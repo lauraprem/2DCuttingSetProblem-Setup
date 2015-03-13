@@ -1,4 +1,4 @@
-package com.polytech4A.CuttingSetProblemSetup.core.resolution;
+package com.polytech4A.CSPS.core.resolution;
 
 /**
  * @author Alexandre

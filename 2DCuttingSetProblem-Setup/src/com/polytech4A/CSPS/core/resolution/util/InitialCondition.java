@@ -1,6 +1,6 @@
-package com.polytech4A.CuttingSetProblemSetup.core.resolution.util;
+package com.polytech4A.CSPS.core.resolution.util;
 
-import com.polytech4A.CuttingSetProblemSetup.core.resolution.Resolution;
+import com.polytech4A.CSPS.core.resolution.Resolution;
 
 /**
  * @author Alexandre
