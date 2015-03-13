@@ -29,7 +29,12 @@ public class Image {
 	 */
 	private Vector size;
 	
-	public Image(Long _amout, boolean _rotated, List<Vector> _positions, Vector _size){
+	/**
+	 * nombre de fois que l'on veut imprimer l'image au total
+	 */
+	private Long goal;
+	
+	public Image(Long _amout, boolean _rotated, List<Vector> _positions, Vector _size, Long _goal){
 		amout=_amout;
 		rotated=_rotated;
 		positions=_positions;
@@ -66,6 +71,14 @@ public class Image {
 
 	public void setSize(Vector size) {
 		this.size = size;
+	}
+
+	public Long getGoal() {
+		return goal;
+	}
+
+	public void setGoal(Long goal) {
+		this.goal = goal;
 	}
 	
 	
