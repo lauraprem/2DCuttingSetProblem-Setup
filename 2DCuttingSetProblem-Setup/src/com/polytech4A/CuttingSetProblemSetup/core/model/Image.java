@@ -4,23 +4,23 @@ import java.util.List;
 
 
 /**
- * Image à positionner dans un pattern
+ * Image ï¿½ positionner dans un pattern
  * @author Laura
  *
  */
 public class Image {
 	/**
-	 * nombre de fois que l'image est présente dans un pattern
+	 * nombre de fois que l'image est prï¿½sente dans un pattern
 	 */
 	private Long amout;
 	
 	/**
-	 * Permet de savoir si l'image est tournée
+	 * Permet de savoir si l'image est tournï¿½e
 	 */
 	private boolean rotated;
 	
 	/**
-	 * Liste des positions pour chaque fois que l'image est présente dans un pattern (amout)
+	 * Liste des positions pour chaque fois que l'image est prï¿½sente dans un pattern (amout)
 	 */
 	private List<Vector> positions;
 	
@@ -28,4 +28,46 @@ public class Image {
 	 * Taille de l'image
 	 */
 	private Vector size;
+	
+	public Image(Long _amout, boolean _rotated, List<Vector> _positions, Vector _size){
+		amout=_amout;
+		rotated=_rotated;
+		positions=_positions;
+		size=_size;
+	}
+
+	public Long getAmout() {
+		return amout;
+	}
+
+	public void setAmout(Long amout) {
+		this.amout = amout;
+	}
+
+	public boolean isRotated() {
+		return rotated;
+	}
+
+	public void setRotated(boolean rotated) {
+		this.rotated = rotated;
+	}
+
+	public List<Vector> getPositions() {
+		return positions;
+	}
+
+	public void setPositions(List<Vector> positions) {
+		this.positions = positions;
+	}
+
+	public Vector getSize() {
+		return size;
+	}
+
+	public void setSize(Vector size) {
+		this.size = size;
+	}
+	
+	
+	
 }
