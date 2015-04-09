@@ -43,6 +43,10 @@ public class Image {
 		size = _size;
 	}
 
+	public Image(Vector size, Long goal) {
+		this(null, false, null, size, goal);
+	}
+
 	public Long getAmout() {
 		return amout;
 	}
