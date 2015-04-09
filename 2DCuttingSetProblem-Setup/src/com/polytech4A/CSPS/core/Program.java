@@ -6,4 +6,7 @@ package com.polytech4A.CSPS.core;
  */
 public class Program {
 	// TODO Surcharger tous les toString()
+	public static void main(String[] args) {
+
+	}
 }
