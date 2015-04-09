@@ -80,7 +80,6 @@ public class Image {
 	public void setGoal(Long goal) {
 		this.goal = goal;
 	}
-	
-	
-	
+
+	// TODO : getArea()
 }

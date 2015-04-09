@@ -9,10 +9,12 @@ public interface IVerificationMethod {
 	 * @param solution
 	 * @return
 	 */
-	public boolean isViable(Solution solution);
-	
+	default boolean isViable(Solution solution) {
+		return getPlaced(solution) != null;
+	}
+
 	/**
-	 * 
+	 *
 	 * @param solution
 	 * @return
 	 */

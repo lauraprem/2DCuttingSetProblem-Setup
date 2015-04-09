@@ -12,7 +12,7 @@ import com.polytech4A.CSPS.core.model.Solution;
  *
  */
 
-public abstract class StrategyMethod extends Thread{
+public abstract class StrategyMethod extends Thread {
 	
 	/**
 	 * cout d'un Pattern
@@ -45,9 +45,7 @@ public abstract class StrategyMethod extends Thread{
 	 * @
 	 * @return Solution
 	 */
-	public Solution getSolution(Solution solution){
-		return null;
-	}
+	abstract Solution getSolution(Solution solution);
 	
 	/**
 	 * 
@@ -55,7 +53,5 @@ public abstract class StrategyMethod extends Thread{
 	 * 
 	 * @return StrategyMethod
 	 */
-	public StrategyMethod loadFromFile(String filepath){
-		return null;
-	}
+	abstract StrategyMethod loadFromFile(String filepath);
 }

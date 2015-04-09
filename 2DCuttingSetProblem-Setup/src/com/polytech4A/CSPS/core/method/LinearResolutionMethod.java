@@ -4,4 +4,6 @@ public class LinearResolutionMethod {
 	private Long costOfPattern;
 	private Long costOfPrinting;
 //	-goal : Images[]
+
+	// TODO : Tout à faire
 }

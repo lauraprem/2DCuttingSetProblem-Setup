@@ -38,6 +38,8 @@ public class Pattern {
 	public void setAmout(Long amout) {
 		this.amout = amout;
 	}
+
+	// TODO : Ajouter l'ArrayList<Image> en attribut
 	
 	
 }
