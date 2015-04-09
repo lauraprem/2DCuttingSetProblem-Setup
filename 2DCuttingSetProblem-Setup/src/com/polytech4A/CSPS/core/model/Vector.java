@@ -37,7 +37,10 @@ public class Vector {
 	public void setY(Long y) {
 		Y = y;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "VECTOR\n"
+		+"X:"+X+" Y:"+Y;
+	}
 }

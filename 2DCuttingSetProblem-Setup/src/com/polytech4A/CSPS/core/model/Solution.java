@@ -10,7 +10,7 @@ import java.util.List;
 public class Solution {
 	
 	/**
-	 * param�tre de conversion des float en long
+	 * paramètre de conversion des float en long
 	 */
 	private int scale;
 	
@@ -40,6 +40,11 @@ public class Solution {
 	public void setPatterns(List<Pattern> patterns) {
 		this.patterns = patterns;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "SOLUTION\n"
+		+"Paramètre de conversion des float en long : "+scale+"\n"
+		+"Patterns qui forment la solution : "+patterns.toString()+"\n";
+	}
 }

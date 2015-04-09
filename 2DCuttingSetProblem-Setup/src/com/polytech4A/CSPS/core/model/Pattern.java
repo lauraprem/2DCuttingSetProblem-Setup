@@ -1,5 +1,7 @@
 package com.polytech4A.CSPS.core.model;
 
+import java.util.ArrayList;
+
 /**
  * Planche contenant des images
  * @author Laura
@@ -16,6 +18,11 @@ public class Pattern {
 	 * Nombre de fois qu'il faut imprimer le pattern
 	 */
 	private Long amout;
+	
+	/**
+	 * Les images présente dans le pattern
+	 */
+	private ArrayList<Image> listImage;
 
 	public Pattern(Vector size, Long amout) {
 		super();
@@ -39,7 +46,33 @@ public class Pattern {
 		this.amout = amout;
 	}
 
-	// TODO : Ajouter l'ArrayList<Image> en attribut
+	public ArrayList<Image> getListImage() {
+		return listImage;
+	}
+
+	public void setListImage(ArrayList<Image> listImage) {
+		this.listImage = listImage;
+	}
 	
 	
+	
+//	/**
+//	 * taille du pattern
+//	 */
+//	private Vector size;
+//	
+//	/**
+//	 * Nombre de fois qu'il faut imprimer le pattern
+//	 */
+//	private Long amout;
+//	
+//	/**
+//	 * Les images présente dans le pattern
+//	 */
+//	private ArrayList<Image> listImage;
+//	
+//	@Override
+//	public String toString() {
+//		return Pattern;
+//	}
 }
