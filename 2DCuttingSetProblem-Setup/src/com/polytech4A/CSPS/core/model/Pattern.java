@@ -30,6 +30,11 @@ public class Pattern {
 		this.amount = amount;
 	}
 
+	public Pattern(Vector size, ArrayList<Image> listImg) {
+		this.size = size;
+		this.listImg = listImg;
+	}
+
 	public Vector getSize() {
 		return size;
 	}

@@ -12,18 +12,18 @@ public class Image {
 	/**
 	 * nombre de fois que l'image est présente dans un pattern
 	 */
-	private Long amount;
+	private Long amount = 0L;
 
 	/**
 	 * Permet de savoir si l'image est tourn�e
 	 */
-	private boolean rotated;
+	private boolean rotated = false;
 
 	/**
 	 * Liste des positions pour chaque fois que l'image est pr�sente dans un
 	 * pattern (amount)
 	 */
-	private ArrayList<Vector> positions;
+	private ArrayList<Vector> positions = new ArrayList<Vector>();
 
 	/**
 	 * Taille de l'image
