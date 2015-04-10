@@ -17,17 +17,17 @@ public class Pattern {
 	/**
 	 * Nombre de fois qu'il faut imprimer le pattern
 	 */
-	private Long amout;
+	private Long amount;
 	
 	/**
 	 * Les images présente dans le pattern
 	 */
 	private ArrayList<Image> listImg;
 
-	public Pattern(Vector size, Long amout) {
+	public Pattern(Vector size, Long amount) {
 		super();
 		this.size = size;
-		this.amout = amout;
+		this.amount = amount;
 	}
 
 	public Vector getSize() {
@@ -38,12 +38,12 @@ public class Pattern {
 		this.size = size;
 	}
 
-	public Long getAmout() {
-		return amout;
+	public Long getAmount() {
+		return amount;
 	}
 
-	public void setAmout(Long amout) {
-		this.amout = amout;
+	public void setAmount(Long amount) {
+		this.amount = amount;
 	}
 
 	public ArrayList<Image> getListImg() {
@@ -59,7 +59,7 @@ public class Pattern {
 		String listImgString="";
 		String patternString="PATTERN\n"
 				+"Taille du pattern : "+size.toString()+"\n"
-				+"Nombre de fois qu\'il faut imprimer le pattern : "+amout+"\n"
+				+"Nombre de fois qu\'il faut imprimer le pattern : "+ amount +"\n"
 				+"Les images présente dans le pattern : \n";
 		
 		for (int i = 0; i < listImg.size(); i++) {

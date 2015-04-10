@@ -1,6 +1,6 @@
 package com.polytech4A.CSPS.core.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Image à positionner dans un pattern
@@ -12,7 +12,7 @@ public class Image {
 	/**
 	 * nombre de fois que l'image est présente dans un pattern
 	 */
-	private Long amout;
+	private Long amount;
 
 	/**
 	 * Permet de savoir si l'image est tourn�e
@@ -21,9 +21,9 @@ public class Image {
 
 	/**
 	 * Liste des positions pour chaque fois que l'image est pr�sente dans un
-	 * pattern (amout)
+	 * pattern (amount)
 	 */
-	private List<Vector> positions;
+	private ArrayList<Vector> positions;
 
 	/**
 	 * Taille de l'image
@@ -35,9 +35,9 @@ public class Image {
 	 */
 	private Long goal;
 
-	public Image(Long _amout, boolean _rotated, List<Vector> _positions,
+	public Image(Long _amout, boolean _rotated, ArrayList<Vector> _positions,
 			Vector _size, Long _goal) {
-		amout = _amout;
+		amount = _amout;
 		rotated = _rotated;
 		positions = _positions;
 		size = _size;
@@ -47,12 +47,12 @@ public class Image {
 		this(null, false, null, size, goal);
 	}
 
-	public Long getAmout() {
-		return amout;
+	public Long getAmount() {
+		return amount;
 	}
 
-	public void setAmout(Long amout) {
-		this.amout = amout;
+	public void setAmount(Long amount) {
+		this.amount = amount;
 	}
 
 	public boolean isRotated() {
@@ -63,11 +63,11 @@ public class Image {
 		this.rotated = rotated;
 	}
 
-	public List<Vector> getPositions() {
+	public ArrayList<Vector> getPositions() {
 		return positions;
 	}
 
-	public void setPositions(List<Vector> positions) {
+	public void setPositions(ArrayList<Vector> positions) {
 		this.positions = positions;
 	}
 
@@ -95,7 +95,7 @@ public class Image {
 	public String toString() {
 		String stringPosition;
 		String detail = "IMAGE\n" +
-				"Nombre d\'image dans le pattern : "+ amout+"\n"
+				"Nombre d\'image dans le pattern : "+ amount +"\n"
 				+"L\'image est tournée : "+rotated+"\n";
 		
 		stringPosition = "Liste des positions pour chaque fois que l\'image est présente : \n";

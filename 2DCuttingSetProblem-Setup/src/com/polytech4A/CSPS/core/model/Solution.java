@@ -1,6 +1,6 @@
 package com.polytech4A.CSPS.core.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Une solution au Cutting Problem
@@ -17,9 +17,9 @@ public class Solution {
 	/**
 	 * liste des pattern qui forment la solution
 	 */
-	private List<Pattern> patterns;
+	private ArrayList<Pattern> patterns;
 	
-	public Solution(int scale, List<Pattern> patterns) {
+	public Solution(int scale, ArrayList<Pattern> patterns) {
 		super();
 		this.scale = scale;
 		this.patterns = patterns;
@@ -33,11 +33,11 @@ public class Solution {
 		this.scale = scale;
 	}
 
-	public List<Pattern> getPatterns() {
+	public ArrayList<Pattern> getPatterns() {
 		return patterns;
 	}
 
-	public void setPatterns(List<Pattern> patterns) {
+	public void setPatterns(ArrayList<Pattern> patterns) {
 		this.patterns = patterns;
 	}
 
