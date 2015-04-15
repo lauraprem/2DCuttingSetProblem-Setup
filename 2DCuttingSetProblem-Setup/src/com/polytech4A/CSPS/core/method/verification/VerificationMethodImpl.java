@@ -10,7 +10,7 @@ import com.polytech4A.CSPS.core.model.Solution;
  * 
  * @author Corinne
  */
-public class Packaging implements IVerificationMethod {
+public class VerificationMethodImpl implements IVerificationMethod {
 
 	/*
 	 * Liste de pattern au fur et à mesure du découpage du pattern initial. A
@@ -24,7 +24,7 @@ public class Packaging implements IVerificationMethod {
 	 */
 	private ArrayList<Image> listImg;
 
-	public Packaging(ArrayList<Pattern> listPattern) {
+	public VerificationMethodImpl(ArrayList<Pattern> listPattern) {
 		this.listPattern = new ArrayList<Pattern>();
 		this.listImg = new ArrayList<Image>();
 	}
@@ -47,17 +47,17 @@ public class Packaging implements IVerificationMethod {
 
 	@Override
 	public Solution getPlaced(Solution solution) {
-		Solution newSolution = new Solution(solution.getScale());
+//		Solution newSolution = new Solution(solution.getScale());
 
 		for (int i = 0; i < solution.getPatterns().size(); i++) {
 			Pattern p = this.getPlacedPattern(solution.getPatterns().get(i));
 			if (p != null) {
-				newSolution.addPattern(p);
+//				newSolution.addPattern(p);
 			} else {
 				return null;
 			}
 		}
-		return newSolution;
+		return null;//newSolution;
 	}
 
 	/**
