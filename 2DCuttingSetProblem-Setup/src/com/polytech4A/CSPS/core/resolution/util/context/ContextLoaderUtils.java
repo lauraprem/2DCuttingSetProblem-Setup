@@ -1,13 +1,13 @@
 package com.polytech4A.CSPS.core.resolution.util.context;
 
+import com.polytech4A.CSPS.core.model.Image;
+import com.polytech4A.CSPS.core.model.Vector;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.LineIterator;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import com.polytech4A.CSPS.core.model.Image;
-import com.polytech4A.CSPS.core.model.Vector;
-import org.apache.commons.io.LineIterator;
-import org.apache.commons.io.FileUtils;
 
 /**
  * Created by Antoine CARON on 20/03/2015.
@@ -82,8 +82,11 @@ public class ContextLoaderUtils {
 			String[] array = line.split("\\t");
 			Long x = Math.round(Double.parseDouble(array[0]) * SCALE),
 					y = Math.round(Double.parseDouble(array[1]) * SCALE);
-			return new Image(new Vector(x, y), Long.parseLong(array[2]));
+			id++;
+			return new Image(id, new Vector(x, y), Long.parseLong(array[2]));
 		} else throw mctx;
 	}
+
+	private static Long id = -1L;
 
 }

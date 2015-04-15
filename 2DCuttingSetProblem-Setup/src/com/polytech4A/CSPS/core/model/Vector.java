@@ -43,4 +43,15 @@ public class Vector {
 		return "VECTOR\n"
 		+"X:"+X+" Y:"+Y;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Vector vector = (Vector) o;
+
+		if (X != null ? !X.equals(vector.X) : vector.X != null) return false;
+		return !(Y != null ? !Y.equals(vector.Y) : vector.Y != null);
+	}
 }

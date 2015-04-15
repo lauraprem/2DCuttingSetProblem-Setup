@@ -10,6 +10,12 @@ import static com.polytech4A.CSPS.core.util.Util.escToString;
  * @author Laura
  */
 public class Image {
+
+    /**
+     * nombre de fois que l'image est présente dans un pattern
+     */
+    private Long id = 0L;
+
     /**
      * nombre de fois que l'image est présente dans un pattern
      */
@@ -36,17 +42,22 @@ public class Image {
      */
     private Long goal = -1L;
 
-    public Image(Long _amount, boolean _rotated, ArrayList<Vector> _positions,
+    public Image(Long _id, Long _amount, boolean _rotated, ArrayList<Vector> _positions,
                  Vector _size, Long _goal) {
         amount = _amount == null ? 0L : _amount;
         rotated = _rotated;
         positions = _positions == null ? new ArrayList<>() : _positions;
         size = _size;
         goal = _goal;
+        id = _id == null ? 0L : _id;
     }
 
     public Image(Vector size, Long goal) {
-        this(null, false, null, size, goal);
+        this(null, null, false, null, size, goal);
+    }
+
+    public Image(Long id, Vector size, Long goal) {
+        this(id, null, false, null, size, goal);
     }
 
     public Long getAmount() {
@@ -89,20 +100,24 @@ public class Image {
         this.goal = goal;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Long getArea() {
         return size.getX() * size.getY();
     }
 
     @Override
     public String toString() {
-        StringBuilder stringPosition = new StringBuilder("Liste des positions pour chaque fois que l\'image est présente : \n");
-        String detail = "IMAGE\n" +
-                "Nombre d\'image dans le pattern : " + escToString(amount) + "\n"
-                + "L\'image est tournée : " + rotated + "\n";
+        StringBuilder stringPosition = new StringBuilder("positions : \n");
+        String detail = "IMAGE " + id + "\n" +
+                "amount : " + escToString(amount) + "\n"
+                + "rotated : " + rotated + "\n";
 
         if (positions == null) {
             stringPosition.append("<null>\n");
-        } else if(positions.size() == 0) {
+        } else if (positions.size() == 0) {
             stringPosition.append("<empty>\n");
         } else {
             for (Vector vec : positions) {
@@ -112,10 +127,22 @@ public class Image {
         }
 
         detail = detail + stringPosition
-                + "Taille de l\'image : " + size.toString() + "\n"
-                + "Nombre d\'image à imprimer au total : " + escToString(goal) + "\n";
+                + "size : " + size.toString() + "\n"
+                + "goal : " + escToString(goal) + "\n";
 
         return detail;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Image image = (Image) o;
+
+        if (!id.equals(image.id)) return false;
+        if (!size.equals(image.size)) return false;
+        return goal.equals(image.goal);
 
     }
 }
