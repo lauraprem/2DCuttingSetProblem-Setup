@@ -1,6 +1,7 @@
 package com.polytech4A.CSPS.core.method.verification;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 import com.polytech4A.CSPS.core.model.Image;
@@ -71,11 +72,12 @@ public class VerificationMethodImpl implements IVerificationMethod {
 		for (int i = 0; i < listImg.size(); i++) {
 			int j = 0;
 			while (j < listPattern.size()) {
-				 if(listImg.get(i).getArea()< listPattern.get(j).getArea()){
-//					 decoupagePattern()
-				// TODO place l'image en bas à droite du pattern puis découpe
-				// pour guillotine => listPattern = plusieurs pattern
-				 }
+				if (listImg.get(i).getArea() < listPattern.get(j).getArea()) {
+					// decoupagePattern()
+					// TODO place l'image en bas à droite du pattern puis
+					// découpe
+					// pour guillotine => listPattern = plusieurs pattern
+				}
 				this.getImgOrderDesc();
 				this.getPatternsOrderAsc();
 				j++;
@@ -89,7 +91,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 * la plus grande)
 	 */
 	protected void getPatternsOrderAsc() {
-		// listPattern;
+		Collections.sort(listPattern,Pattern.PatternNameComparator);
 	}
 
 	/**
@@ -97,18 +99,35 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 * la plus petite)
 	 */
 	protected void getImgOrderDesc() {
-		ArrayList<Image> listImgNew = new ArrayList<Image>();
-		
-		 Iterator<Image> it = listImgNew.iterator();
-		 while(it.hasNext()){
-			for(int i=0;i<listImg.size();i++){
-//				if()
-//				listImgNew.add(e);
-			}
-		}
+		Collections.sort(listImg,Image.ImageNameComparator);
 	}
-	
-	protected ArrayList<Pattern> decoupagePattern(){
+
+	public static void quicksort(Image [] tableau, int début, int fin) {
+	    if (début < fin) {
+	        int indicePivot = partition(tableau, début, fin);
+	        quicksort(tableau, début, indicePivot-1);
+	        quicksort(tableau, indicePivot+1, fin);
+	    }
+	}
+	 
+	public static int partition (Image [] t, int début, int fin) {
+	    Image valeurPivot = t[début];
+	    int d = début+1;
+	    int f = fin;
+	    while (d < f) {
+	        while(d < f && t[f].getArea() >= valeurPivot.getArea()) f--;
+	        while(d < f && t[d].getArea() <= valeurPivot.getArea()) d++;
+	        Image temp = t[d];
+	        t[d]= t[f];
+	        t[f] = temp;
+	    }
+	    if (t[d].getArea() > valeurPivot.getArea()) d--;
+	    t[début] = t[d];
+	    t[d] = valeurPivot;
+	    return d;
+	}
+
+	protected ArrayList<Pattern> decoupagePattern() {
 		return null;
 	}
 }

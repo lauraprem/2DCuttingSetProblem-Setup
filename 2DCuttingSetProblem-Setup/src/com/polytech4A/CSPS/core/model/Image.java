@@ -156,7 +156,6 @@ public class Image implements Comparable<Image> {
 		}
 		return 1;
 	}
-	
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		Image cloned = (Image) super.clone();

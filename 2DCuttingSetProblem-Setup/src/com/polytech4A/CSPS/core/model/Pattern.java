@@ -94,8 +94,6 @@ public class Pattern implements Comparable<Pattern> {
 		this.listImg = pattern.getListImg();
 		this.size = pattern.getSize();
 	}
-
-		@Override
 	public Object clone() throws CloneNotSupportedException {
 		Pattern cloned = (Pattern) super.clone();
 		cloned.setAmount(this.amount);
@@ -106,7 +104,6 @@ public class Pattern implements Comparable<Pattern> {
 		}
 		return cloned;
 	}
-
 	@Override
 	public int compareTo(Pattern o) {
 		if (this.getArea() < o.getArea()) {
