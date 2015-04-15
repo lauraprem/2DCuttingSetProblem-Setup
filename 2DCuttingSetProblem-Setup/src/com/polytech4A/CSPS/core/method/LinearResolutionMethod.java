@@ -101,18 +101,18 @@ public class LinearResolutionMethod {
 		ArrayList<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
 		double[] coefficients;
 		int i;
-		for (Image ctxBox : context.getImages()) {
+		for (Image ctxImage : context.getImages()) {
 			coefficients = new double[solution.getPatterns().size()];
 			i = 0;
 			for (Pattern p : solution.getPatterns()) {
 				for (Image box : p.getListImg()) {
-					if (box.equals(ctxBox)) {
+					if (box.equals(ctxImage)) {
 						coefficients[i] = box.getAmount();
 						++i;
 					}
 				}
 			}
-			constraints.add(new LinearConstraint(coefficients, Relationship.GEQ, ctxBox.getAmount()));
+			constraints.add(new LinearConstraint(coefficients, Relationship.GEQ, ctxImage.getAmount()));
 		}
 		this.constraints = constraints;
 	}
