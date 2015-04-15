@@ -1,8 +1,8 @@
 package com.polytech4A.CSPS.core.model;
 
-import java.util.ArrayList;
-
 import static com.polytech4A.CSPS.core.util.Util.escToString;
+
+import java.util.ArrayList;
 
 /**
  * Une solution au Cutting Problem
@@ -26,7 +26,13 @@ public class Solution {
         this.scale = scale;
         this.patterns = patterns;
     }
-
+    
+     public Solution(int scale) {
+        super();
+        this.scale = scale;
+        this.patterns = new ArrayList<Pattern>();
+    }
+    
     public int getScale() {
         return scale;
     }
@@ -42,11 +48,15 @@ public class Solution {
     public void setPatterns(ArrayList<Pattern> patterns) {
         this.patterns = patterns;
     }
+    
+    public void addPattern(Pattern p) {
+        this.patterns.add(p);
+    }
 
     @Override
     public String toString() {
         return "SOLUTION\n"
-                + "Paramètre de conversion des float en long : " + scale + "\n"
-                + "Patterns qui forment la solution : " + escToString(patterns) + "\n";
+                + "scale : " + scale + "\n"
+                + "Patterns : " + escToString(patterns) + "\n";
     }
 }

@@ -60,14 +60,18 @@ public class Pattern {
     public void setListImg(ArrayList<Image> listImg) {
         this.listImg = listImg;
     }
+    
+    public Long getArea() {
+        return size.getX()*size.getY();
+    }
 
     @Override
     public String toString() {
         StringBuilder listImgString = new StringBuilder();
         String patternString = "PATTERN\n"
-                + "Taille du pattern : " + escToString(size) + "\n"
-                + "Nombre de fois qu\'il faut imprimer le pattern : " + escToString(amount) + "\n"
-                + "Les images présente dans le pattern : \n";
+                + "size : " + escToString(size) + "\n"
+                + "amount : " + escToString(amount) + "\n"
+                + "listImg : \n";
 
         for (Image img : listImg) {
             listImgString.append(escToString(img));
