@@ -26,7 +26,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 */
 	private ArrayList<Image> listImg;
 
-	public VerificationMethodImpl(ArrayList<Pattern> listPattern) {
+	public VerificationMethodImpl() {
 		this.listPattern = new ArrayList<Pattern>();
 		this.listImg = new ArrayList<Image>();
 	}
@@ -63,6 +63,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	}
 
 	public Pattern getPlacedPattern(Pattern pattern) {
+		
 		// Initialisation des variables pour placer un pattern
 		Pattern newPattern = new Pattern(pattern.getSize(), pattern.getAmount());
 		listPattern.add(newPattern);
@@ -85,6 +86,17 @@ public class VerificationMethodImpl implements IVerificationMethod {
 		}
 		return null;
 	}
+	
+	protected ArrayList<Pattern> placementImage(Pattern p, Image i) {
+		// Verif si hauteur & largeur rentre (pattern-image) (en placent en bas à droite)
+		// => Si oui, on place, sinon rotation image 90° et reteste
+		return null;
+	}
+	
+	protected ArrayList<Pattern> decoupagePattern() {
+		
+		return null;
+	}
 
 	/**
 	 * Tri la liste des patterns par ordre croissant (de la plus petite taille à
@@ -100,34 +112,5 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 */
 	protected void getImgOrderDesc() {
 		Collections.sort(listImg,Image.ImageNameComparator);
-	}
-
-	public static void quicksort(Image [] tableau, int début, int fin) {
-	    if (début < fin) {
-	        int indicePivot = partition(tableau, début, fin);
-	        quicksort(tableau, début, indicePivot-1);
-	        quicksort(tableau, indicePivot+1, fin);
-	    }
-	}
-	 
-	public static int partition (Image [] t, int début, int fin) {
-	    Image valeurPivot = t[début];
-	    int d = début+1;
-	    int f = fin;
-	    while (d < f) {
-	        while(d < f && t[f].getArea() >= valeurPivot.getArea()) f--;
-	        while(d < f && t[d].getArea() <= valeurPivot.getArea()) d++;
-	        Image temp = t[d];
-	        t[d]= t[f];
-	        t[f] = temp;
-	    }
-	    if (t[d].getArea() > valeurPivot.getArea()) d--;
-	    t[début] = t[d];
-	    t[d] = valeurPivot;
-	    return d;
-	}
-
-	protected ArrayList<Pattern> decoupagePattern() {
-		return null;
 	}
 }
