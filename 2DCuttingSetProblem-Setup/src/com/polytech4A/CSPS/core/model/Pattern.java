@@ -65,9 +65,9 @@ public class Pattern {
     public String toString() {
         StringBuilder listImgString = new StringBuilder();
         String patternString = "PATTERN\n"
-                + "Taille du pattern : " + escToString(size) + "\n"
-                + "Nombre de fois qu\'il faut imprimer le pattern : " + escToString(amount) + "\n"
-                + "Les images présente dans le pattern : \n";
+                + "size : " + escToString(size) + "\n"
+                + "amount : " + escToString(amount) + "\n"
+                + "listImg : \n";
 
         for (Image img : listImg) {
             listImgString.append(escToString(img));

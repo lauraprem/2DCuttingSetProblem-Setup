@@ -47,12 +47,12 @@ public class VerificationMethodImpl implements IVerificationMethod {
 
 	@Override
 	public Solution getPlaced(Solution solution) {
-//		Solution newSolution = new Solution(solution.getScale());
+		Solution newSolution = new Solution(solution.getScale());
 
 		for (int i = 0; i < solution.getPatterns().size(); i++) {
 			Pattern p = this.getPlacedPattern(solution.getPatterns().get(i));
 			if (p != null) {
-//				newSolution.addPattern(p);
+				newSolution.addPattern(p);
 			} else {
 				return null;
 			}
