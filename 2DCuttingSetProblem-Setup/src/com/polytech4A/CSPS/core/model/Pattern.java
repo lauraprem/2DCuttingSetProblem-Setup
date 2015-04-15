@@ -15,17 +15,17 @@ public class Pattern implements Comparable<Pattern> {
 	/**
 	 * taille du pattern
 	 */
-	private Vector size;
+	private Vector				size;
 
 	/**
 	 * Nombre de fois qu'il faut imprimer le pattern
 	 */
-	private Long amount;
+	private Long				amount;
 
 	/**
 	 * Les images présente dans le pattern
 	 */
-	private ArrayList<Image> listImg;
+	private ArrayList<Image>	listImg;
 
 	public Pattern(Vector size, Long amount) {
 		super();
@@ -69,41 +69,40 @@ public class Pattern implements Comparable<Pattern> {
 	@Override
 	public String toString() {
 		StringBuilder listImgString = new StringBuilder();
-		String patternString = "PATTERN\n" + "size : " + escToString(size)
-				+ "\n" + "amount : " + escToString(amount) + "\n"
-				+ "listImg : \n";
-		
-		if(listImg!=null){
+		String patternString = "PATTERN\n" + "size : " + escToString(size) + "\n" + "amount : " + escToString(amount) + "\n" + "listImg : \n";
+
+		if (listImg != null) {
 			for (Image img : listImg) {
 				if (img != null && img.getAmount() != 0) {
 					listImgString.append(escToString(img));
 					listImgString.append('\n');
 				}
 			}
-		}else{
+		} else {
 			listImgString.append(escToString(listImg));
 			listImgString.append('\n');
 		}
-		
+
 		patternString = patternString + listImgString.toString();
-		
+
 		return patternString;
 	}
+
 	public void setPattern(Pattern pattern) {
 		this.amount = pattern.getAmount();
 		this.listImg = pattern.getListImg();
 		this.size = pattern.getSize();
 	}
+
 	public Object clone() throws CloneNotSupportedException {
-		Pattern cloned = (Pattern) super.clone();
-		cloned.setAmount(this.amount);
-		cloned.setSize(this.size);
+		Pattern cloned = new Pattern(this.size, this.amount);
 		cloned.listImg = new ArrayList<Image>();
 		for (Image image : this.listImg) {
 			cloned.listImg.add((Image) image.clone());
 		}
 		return cloned;
 	}
+
 	@Override
 	public int compareTo(Pattern o) {
 		if (this.getArea() < o.getArea()) {
@@ -112,18 +111,21 @@ public class Pattern implements Comparable<Pattern> {
 		return 1;
 	}
 
-	public static Comparator<Pattern> PatternNameComparator = new Comparator<Pattern>() {
-		public int compare(Pattern p1, Pattern p2) {
+	public static Comparator<Pattern>	PatternNameComparator	= new Comparator<Pattern>() {
+																	public int compare(Pattern p1, Pattern p2) {
 
-			Long PattArea1 = p1.getArea();
-			Long PattArea2 = p2.getArea();
+																		Long PattArea1 = p1.getArea();
+																		Long PattArea2 = p2.getArea();
 
-			// ascending order
-			 return PattArea1.compareTo(PattArea2);
+																		// ascending
+																		// order
+																		return PattArea1.compareTo(PattArea2);
 
-			// descending order
-//			return PattArea2.compareTo(PattArea1);
-		}
+																		// descending
+																		// order
+																		// return
+																		// PattArea2.compareTo(PattArea1);
+																	}
 
-	};
+																};
 }

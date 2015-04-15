@@ -15,36 +15,35 @@ public class Image implements Comparable<Image> {
 	/**
 	 * nombre de fois que l'image est présente dans un pattern
 	 */
-	private Long id = 0L;
+	private Long				id			= 0L;
 
 	/**
 	 * nombre de fois que l'image est présente dans un pattern
 	 */
-	private Long amount = 0L;
+	private Long				amount		= 0L;
 
 	/**
 	 * Permet de savoir si l'image est tourn�e
 	 */
-	private boolean rotated = false;
+	private boolean				rotated		= false;
 
 	/**
 	 * Liste des positions pour chaque fois que l'image est pr�sente dans un
 	 * pattern (amount)
 	 */
-	private ArrayList<Vector> positions = new ArrayList<>();
+	private ArrayList<Vector>	positions	= new ArrayList<>();
 
 	/**
 	 * Taille de l'image
 	 */
-	private Vector size;
+	private Vector				size;
 
 	/**
 	 * nombre de fois que l'on veut imprimer l'image au total
 	 */
-	private Long goal = -1L;
+	private Long				goal		= -1L;
 
-	public Image(Long _id, Long _amount, boolean _rotated,
-			ArrayList<Vector> _positions, Vector _size, Long _goal) {
+	public Image(Long _id, Long _amount, boolean _rotated, ArrayList<Vector> _positions, Vector _size, Long _goal) {
 		amount = _amount == null ? 0L : _amount;
 		rotated = _rotated;
 		positions = _positions == null ? new ArrayList<>() : _positions;
@@ -112,8 +111,7 @@ public class Image implements Comparable<Image> {
 	@Override
 	public String toString() {
 		StringBuilder stringPosition = new StringBuilder("positions : \n");
-		String detail = "IMAGE " + id + "\n" + "amount : "
-				+ escToString(amount) + "\n" + "rotated : " + rotated + "\n";
+		String detail = "IMAGE " + id + "\n" + "amount : " + escToString(amount) + "\n" + "rotated : " + rotated + "\n";
 
 		if (positions == null) {
 			stringPosition.append("<null>\n");
@@ -126,8 +124,7 @@ public class Image implements Comparable<Image> {
 			}
 		}
 
-		detail = detail + stringPosition + "size : " + size.toString() + "\n"
-				+ "goal : " + escToString(goal) + "\n";
+		detail = detail + stringPosition + "size : " + size.toString() + "\n" + "goal : " + escToString(goal) + "\n";
 
 		return detail;
 	}
@@ -156,11 +153,11 @@ public class Image implements Comparable<Image> {
 		}
 		return 1;
 	}
+
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		Image cloned = (Image) super.clone();
+		Image cloned = new Image((Vector) size.clone(), goal);
 		cloned.setAmount(amount);
-		cloned.setGoal(goal);
 		cloned.setRotated(rotated);
 		cloned.positions = new ArrayList<Vector>();
 		for (Vector vector : positions) {
@@ -169,19 +166,22 @@ public class Image implements Comparable<Image> {
 		return cloned;
 	}
 
-	public static Comparator<Image> ImageNameComparator = new Comparator<Image>() {
+	public static Comparator<Image>	ImageNameComparator	= new Comparator<Image>() {
 
-		public int compare(Image img1, Image img2) {
+															public int compare(Image img1, Image img2) {
 
-			Long ImgArea1 = img1.getArea();
-			Long ImgArea2 = img2.getArea();
+																Long ImgArea1 = img1.getArea();
+																Long ImgArea2 = img2.getArea();
 
-			// ascending order
-//			return ImgArea1.compareTo(ImgArea2);
+																// ascending
+																// order
+																// return
+																// ImgArea1.compareTo(ImgArea2);
 
-			// descending order
-			 return ImgArea2.compareTo(ImgArea1);
-		}
+																// descending
+																// order
+																return ImgArea2.compareTo(ImgArea1);
+															}
 
-	};
+														};
 }
