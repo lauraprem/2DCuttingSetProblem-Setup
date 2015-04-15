@@ -3,13 +3,14 @@ package com.polytech4A.CSPS.core.model;
 import static com.polytech4A.CSPS.core.util.Util.escToString;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Image à positionner dans un pattern
  *
  * @author Laura
  */
-public class Image {
+public class Image implements Comparable<Image> {
 
 	/**
 	 * nombre de fois que l'image est présente dans un pattern
@@ -149,6 +150,14 @@ public class Image {
 	}
 
 	@Override
+	public int compareTo(Image o) {
+		if (this.getArea() < o.getArea()) {
+			return 0;
+		}
+		return 1;
+	}
+	
+	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		Image cloned = (Image) super.clone();
 		cloned.setAmount(amount);
@@ -161,4 +170,19 @@ public class Image {
 		return cloned;
 	}
 
+	public static Comparator<Image> ImageNameComparator = new Comparator<Image>() {
+
+		public int compare(Image img1, Image img2) {
+
+			Long ImgArea1 = img1.getArea();
+			Long ImgArea2 = img2.getArea();
+
+			// ascending order
+//			return ImgArea1.compareTo(ImgArea2);
+
+			// descending order
+			 return ImgArea2.compareTo(ImgArea1);
+		}
+
+	};
 }
