@@ -74,8 +74,10 @@ public class Pattern {
                 + "listImg : \n";
 
         for (Image img : listImg) {
-            listImgString.append(escToString(img));
-            listImgString.append('\n');
+            if(img != null && img.getAmount() != 0) {
+                listImgString.append(escToString(img));
+                listImgString.append('\n');
+            }
         }
         patternString = patternString + listImgString.toString();
 

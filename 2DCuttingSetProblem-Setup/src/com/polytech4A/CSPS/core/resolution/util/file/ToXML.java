@@ -11,6 +11,7 @@ public class ToXML extends FileMethod {
 		super(".xml", "xml/");
 	}
 
-	@Override public void save(String filename, Resolution resolution) {
+	@Override
+	public void save(String filename, Resolution resolution) {
 	}
 }
