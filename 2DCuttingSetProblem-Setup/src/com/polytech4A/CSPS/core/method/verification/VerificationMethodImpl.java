@@ -1,6 +1,7 @@
 package com.polytech4A.CSPS.core.method.verification;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
@@ -57,7 +58,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 				return null;
 			}
 		}
-		return null;//newSolution;
+		return newSolution;
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 * @param solution
 	 * @return Pattern si c'est possible, 'null' sinon
 	 */
-	protected Pattern getPlacedPattern(Pattern pattern) {
+	public Pattern getPlacedPattern(Pattern pattern) {
 		// Initialisation des variables pour placer un pattern
 		Pattern newPattern = new Pattern(pattern.getSize(), pattern.getAmount());
 		listPattern.add(newPattern);
@@ -78,13 +79,13 @@ public class VerificationMethodImpl implements IVerificationMethod {
 		for (int i = 0; i < listImg.size(); i++) {
 			int j = 0;
 			while (j < listPattern.size()) {
-				// if(listImg.get(i).getArea()< listPattern.get(j).getArea()){
-				// TODO getAreaPattern()
+				 if(listImg.get(i).getArea()< listPattern.get(j).getArea()){
+//					 decoupagePattern()
 				// TODO place l'image en bas à droite du pattern puis découpe
 				// pour guillotine => listPattern = plusieurs pattern
-				// }
-//				this.getImgOrderDesc();
-//				this.getPatternsOrderAsc();
+				 }
+				this.getImgOrderDesc();
+				this.getPatternsOrderAsc();
 				j++;
 			}
 		}
@@ -104,6 +105,18 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 * la plus petite)
 	 */
 	protected void getImgOrderDesc() {
-		// listImg;
+		ArrayList<Image> listImgNew = new ArrayList<Image>();
+		
+		 Iterator<Image> it = listImgNew.iterator();
+		 while(it.hasNext()){
+			for(int i=0;i<listImg.size();i++){
+//				if()
+//				listImgNew.add(e);
+			}
+		}
+	}
+	
+	protected ArrayList<Pattern> decoupagePattern(){
+		return null;
 	}
 }

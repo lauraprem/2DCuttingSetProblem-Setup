@@ -60,6 +60,10 @@ public class Pattern {
     public void setListImg(ArrayList<Image> listImg) {
         this.listImg = listImg;
     }
+    
+    public Long getArea() {
+        return size.getX()*size.getY();
+    }
 
     @Override
     public String toString() {
