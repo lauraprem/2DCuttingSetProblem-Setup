@@ -61,14 +61,6 @@ public class VerificationMethodImpl implements IVerificationMethod {
 		return newSolution;
 	}
 
-	/**
-	 * Donne le placement des images dans 1 Pattern si c'est possible, sinon
-	 * renvoie 'null'. Pour information, le placement de l'image est fixé en bas
-	 * à gauche & le placement de l'image ce fait verticalement (en priorité).
-	 * 
-	 * @param solution
-	 * @return Pattern si c'est possible, 'null' sinon
-	 */
 	public Pattern getPlacedPattern(Pattern pattern) {
 		// Initialisation des variables pour placer un pattern
 		Pattern newPattern = new Pattern(pattern.getSize(), pattern.getAmount());
