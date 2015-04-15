@@ -18,7 +18,6 @@ import java.util.ArrayList;
  *          Loader of Context files.
  */
 public class ContextLoaderUtils {
-	public static final Long SCALE = 1000L;
 	/**
 	 * Load the content of the context file.
 	 *
@@ -39,7 +38,7 @@ public class ContextLoaderUtils {
 				images.add(loadImage(it.nextLine()));
 			}
 			LineIterator.closeQuietly(it);
-			return new Context(file.getName(), cost, 1, images, new Vector(Math.round(x*SCALE), Math.round(y*SCALE)));
+			return new Context(file.getName(), cost, 1, images, new Vector(x, y));
 		} catch (MalformedContextFileException mctx) {
 			throw mctx;
 		} finally {
@@ -80,10 +79,10 @@ public class ContextLoaderUtils {
 		MalformedContextFileException mctx = new MalformedContextFileException();
 		if (line.matches("[0-9]{1,13}(\\.[0-9]*)?\\t[0-9]{1,13}(\\.[0-9]*)?\\t\\d{1,5}")) {
 			String[] array = line.split("\\t");
-			Long x = Math.round(Double.parseDouble(array[0]) * SCALE),
-					y = Math.round(Double.parseDouble(array[1]) * SCALE);
+			Double w = Double.parseDouble(array[0]),
+					h = Double.parseDouble(array[1]);
 			id++;
-			return new Image(id, new Vector(x, y), Long.parseLong(array[2]));
+			return new Image(id, new Vector(w, h), Long.parseLong(array[2]));
 		} else throw mctx;
 	}
 

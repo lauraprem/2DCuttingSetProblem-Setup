@@ -34,8 +34,13 @@ public class LinearResolutionMethod {
     private Context context;
 
     public ArrayList<Long> getCount(Solution solution) {
+        ArrayList<Long> count = minimize(solution);
+        for(int i = 0; i < count.size();i++) {
+            solution.getPatterns().get(i).setAmount(count.get(i));
+        }
         return minimize(solution);
     }
+
 
     public Long getFitness(Solution solution, Long costOfPattern,
                            Long costOfPrinting) {
