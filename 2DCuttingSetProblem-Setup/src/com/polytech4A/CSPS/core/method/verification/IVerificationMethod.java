@@ -14,9 +14,9 @@ public interface IVerificationMethod {
 	}
 
 	/**
-	 *
+	 * Place les images dans les patterns si c'est possible
 	 * @param solution
-	 * @return
+	 * @return Solution si on arrive pas à placer les images dans le pattern, sinon 'null'
 	 */
 	public Solution getPlaced(Solution solution);
 }
