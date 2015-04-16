@@ -19,14 +19,28 @@ public class Vector {
      */
     private Long Y;
 
-    public Vector(Long x, Long y) {
+    /**
+     * TRUE si l'image est tournée
+     */
+    private Boolean rotated = Boolean.FALSE;
+
+    public Vector(Long x, Long y, Boolean rot) {
         X = x;
         Y = y;
+        rotated = rot;
     }
 
+    public Vector(Long x, Long y) {
+        this(x, y, Boolean.FALSE);
+    }
+
+
     public Vector(Double w, Double h) {
-        X = Math.round(w * SCALE);
-        Y = Math.round(h * SCALE);
+        this(w, h, Boolean.FALSE);
+    }
+
+    public Vector(Double w, Double h, Boolean rot) {
+        this(Math.round(w * SCALE), Math.round(h * SCALE), rot);
     }
 
     public Long getX() {
@@ -45,6 +59,13 @@ public class Vector {
         Y = y;
     }
 
+    public Boolean isRotated() {
+        return rotated;
+    }
+
+    public void setRotated(Boolean rotated) {
+        this.rotated = rotated;
+    }
 
     public Double getWidth() {
         return X.doubleValue() / SCALE.doubleValue();
