@@ -12,12 +12,12 @@ public class Vector {
     /**
      * Valeur de X
      */
-    private Long X;
+    private Long X = 0L;
 
     /**
      * Valeur de Y
      */
-    private Long Y;
+    private Long Y = 0L;
 
 
     public Vector(Long x, Long y) {
