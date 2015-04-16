@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author Alexandre
@@ -61,13 +62,13 @@ public class ToPNG extends FileMethod {
      * Void Constructor.
      */
     public ToPNG() {
-        super(".png", "png/");
+        super("png", "png");
     }
 
     /**
      * Get a grey color.
      *
-     * @param pId N° Image in Pattern.
+     * @param pId Nï¿½ Image in Pattern.
      * @param pNb Number of Images in a Pattern.
      * @return Color
      */
@@ -85,7 +86,7 @@ public class ToPNG extends FileMethod {
     /**
      * Get a color.
      *
-     * @param pId N° Image in Pattern.
+     * @param pId Nï¿½ Image in Pattern.
      * @param pNb Number of Images in a Pattern.
      * @return Color
      */
@@ -103,7 +104,7 @@ public class ToPNG extends FileMethod {
     /**
      * Get a color or a gray
      *
-     * @param pId N° Image in Pattern.
+     * @param pId Nï¿½ Image in Pattern.
      * @param pNb Number of Images in a Pattern.
      * @return Color color in grey or not.
      */
@@ -194,14 +195,18 @@ public class ToPNG extends FileMethod {
      */
     @Override
     public void save(String filename, Resolution resolution) {
-        mkdir();
-        filename = getFilename(filename);
+        String subDir = filename;
+        String baseFilename = filename;
+        Date date = new Date();
+        mkdir(subDir, date);
         ArrayList<Pattern> patterns = resolution.getSolution().getPatterns();
         int coeff = (int) Math.ceil(800 * resolution.getContext().getScale() / Math
                 .max(patterns.get(0).getSize().getWidth(),
                         patterns.get(0).getSize().getHeight()));
-        int y = 0;
+        Long y = 0L;
+        int length;
         for (Pattern cur_patt : patterns) {
+            filename = getFilename(subDir, baseFilename, date, y);
             BufferedImage img = new BufferedImage(
                     (int) (patterns.get(0).getSize().getWidth() * coeff),
                     (int) (patterns.get(0).getSize().getHeight() * coeff),
@@ -209,8 +214,10 @@ public class ToPNG extends FileMethod {
             Graphics2D graphics = img.createGraphics();
             graphics.setPaint(BACKGROUND);
             graphics.fillRect(0, 0, img.getWidth(), img.getHeight());
-            int i = 0;
+            int num;
+            length = cur_patt.getListImg().size();
             for (Image placedBox : cur_patt.getListImg()) {
+                num = placedBox.getId().intValue();
                 for (Vector position : placedBox.getPositions()) {
                     if (position != null) {
                         Vector size = placedBox.getSize();
@@ -219,17 +226,16 @@ public class ToPNG extends FileMethod {
                                     (int) (position.getHeight() * coeff),
                                     (int) (size.getWidth() * coeff),
                                     (int) (size.getHeight() * coeff),
-                                    String.valueOf(i),
-                                    getColor(i, cur_patt.getListImg().size()));
+                                    String.valueOf(num),
+                                    getColor(num, length));
                         } else {
                             drawRectangle(img, (int) (position.getWidth() * coeff),
                                     (int) (position.getHeight() * coeff),
                                     (int) (size.getHeight() * coeff),
                                     (int) (size.getWidth() * coeff),
-                                    String.valueOf(i),
-                                    getColor(i, cur_patt.getListImg().size()));
+                                    String.valueOf(num),
+                                    getColor(num, length));
                         }
-                        i++;
                     }
                 }
             }

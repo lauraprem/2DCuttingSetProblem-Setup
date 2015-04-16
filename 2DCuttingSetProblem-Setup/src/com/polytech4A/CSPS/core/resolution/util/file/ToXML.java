@@ -8,7 +8,7 @@ import com.polytech4A.CSPS.core.resolution.Resolution;
  */
 public class ToXML extends FileMethod {
 	public ToXML() {
-		super(".xml", "xml/");
+		super("xml", "xml");
 	}
 
 	@Override

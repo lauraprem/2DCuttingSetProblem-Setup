@@ -17,9 +17,17 @@ public class Tests {
     public ArrayList<Solution> solution = new ArrayList<>();
     private ArrayList<Pattern> patterns = new ArrayList<>();
 
-    public int size() { return contexts.size(); }
-    public Context getContext(int i) { return contexts.get(i); }
-    public Solution getSolution(int i) { return solution.get(i); }
+    public int size() {
+        return contexts.size();
+    }
+
+    public Context getContext(int i) {
+        return contexts.get(i);
+    }
+
+    public Solution getSolution(int i) {
+        return solution.get(i);
+    }
 
     public Tests() {
         contexts.add(context0());
@@ -32,6 +40,7 @@ public class Tests {
 
         images = new ArrayList<>(images0());
         images.get(3).setAmount(1L);
+        images.get(3).getPositions().add(new Vector(0L, 0L));
         images.get(5).setAmount(1L);
         images.get(7).setAmount(1L);
         images.get(11).setAmount(1L);
@@ -60,6 +69,8 @@ public class Tests {
 
         images = new ArrayList<>(images0());
         images.get(2).setAmount(1L);
+        images.get(2).setRotated(false);
+        images.get(2).getPositions().add(new Vector(0L, 0L));
         images.get(4).setAmount(1L);
         images.get(6).setAmount(1L);
         images.get(9).setAmount(1L);

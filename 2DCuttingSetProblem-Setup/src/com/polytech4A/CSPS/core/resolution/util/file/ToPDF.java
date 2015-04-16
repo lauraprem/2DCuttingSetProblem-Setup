@@ -8,7 +8,7 @@ import com.polytech4A.CSPS.core.resolution.Resolution;
 public class ToPDF extends FileMethod {
 
 	public ToPDF() {
-		super(".pdf", "pdf/");
+		super("pdf", "pdf");
 	}
 
 	@Override

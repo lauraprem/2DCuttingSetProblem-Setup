@@ -11,7 +11,8 @@ import java.util.Date;
  *         13/03/2015
  */
 public abstract class FileMethod {
-    private final String path = "out/";
+    private final static String DATE_FORMAT = "yyyyMMddhhmmss";
+    private final String path = "out";
     private String extension;
     private String dir;
 
@@ -23,18 +24,39 @@ public abstract class FileMethod {
     abstract void save(String filename, Resolution resolution);
 
     protected void mkdir() {
-        File f = new File(String.format("%s/%s",
-                path,
-                dir));
-		f.mkdirs();
+        mkdir("", null);
+    }
+
+    protected void mkdir(String subDir) {
+        mkdir(subDir, null);
+    }
+
+    protected void mkdir(String subDir, Date date) {
+        String file = path + '/';
+        file += dir + '/';
+        if(subDir != "") file += subDir;
+        if(date != null) file += '-' + new SimpleDateFormat(DATE_FORMAT).format(date);
+
+        File f = new File(file);
+        f.mkdirs();
     }
 
     protected String getFilename(String filename) {
-        return String.format("%s/%s/%s-%s.%s",
-                path,
-                dir,
-                filename,
-                new SimpleDateFormat("yyyyMMddhhmmss").format(new Date()),
-                extension);
+        return getFilename("", filename, new Date());
+    }
+
+    protected String getFilename(String subDir, String filename, Date date) {
+        return getFilename(subDir, filename, date, -1L);
+    }
+
+    protected String getFilename(String subDir, String filename, Date date, Long id) {
+        String file = path + '/';
+        file += dir + '/';
+        if(subDir != "") file += subDir + '-' + new SimpleDateFormat(DATE_FORMAT).format(date) + '/';
+        file += filename;
+        if(id >= 0) file += '_' + id.toString();
+        file += '-' + new SimpleDateFormat(DATE_FORMAT).format(date);
+        file += '.' + extension;
+        return file;
     }
 }
