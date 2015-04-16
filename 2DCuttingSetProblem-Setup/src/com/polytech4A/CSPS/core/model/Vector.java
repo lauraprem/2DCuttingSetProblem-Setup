@@ -18,7 +18,7 @@ public class Vector {
      * Valeur de Y
      */
     private Long Y;
-
+    
     public Vector(Long x, Long y) {
         X = x;
         Y = y;
