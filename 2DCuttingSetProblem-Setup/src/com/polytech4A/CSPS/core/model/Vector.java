@@ -155,6 +155,6 @@ public class Vector {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        return new Vector(this.X, this.Y);
+        return new Vector(this.X, this.Y, this.isRotated());
     }
 }
