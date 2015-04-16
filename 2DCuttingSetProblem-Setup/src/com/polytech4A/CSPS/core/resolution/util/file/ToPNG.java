@@ -246,10 +246,10 @@ public class ToPNG extends FileMethod {
     }
 
     private void printImage(BufferedImage img, int length, Image placedBox, Vector position, int coeff) {
-        int num = placedBox.getId().intValue();
         if (position != null) {
+            int num = placedBox.getId().intValue();
             Vector size = placedBox.getSize();
-            if (!placedBox.isRotated()) {
+            if (!position.isRotated()) {
                 drawRectangle(img, (int) (position.getWidth() * coeff),
                         (int) (position.getHeight() * coeff),
                         (int) (size.getWidth() * coeff),
