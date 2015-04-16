@@ -157,7 +157,7 @@ public class ToPNG extends FileMethod {
 
         if (DRAW_BORDER) {
             graph.setPaint(Color.red);
-            int border_size = 2;
+            int border_size = 1;
             for (int i = 0; i < border_size; i++) {
                 // top
                 graph.drawLine(x, y + i, x + width - 1, y + i);
@@ -178,11 +178,13 @@ public class ToPNG extends FileMethod {
 
         Rectangle2D textDimensions = graph.getFontMetrics()
                 .getStringBounds(label, graph);
-        int stringLen = (int) textDimensions.getWidth();
-        int start_x = width / 2 - stringLen / 2;
+        double stringWidth = textDimensions.getCenterX();
+        double stringHeight = textDimensions.getCenterY();
+        int start_x = (int) (((double) width/ 2) - stringWidth);
+        int start_y = (int)  (((double) height/ 2) - stringHeight);
 
         graph.setPaint(getTextColor(color));
-        graph.drawString(label, x + start_x, y + (height / 2) + 30);
+        graph.drawString(label, x + start_x, y + start_y);
 
         graph.dispose();
     }
@@ -204,41 +206,29 @@ public class ToPNG extends FileMethod {
                 .max(patterns.get(0).getSize().getWidth(),
                         patterns.get(0).getSize().getHeight()));
         Long y = 0L;
-        int length;
+        final int length = patterns.get(0).getListImg().size();
+        int WIDTH, HEIGHT;
+        final int sizeOfFooter = 10 * coeff;
         for (Pattern cur_patt : patterns) {
             filename = getFilename(subDir, baseFilename, date, y);
+            WIDTH = (int) (patterns.get(0).getSize().getWidth() * coeff);
+            HEIGHT = (int) (patterns.get(0).getSize().getHeight() * coeff) + sizeOfFooter;
             BufferedImage img = new BufferedImage(
-                    (int) (patterns.get(0).getSize().getWidth() * coeff),
-                    (int) (patterns.get(0).getSize().getHeight() * coeff),
+                    WIDTH, HEIGHT,
                     BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics = img.createGraphics();
             graphics.setPaint(BACKGROUND);
             graphics.fillRect(0, 0, img.getWidth(), img.getHeight());
-            int num;
-            length = cur_patt.getListImg().size();
-            for (Image placedBox : cur_patt.getListImg()) {
-                num = placedBox.getId().intValue();
-                for (Vector position : placedBox.getPositions()) {
-                    if (position != null) {
-                        Vector size = placedBox.getSize();
-                        if (!placedBox.isRotated()) {
-                            drawRectangle(img, (int) (position.getWidth() * coeff),
-                                    (int) (position.getHeight() * coeff),
-                                    (int) (size.getWidth() * coeff),
-                                    (int) (size.getHeight() * coeff),
-                                    String.valueOf(num),
-                                    getColor(num, length));
-                        } else {
-                            drawRectangle(img, (int) (position.getWidth() * coeff),
-                                    (int) (position.getHeight() * coeff),
-                                    (int) (size.getHeight() * coeff),
-                                    (int) (size.getWidth() * coeff),
-                                    String.valueOf(num),
-                                    getColor(num, length));
-                        }
-                    }
-                }
-            }
+            cur_patt.getListImg().forEach(
+                    pb -> pb.getPositions()
+                            .forEach(
+                                    pos -> printImage(img, length, pb, pos, coeff)));
+            drawRectangle(img, 0,
+                    HEIGHT - sizeOfFooter,
+                    WIDTH,
+                    sizeOfFooter,
+                    String.format("P%s (x%s)", y.toString(), cur_patt.getAmount().toString()),
+                    Color.BLACK);
 
             try {
                 File file = new File(filename);
@@ -252,6 +242,28 @@ public class ToPNG extends FileMethod {
                 e.printStackTrace();
             }
             y++;
+        }
+    }
+
+    private void printImage(BufferedImage img, int length, Image placedBox, Vector position, int coeff) {
+        int num = placedBox.getId().intValue();
+        if (position != null) {
+            Vector size = placedBox.getSize();
+            if (!placedBox.isRotated()) {
+                drawRectangle(img, (int) (position.getWidth() * coeff),
+                        (int) (position.getHeight() * coeff),
+                        (int) (size.getWidth() * coeff),
+                        (int) (size.getHeight() * coeff),
+                        String.valueOf(num),
+                        getColor(num, length));
+            } else {
+                drawRectangle(img, (int) (position.getWidth() * coeff),
+                        (int) (position.getHeight() * coeff),
+                        (int) (size.getHeight() * coeff),
+                        (int) (size.getWidth() * coeff),
+                        String.valueOf(num) + "*",
+                        getColor(num, length));
+            }
         }
     }
 }

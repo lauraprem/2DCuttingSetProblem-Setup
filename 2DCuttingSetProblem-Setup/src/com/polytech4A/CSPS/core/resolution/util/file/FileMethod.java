@@ -11,7 +11,7 @@ import java.util.Date;
  *         13/03/2015
  */
 public abstract class FileMethod {
-    private final static String DATE_FORMAT = "yyyyMMddhhmmss";
+    protected final static String DATE_FORMAT = "yyyy-MM-dd_hh-mm-ss";
     private final String path = "out";
     private String extension;
     private String dir;
