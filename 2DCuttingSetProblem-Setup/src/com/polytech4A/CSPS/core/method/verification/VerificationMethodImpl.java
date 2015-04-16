@@ -2,11 +2,14 @@ package com.polytech4A.CSPS.core.method.verification;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.ListIterator;
+
+import javax.lang.model.element.Element;
 
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
+import com.polytech4A.CSPS.core.model.Vector;
 
 /**
  * 
@@ -67,14 +70,18 @@ public class VerificationMethodImpl implements IVerificationMethod {
 		// Initialisation des variables pour placer un pattern
 		Pattern newPattern = new Pattern(pattern.getSize(), pattern.getAmount());
 		listPattern.add(newPattern);
-		listImg = pattern.getListImg(); // .clone
+		listImg = (ArrayList<Image>) pattern.getListImg().clone();
 		this.getImgOrderDesc();
-
+		
 		for (int i = 0; i < listImg.size(); i++) {
 			int j = 0;
-			while (j < listPattern.size()) {
-				if (listImg.get(i).getArea() < listPattern.get(j).getArea()) {
-					// decoupagePattern()
+			//listPattern
+			ListIterator<Pattern> iterator = listPattern.listIterator();
+	        while(iterator.hasNext()){
+	            Pattern element = iterator.next();
+				if (listImg.get(i).getArea() < element.getArea()) {
+					element = placementImage(element, listImg.get(i));
+//					 decoupagePattern() add et remove ceux avec img
 					// TODO place l'image en bas à droite du pattern puis
 					// découpe
 					// pour guillotine => listPattern = plusieurs pattern
@@ -86,16 +93,56 @@ public class VerificationMethodImpl implements IVerificationMethod {
 		}
 		return null;
 	}
-	
-	protected ArrayList<Pattern> placementImage(Pattern p, Image i) {
-		// Verif si hauteur & largeur rentre (pattern-image) (en placent en bas à droite)
+
+	protected Pattern placementImage(Pattern p, Image i) {
+		// Verif si hauteur & largeur rentre (pattern-image) (en placent en bas
+		// à droite)
 		// => Si oui, on place, sinon rotation image 90° et reteste
+		
+		// Verification si rentre dans le Pattern sinon on tourne l'image de 90°C
+		if((p.getSize().getX() > i.getSize().getX() && (p.getSize().getY() > i.getSize().getY())) && i.isRotated()!=true){ // Hauteur Largeur
+//			i.setPositions(new Vector(p.get, y)); // Positionne l'image
+		}else{
+			i.setRotated(true);
+		}
+		
+		if(p.getSize().getY() < i.getSize().getY() || (p.getSize().getX() < i.getSize().getX()) && i.isRotated()==true){ // Hauteur Largeur
+			i.setRotated(false);
+			return null;
+		}
+//		if
 		return null;
 	}
-	
-	protected ArrayList<Pattern> decoupagePattern() {
-		
-		return null;
+
+	protected ArrayList<Pattern> decoupagePattern(Pattern p, Image i) {
+		ArrayList<Pattern> listPattern = new ArrayList<Pattern>();
+		Pattern n1, n2, n3;
+
+		if (!i.isRotated()) {
+			// Haut Droite Bas
+			n1 = new Pattern(
+					new Vector(p.getSize().getX() - i.getSize().getX(), i
+							.getSize().getY()));
+			n2 = new Pattern(new Vector(
+					p.getSize().getX() - i.getSize().getX(), p.getSize().getX()
+							- i.getSize().getY()));
+			n3 = new Pattern(new Vector(p.getSize().getX(), p.getSize().getY()
+					- i.getSize().getY()));
+		} else {
+			n1 = new Pattern(
+					new Vector(p.getSize().getY() - i.getSize().getY(), i
+							.getSize().getX()));
+			n2 = new Pattern(new Vector(
+					p.getSize().getY() - i.getSize().getY(), p.getSize().getY()
+							- i.getSize().getX()));
+			n3 = new Pattern(new Vector(p.getSize().getY(), p.getSize().getX()
+					- i.getSize().getX()));
+		}
+		listPattern.add(n1);
+		listPattern.add(n2);
+		listPattern.add(n3);
+
+		return listPattern;
 	}
 
 	/**
@@ -103,7 +150,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 * la plus grande)
 	 */
 	protected void getPatternsOrderAsc() {
-		Collections.sort(listPattern,Pattern.PatternNameComparator);
+		Collections.sort(listPattern, Pattern.PatternNameComparator);
 	}
 
 	/**
@@ -111,6 +158,6 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 * la plus petite)
 	 */
 	protected void getImgOrderDesc() {
-		Collections.sort(listImg,Image.ImageNameComparator);
+		Collections.sort(listImg, Image.ImageNameComparator);
 	}
 }

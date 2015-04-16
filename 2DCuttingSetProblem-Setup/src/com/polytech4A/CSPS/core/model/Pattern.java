@@ -15,18 +15,23 @@ public class Pattern implements Comparable<Pattern> {
 	/**
 	 * taille du pattern
 	 */
-	private Vector				size;
+	private Vector size;
 
 	/**
 	 * Nombre de fois qu'il faut imprimer le pattern
 	 */
-	private Long				amount;
+	private Long amount;
 
 	/**
 	 * Les images présente dans le pattern
 	 */
-	private ArrayList<Image>	listImg;
-
+	private ArrayList<Image> listImg;
+	
+	public Pattern(Vector size) {
+		super();
+		this.size = size;
+	}
+	
 	public Pattern(Vector size, Long amount) {
 		super();
 		this.size = size;
@@ -69,7 +74,9 @@ public class Pattern implements Comparable<Pattern> {
 	@Override
 	public String toString() {
 		StringBuilder listImgString = new StringBuilder();
-		String patternString = "PATTERN\n" + "size : " + escToString(size) + "\n" + "amount : " + escToString(amount) + "\n" + "listImg : \n";
+		String patternString = "PATTERN\n" + "size : " + escToString(size)
+				+ "\n" + "amount : " + escToString(amount) + "\n"
+				+ "listImg : \n";
 
 		if (listImg != null) {
 			for (Image img : listImg) {
@@ -111,21 +118,18 @@ public class Pattern implements Comparable<Pattern> {
 		return 1;
 	}
 
-	public static Comparator<Pattern>	PatternNameComparator	= new Comparator<Pattern>() {
-																	public int compare(Pattern p1, Pattern p2) {
+	public static Comparator<Pattern> PatternNameComparator = new Comparator<Pattern>() {
+		public int compare(Pattern p1, Pattern p2) {
 
-																		Long PattArea1 = p1.getArea();
-																		Long PattArea2 = p2.getArea();
+			Long PattArea1 = p1.getArea();
+			Long PattArea2 = p2.getArea();
 
-																		// ascending
-																		// order
-																		return PattArea1.compareTo(PattArea2);
+			// ascending order
+			return PattArea1.compareTo(PattArea2);
 
-																		// descending
-																		// order
-																		// return
-																		// PattArea2.compareTo(PattArea1);
-																	}
+			// descending order
+			// return PattArea2.compareTo(PattArea1);
+		}
 
-																};
+	};
 }
