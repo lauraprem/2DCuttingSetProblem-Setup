@@ -23,11 +23,6 @@ public class Image implements Comparable<Image> {
     private Long amount = 0L;
 
     /**
-     * Permet de savoir si l'image est tourn�e
-     */
-    private boolean rotated = false;
-
-    /**
      * Liste des positions pour chaque fois que l'image est pr�sente dans un
      * pattern (amount)
      */
@@ -43,10 +38,9 @@ public class Image implements Comparable<Image> {
      */
     private Long goal = -1L;
 
-    public Image(Long _id, Long _amount, boolean _rotated, ArrayList<Vector> _positions,
+    public Image(Long _id, Long _amount, ArrayList<Vector> _positions,
                  Vector _size, Long _goal) {
         amount = _amount == null ? 0L : _amount;
-        rotated = _rotated;
         positions = _positions == null ? new ArrayList<>() : _positions;
         size = _size;
         goal = _goal;
@@ -54,11 +48,11 @@ public class Image implements Comparable<Image> {
     }
 
     public Image(Vector size, Long goal) {
-        this(null, null, false, null, size, goal);
+        this(null, null, null, size, goal);
     }
 
     public Image(Long id, Vector size, Long goal) {
-        this(id, null, false, null, size, goal);
+        this(id, null, null, size, goal);
     }
 
     public Long getAmount() {
@@ -67,14 +61,6 @@ public class Image implements Comparable<Image> {
 
     public void setAmount(Long amount) {
         this.amount = amount;
-    }
-
-    public boolean isRotated() {
-        return rotated;
-    }
-
-    public void setRotated(boolean rotated) {
-        this.rotated = rotated;
     }
 
     public ArrayList<Vector> getPositions() {
@@ -113,9 +99,7 @@ public class Image implements Comparable<Image> {
     public String toString() {
         StringBuilder stringPosition = new StringBuilder("positions : \n");
         String detail = "IMAGE " + id + "\n" +
-                "amount : " + escToString(amount) + "\n"
-                + "rotated : " + rotated + "\n";
-
+                "amount : " + escToString(amount) + "\n";
         if (positions == null) {
             stringPosition.append("<null>\n");
         } else if (positions.size() == 0) {
@@ -160,7 +144,6 @@ public class Image implements Comparable<Image> {
         Image cloned = new Image((Vector) size.clone(), goal);
         cloned.id = id;
         cloned.setAmount(amount);
-        cloned.setRotated(rotated);
         cloned.positions = new ArrayList<Vector>();
         for (Vector vector : positions) {
             cloned.positions.add((Vector) vector.clone());
