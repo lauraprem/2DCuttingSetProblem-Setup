@@ -1,9 +1,6 @@
 package com.polytech4A.CSPS.core.tests;
 
-import com.polytech4A.CSPS.core.model.Image;
-import com.polytech4A.CSPS.core.model.Pattern;
-import com.polytech4A.CSPS.core.model.Solution;
-import com.polytech4A.CSPS.core.model.Vector;
+import com.polytech4A.CSPS.core.model.*;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 
 import java.util.ArrayList;
@@ -40,28 +37,28 @@ public class Tests {
 
         images = new ArrayList<>(images0());
         images.get(3).setAmount(1L);
-        images.get(3).getPositions().add(new Vector(0L, 0L));
+        images.get(3).getPositions().add(new Position(0L, 0L));
 
         images.get(5).setAmount(1L);
-        images.get(5).getPositions().add(new Vector(57100L, 0L));
+        images.get(5).getPositions().add(new Position(57100L, 0L));
 
         images.get(7).setAmount(1L);
-        images.get(7).getPositions().add(new Vector(57100L, 26900L));
+        images.get(7).getPositions().add(new Position(57100L, 26900L));
 
         images.get(11).setAmount(1L);
-        images.get(11).getPositions().add(new Vector(0L, 40800L, true));
+        images.get(11).getPositions().add(new Position(0L, 40800L, true));
 
         images.get(14).setAmount(1L);
-        images.get(14).getPositions().add(new Vector(57100L, 46800L));
+        images.get(14).getPositions().add(new Position(57100L, 46800L));
 
         images.get(17).setAmount(1L);
-        images.get(17).getPositions().add(new Vector(103300L, 46800L, true));
+        images.get(17).getPositions().add(new Position(103300L, 46800L, true));
 
         images.get(18).setAmount(1L);
-        images.get(18).getPositions().add(new Vector(57100L, 61100L));
+        images.get(18).getPositions().add(new Position(57100L, 61100L));
 
         images.get(19).setAmount(1L);
-        images.get(19).getPositions().add(new Vector(39900L, 40800L));
+        images.get(19).getPositions().add(new Position(39900L, 40800L));
 
         patterns.add(new Pattern(context0().getPatternSize(), images));
 

@@ -4,6 +4,7 @@ import com.polytech4A.CSPS.core.method.LinearResolutionMethod;
 import com.polytech4A.CSPS.core.method.verification.IVerificationMethod;
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Solution;
+import com.polytech4A.CSPS.core.resolution.util.context.Context;
 
 /**
  * Strategies de resolution de probleme
@@ -12,7 +13,7 @@ import com.polytech4A.CSPS.core.model.Solution;
  *
  */
 
-public abstract class StrategyMethod extends Thread implements Runnable {
+public abstract class StrategyMethod implements Runnable {
 	
 	/**
 	 * cout d'un Pattern
@@ -49,13 +50,23 @@ public abstract class StrategyMethod extends Thread implements Runnable {
 
 	/**
 	 *
-	 * @param solution : condition initiale
+	 * @param context : conditions initiale
+	 * @param solution : solution initiale
 	 * @
 	 * @return Solution
 	 */
-	public Solution getSolution(Solution solution) {
+	public Solution getSolution(Context context, Solution solution) {
 		bestSolution = new Solution(solution);
 		run();
 		return bestSolution;
+	}
+	/**
+	 *
+	 * @param context : conditions initiale
+	 *
+	 * @return Solution
+	 */
+	public Solution getSolution(Context context) {
+		return getSolution(context, new Solution());
 	}
 }

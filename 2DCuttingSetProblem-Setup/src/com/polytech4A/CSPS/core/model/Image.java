@@ -26,7 +26,7 @@ public class Image implements Comparable<Image> {
      * Liste des positions pour chaque fois que l'image est pr�sente dans un
      * pattern (amount)
      */
-    private ArrayList<Vector> positions = new ArrayList<>();
+    private ArrayList<Position> positions = new ArrayList<>();
 
     /**
      * Taille de l'image
@@ -38,7 +38,7 @@ public class Image implements Comparable<Image> {
      */
     private Long goal = -1L;
 
-    public Image(Long _id, Long _amount, ArrayList<Vector> _positions,
+    public Image(Long _id, Long _amount, ArrayList<Position> _positions,
                  Vector _size, Long _goal) {
         amount = _amount == null ? 0L : _amount;
         positions = _positions == null ? new ArrayList<>() : _positions;
@@ -63,11 +63,11 @@ public class Image implements Comparable<Image> {
         this.amount = amount;
     }
 
-    public ArrayList<Vector> getPositions() {
+    public ArrayList<Position> getPositions() {
         return positions;
     }
 
-    public void setPositions(ArrayList<Vector> positions) {
+    public void setPositions(ArrayList<Position> positions) {
         this.positions = positions;
     }
 
@@ -144,9 +144,9 @@ public class Image implements Comparable<Image> {
         Image cloned = new Image((Vector) size.clone(), goal);
         cloned.id = id;
         cloned.setAmount(amount);
-        cloned.positions = new ArrayList<Vector>();
-        for (Vector vector : positions) {
-            cloned.positions.add((Vector) vector.clone());
+        cloned.positions = new ArrayList<Position>();
+        for (Position position : positions) {
+            cloned.positions.add((Position) position.clone());
         }
         return cloned;
     }
