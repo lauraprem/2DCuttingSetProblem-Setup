@@ -94,7 +94,7 @@ public class Tests {
         images.get(16).setAmount(2L);
         patterns.add(new Pattern(context0().getPatternSize(), images));
 
-        return new Solution(1000, patterns);
+        return new Solution(patterns);
     }
 
 

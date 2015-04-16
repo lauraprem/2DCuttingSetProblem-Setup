@@ -1,16 +1,14 @@
 package com.polytech4A.CSPS.core.method.verification;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.ListIterator;
-
-import javax.lang.model.element.Element;
-
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.PatternWithCoord;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.model.Vector;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.ListIterator;
 
 /**
  * 

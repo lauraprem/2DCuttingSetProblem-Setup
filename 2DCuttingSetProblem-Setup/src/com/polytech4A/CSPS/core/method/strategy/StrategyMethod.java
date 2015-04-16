@@ -12,7 +12,7 @@ import com.polytech4A.CSPS.core.model.Solution;
  *
  */
 
-public abstract class StrategyMethod extends Thread {
+public abstract class StrategyMethod extends Thread implements Runnable {
 	
 	/**
 	 * cout d'un Pattern
@@ -38,20 +38,24 @@ public abstract class StrategyMethod extends Thread {
 	 * Permet de calculer la fitness d'une solution
 	 */
 	private LinearResolutionMethod listResolMethode;
-	
+
 	/**
-	 * 
+	 *
+	 * @param solution : meilleure solution rencontrée
+	 * @
+	 * @return Solution
+	 */
+	protected Solution bestSolution;
+
+	/**
+	 *
 	 * @param solution : condition initiale
 	 * @
 	 * @return Solution
 	 */
-	abstract Solution getSolution(Solution solution);
-	
-	/**
-	 * 
-	 * @param filepath
-	 * 
-	 * @return StrategyMethod
-	 */
-	abstract StrategyMethod loadFromFile(String filepath);
+	public Solution getSolution(Solution solution) {
+		bestSolution = new Solution(solution);
+		run();
+		return bestSolution;
+	}
 }
