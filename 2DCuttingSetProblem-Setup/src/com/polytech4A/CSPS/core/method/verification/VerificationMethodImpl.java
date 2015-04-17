@@ -135,7 +135,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 * @param p
 	 * @param iImage
 	 */
-	protected boolean placementImage(PatternWithCoord p, int iImage) {
+	protected boolean placementImage(PatternWithCoord p, int iImage) { // Bas Droite
 		Vector v = null; // image courrente
 		boolean isRotate = false;
 
@@ -144,25 +144,14 @@ public class VerificationMethodImpl implements IVerificationMethod {
 		if ((p.getSize().getX() > listImg.get(iImage).getSize().getX() && (p
 				.getSize().getY() > listImg.get(iImage).getSize().getY()))
 				&& isRotate != true) { // Hauteur Largeur
-			// listImg.get(iImage).getPositions().add(new
-			// Vector(p.getCoord().getX(), p.getCoord().getY()));
-			// if(p.getListImg() == null){
-			// p.setListImg(new ArrayList<Image>());
-			// }
-			// listImg.get(iImage).getPositions().add(new
-			// Vector(p.getCoord().getX(), p.getCoord().getY()));
-			// return true;
 			v = new Vector(p.getCoord().getX(), p.getCoord().getY());
 		} else {
 			isRotate = true;
 		}
 
-		if ((p.getSize().getY() > listImg.get(iImage).getSize().getY() && p
-				.getSize().getX() > listImg.get(iImage).getSize().getX())
+		if ((p.getSize().getX() > listImg.get(iImage).getSize().getY() && p
+				.getSize().getY() > listImg.get(iImage).getSize().getX())
 				&& isRotate == true) { // Hauteur Largeur
-			// listImg.get(iImage).getPositions().add(new
-			// Vector(p.getCoord().getX(), p.getCoord().getY(),true));
-			// return true;
 			v = new Vector(p.getCoord().getX(), p.getCoord().getY(), true);
 		} else {
 			isRotate = false;
@@ -170,33 +159,25 @@ public class VerificationMethodImpl implements IVerificationMethod {
 
 		// Si l'image est placé on découpe le pattern
 		if (v != null) {
-			PatternWithCoord n1, n2, n3;
-
+			PatternWithCoord n1, n2;
+			
+			// Découpage horizontal
 			if (!v.isRotated()) {
-				// Haut Gauche
+				
 				n1 = new PatternWithCoord(new Vector(p.getSize().getX()
-						- listImg.get(iImage).getSize().getX(), listImg
-						.get(iImage).getSize().getY()));
-				n2 = new PatternWithCoord(new Vector(p.getSize().getX()
-						- listImg.get(iImage).getSize().getX(), p.getSize()
-						.getX() - listImg.get(iImage).getSize().getY()));
-				n3 = new PatternWithCoord(new Vector(p.getSize().getX(), p
+						- listImg.get(iImage).getSize().getX(), p.getSize().getY()), new Vector(p.getCoord().getX()+listImg.get(iImage).getSize().getX(),p.getCoord().getY()));
+				n2 = new PatternWithCoord(new Vector(p.getSize().getX(), p
 						.getSize().getY()
-						- listImg.get(iImage).getSize().getY()));
+						- listImg.get(iImage).getSize().getY()), new Vector(p.getCoord().getX(),listImg.get(iImage).getSize().getY()+p.getCoord().getY()));
 			} else {
-				n1 = new PatternWithCoord(new Vector(p.getSize().getY()
-						- listImg.get(iImage).getSize().getY(), listImg
-						.get(iImage).getSize().getX()));
-				n2 = new PatternWithCoord(new Vector(p.getSize().getY()
-						- listImg.get(iImage).getSize().getY(), p.getSize()
-						.getY() - listImg.get(iImage).getSize().getX()));
-				n3 = new PatternWithCoord(new Vector(p.getSize().getY(), p
-						.getSize().getX()
-						- listImg.get(iImage).getSize().getX()));
+				n1 = new PatternWithCoord(new Vector(p.getSize().getX()
+						- listImg.get(iImage).getSize().getY(), p.getSize().getY()), new Vector(p.getCoord().getX()+listImg.get(iImage).getSize().getY(),p.getCoord().getY()));
+				n2 = new PatternWithCoord(new Vector(p.getSize().getX(), p
+						.getSize().getY()
+						- listImg.get(iImage).getSize().getX()), new Vector(p.getCoord().getX(),listImg.get(iImage).getSize().getX()+p.getCoord().getY()));
 			}
 			this.addListPattern(n1);
 			this.addListPattern(n2);
-			this.addListPattern(n3);
 
 			listImg.get(iImage).getPositions().add(v);
 
@@ -204,34 +185,6 @@ public class VerificationMethodImpl implements IVerificationMethod {
 		}
 		return false;
 	}
-
-	// protected void decoupagePattern(PatternWithCoord p, int iImage) {
-	// PatternWithCoord n1, n2, n3;
-	//
-	// if (!listImg.get(iImage).getPositions().isRotated()) {
-	// // Haut Gauche
-	// n1 = new PatternWithCoord(new Vector(p.getSize().getX()
-	// - listImg.get(iImage).getSize().getX(), listImg.get(iImage)
-	// .getSize().getY()));
-	// n2 = new PatternWithCoord(new Vector(p.getSize().getX()
-	// - listImg.get(iImage).getSize().getX(), p.getSize().getX()
-	// - listImg.get(iImage).getSize().getY()));
-	// n3 = new PatternWithCoord(new Vector(p.getSize().getX(), p
-	// .getSize().getY() - listImg.get(iImage).getSize().getY()));
-	// } else {
-	// n1 = new PatternWithCoord(new Vector(p.getSize().getY()
-	// - listImg.get(iImage).getSize().getY(), listImg.get(iImage)
-	// .getSize().getX()));
-	// n2 = new PatternWithCoord(new Vector(p.getSize().getY()
-	// - listImg.get(iImage).getSize().getY(), p.getSize().getY()
-	// - listImg.get(iImage).getSize().getX()));
-	// n3 = new PatternWithCoord(new Vector(p.getSize().getY(), p
-	// .getSize().getX() - listImg.get(iImage).getSize().getX()));
-	// }
-	// this.addListPattern(n1);
-	// this.addListPattern(n2);
-	// this.addListPattern(n3);
-	// }
 
 	private void addListPattern(PatternWithCoord p) {
 		if (p.getCoord() != null) {

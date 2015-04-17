@@ -125,10 +125,10 @@ public class Pattern implements Comparable<Pattern> {
 			Long PattArea2 = p2.getArea();
 
 			// ascending order
-			return PattArea1.compareTo(PattArea2);
+//			return PattArea1.compareTo(PattArea2);
 
 			// descending order
-			// return PattArea2.compareTo(PattArea1);
+			 return PattArea2.compareTo(PattArea1);
 		}
 
 	};
