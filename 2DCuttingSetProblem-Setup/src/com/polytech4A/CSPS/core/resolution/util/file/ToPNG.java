@@ -37,7 +37,7 @@ public class ToPNG extends FileMethod {
     /**
      * Pattern Legend or Not.
      */
-    public final static boolean PATTERN_LEGEND = true;
+    public static boolean PATTERN_LEGEND = true;
     /**
      * Background color.
      */
@@ -213,7 +213,7 @@ public class ToPNG extends FileMethod {
         for (Pattern cur_patt : patterns) {
             filename = getFilename(subDir, baseFilename, date, y);
             WIDTH = (int) (patterns.get(0).getSize().getWidth() * coeff);
-            HEIGHT = (int) (patterns.get(0).getSize().getHeight() * coeff) + sizeOfFooter;
+            HEIGHT = (int) (patterns.get(0).getSize().getHeight() * coeff) + (PATTERN_LEGEND ? sizeOfFooter : 0);
             BufferedImage img = new BufferedImage(
                     WIDTH, HEIGHT,
                     BufferedImage.TYPE_INT_RGB);
@@ -224,12 +224,8 @@ public class ToPNG extends FileMethod {
                     pb -> pb.getPositions()
                             .forEach(
                                     pos -> printImage(img, length, pb, pos, coeff)));
-            drawRectangle(img, 0,
-                    HEIGHT - sizeOfFooter,
-                    WIDTH,
-                    sizeOfFooter,
-                    String.format("P%s (x%s)", y.toString(), cur_patt.getAmount().toString()),
-                    Color.BLACK);
+
+            if(PATTERN_LEGEND) printFooter(img, HEIGHT, WIDTH, sizeOfFooter, y, cur_patt);
 
             try {
                 File file = new File(filename);
@@ -266,5 +262,14 @@ public class ToPNG extends FileMethod {
                         getColor(num, length));
             }
         }
+    }
+
+    private void printFooter(BufferedImage img, final int HEIGHT, final int WIDTH, final int sizeOfFooter, final Long num, final Pattern cur_patt) {
+        drawRectangle(img, 0,
+                HEIGHT - sizeOfFooter,
+                WIDTH,
+                sizeOfFooter,
+                String.format("P%s (x%s)", num.toString(), cur_patt.getAmount().toString()),
+                Color.BLACK);
     }
 }
