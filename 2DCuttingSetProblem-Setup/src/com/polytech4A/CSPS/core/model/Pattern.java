@@ -1,16 +1,16 @@
 package com.polytech4A.CSPS.core.model;
 
-import static com.polytech4A.CSPS.core.util.Util.escToString;
-
 import java.util.ArrayList;
 import java.util.Comparator;
+
+import static com.polytech4A.CSPS.core.util.Util.escToString;
 
 /**
  * Planche contenant des images
  *
  * @author Laura
  */
-public class Pattern implements Comparable<Pattern> {
+public class Pattern implements Comparable<Pattern>, Cloneable {
 
 	/**
 	 * taille du pattern
@@ -118,7 +118,7 @@ public class Pattern implements Comparable<Pattern> {
 		return 1;
 	}
 
-	public static Comparator<Pattern> PatternNameComparator = new Comparator<Pattern>() {
+	public final static Comparator<Pattern> PatternNameComparator = new Comparator<Pattern>() {
 		public int compare(Pattern p1, Pattern p2) {
 
 			Long PattArea1 = p1.getArea();

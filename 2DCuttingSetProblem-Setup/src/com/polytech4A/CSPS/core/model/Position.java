@@ -36,4 +36,15 @@ public class Position extends Vector {
         this.rotated = rotated;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Position position = (Position) o;
+
+        return !(rotated != null ? !rotated.equals(position.rotated) : position.rotated != null);
+
+    }
 }

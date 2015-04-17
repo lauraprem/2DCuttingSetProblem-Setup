@@ -22,7 +22,6 @@ public class TestsAlexandre {
         Pattern pattern = tests.getSolution(0).getPatterns().get(0);
         Image img = pattern.getListImg().get(0);
         Solution solution = tests.getSolution(0);
-        img.toString();
         LinearResolutionMethod linearResolutionMethod = new LinearResolutionMethod(context);
         ArrayList<Long> count = linearResolutionMethod.getCount(tests.getSolution(0));
         count.stream().forEach(c -> System.out.println(c));

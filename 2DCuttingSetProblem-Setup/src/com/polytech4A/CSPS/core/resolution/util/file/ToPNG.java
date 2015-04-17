@@ -25,39 +25,39 @@ public class ToPNG extends FileMethod {
     /**
      * Font size for legend.
      */
-    public static int mFontSize = 30;
+    public final static int mFontSize = 30;
     /**
      * Draw border on images or not.
      */
-    public static boolean DRAW_BORDER = true;
+    public final static boolean DRAW_BORDER = true;
     /**
      * In grey of in colors.
      */
-    public static boolean ALL_IN_GRAY = true;
+    public final static boolean ALL_IN_GRAY = true;
     /**
      * Pattern Legend or Not.
      */
-    public static boolean PATTERN_LEGEND = true;
+    public final static boolean PATTERN_LEGEND = true;
     /**
      * Background color.
      */
-    public static Color BACKGROUND = Color.WHITE;
+    public final static Color BACKGROUND = Color.WHITE;
     /**
      * Greyscale minimum.
      */
-    public static int GREY_MIN = 20;
+    public final static int GREY_MIN = 20;
     /**
      * Greyscale maximum.
      */
-    public static int GREY_MAX = 200;
+    public final static int GREY_MAX = 200;
     /**
      * Saturation for colored mod.
      */
-    public static float SATURATION = 0.9f;
+    public final static float SATURATION = 0.9f;
     /**
      * Brightness for colored mod.
      */
-    public static float BRIGHTNESS = 0.7f;
+    public final static float BRIGHTNESS = 0.7f;
 
     /**
      * Void Constructor.

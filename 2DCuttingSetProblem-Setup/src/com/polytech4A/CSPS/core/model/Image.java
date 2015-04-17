@@ -40,7 +40,7 @@ public class Image implements Comparable<Image> {
 
     public Image(Long _id, Long _amount, ArrayList<Position> _positions,
                  Vector _size, Long _goal) {
-        amount = _amount == null ? 0L : _amount;
+        if(_amount != null) amount = _amount;
         positions = _positions == null ? new ArrayList<>() : _positions;
         size = _size;
         goal = _goal;
@@ -151,7 +151,7 @@ public class Image implements Comparable<Image> {
         return cloned;
     }
 
-    public static Comparator<Image> ImageNameComparator = new Comparator<Image>() {
+    public final static Comparator<Image> ImageNameComparator = new Comparator<Image>() {
         public int compare(Image img1, Image img2) {
 
             Long ImgArea1 = img1.getArea();
