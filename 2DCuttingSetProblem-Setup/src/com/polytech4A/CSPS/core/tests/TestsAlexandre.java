@@ -7,6 +7,8 @@ import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.resolution.util.file.ToPNG;
+import com.polytech4A.CSPS.core.util.Log;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
@@ -15,6 +17,7 @@ import java.util.ArrayList;
  *         09/04/2015
  */
 public class TestsAlexandre {
+    private static final Logger logger = Log.getLogger(TestsAlexandre.class);
 
     public static void main(String[] args) {
         Tests tests = new Tests();
@@ -28,6 +31,7 @@ public class TestsAlexandre {
         LinearResolutionMethod.check(count, context, solution);
         Resolution resolution = new Resolution(context);
         resolution.setSolution(solution);
+        logger.trace("test");
         new ToPNG().save("test", resolution);
     }
 }

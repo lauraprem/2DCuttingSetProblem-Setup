@@ -6,6 +6,7 @@ import com.polytech4A.CSPS.core.model.Position;
 import com.polytech4A.CSPS.core.model.Vector;
 import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.util.Log;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,6 +22,7 @@ import java.util.Date;
  *         09/04/2015
  */
 public class ToPNG extends FileMethod {
+    private static final Logger logger = Log.getLogger(ToPNG.class);
 
     /**
      * Font size for legend.
@@ -234,7 +236,7 @@ public class ToPNG extends FileMethod {
                     file.createNewFile();
                 }
                 ImageIO.write(img, "png", file);
-                Log.log.info("Create new file " + file.getAbsolutePath());
+                logger.info("Create new file " + file.getPath());
             } catch (IOException e) {
                 e.printStackTrace();
             }

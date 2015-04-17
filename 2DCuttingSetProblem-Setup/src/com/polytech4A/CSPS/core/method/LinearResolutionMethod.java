@@ -12,11 +12,14 @@ import org.apache.commons.math.optimization.linear.LinearConstraint;
 import org.apache.commons.math.optimization.linear.LinearObjectiveFunction;
 import org.apache.commons.math.optimization.linear.Relationship;
 import org.apache.commons.math.optimization.linear.SimplexSolver;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LinearResolutionMethod {
+
+    private static final Logger logger = Log.getLogger(LinearResolutionMethod.class);
 
     /**
      * Function to minimize.
@@ -49,7 +52,7 @@ public class LinearResolutionMethod {
                 .parallelStream()
                 .mapToLong(i -> i.longValue()).sum();
         Long fitness = prints * costOfPrinting + count.size() * costOfPattern;
-        Log.log.trace(String.format("fitness = %s", fitness));
+        logger.trace(String.format("fitness = %s", fitness));
         return fitness;
     }
 
@@ -141,7 +144,7 @@ public class LinearResolutionMethod {
         for (int i = 0; i < context.getImages().size(); i++) {
             if (countImage.get(i) < context.getImages().get(i).getGoal()) {
                 check = Boolean.FALSE;
-                Log.log.warn(context.getImages().get(i).getId()
+                logger.warn(context.getImages().get(i).getId()
                         + " : "
                         + context.getImages().get(i).getGoal()
                         + " -> "

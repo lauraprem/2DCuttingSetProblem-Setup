@@ -8,5 +8,7 @@ import org.apache.logging.log4j.Logger;
  *         09/04/2015
  */
 public class Log {
-	public final static Logger log = LogManager.getLogger();
+	public final static Logger getLogger(Class clazz) {
+		return LogManager.getLogger(clazz.getCanonicalName().replaceFirst("com.polytech4A.CSPS.core.", ""));
+	}
 }

@@ -17,31 +17,37 @@
       </plugin>
     </plugins>
   </build>
+  <properties>
+    <log4j.version>2.2</log4j.version>
+    <junit.version>4.12</junit.version>
+    <commons.apache.version>2.2</commons.apache.version>
+    <commons.io.version>2.4</commons.io.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-math</artifactId>
-      <version>2.2</version>
+      <version>${commons.apache.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.2</version>
+      <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.2</version>
+      <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.4</version>
+      <version>${commons.io.version}</version>
     </dependency>
   </dependencies>
 </project>
