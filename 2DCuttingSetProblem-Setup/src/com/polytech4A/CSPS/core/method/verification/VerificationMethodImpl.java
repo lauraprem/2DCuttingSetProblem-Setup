@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ListIterator;
 
+import javax.swing.text.Position;
+
 /**
  * 
  * @author Corinne
@@ -65,110 +67,127 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	}
 
 	/**
-	 * decoupagePattern() add et remove ceux avec img
-	 * TODO place l'image en bas à droite du pattern puis découpe pour guillotine => listPattern = plusieurs pattern
+	 * decoupagePattern() add et remove ceux avec img TODO place l'image en bas
+	 * à droite du pattern puis découpe pour guillotine => listPattern =
+	 * plusieurs pattern
 	 */
 	public Pattern getPlacedPattern(Pattern pattern) {
-		
+
 		// Initialisation des variables pour placer un pattern
-		PatternWithCoord newPattern = new PatternWithCoord(pattern.getSize(), pattern.getAmount());
+		PatternWithCoord newPattern = new PatternWithCoord(pattern.getSize(),
+				pattern.getAmount());
 		listPattern.add(newPattern);
 		listImg = (ArrayList<Image>) pattern.getListImg().clone();
-		if(listImg.size()!=0) listImg.clear();
-		
+		boolean isPlaced = false;
+
+		// Reset position des images
+		for (int i = 0; i < listImg.size(); i++) {
+			if (listImg.get(i).getPositions().size() > 0) {
+				listImg.get(i).getPositions().clear();
+			}
+		}
 		
 		this.getImgOrderDesc();
-		
-		int i=0;
+
+		int i = 0;
 		while (i < listImg.size()) {
 			Long amount = listImg.get(i).getAmount();
-				while(amount>0){
-					int j = 0;
-					
-					ListIterator<PatternWithCoord> iterator = listPattern.listIterator();
-			        while(iterator.hasNext()){
-			        	PatternWithCoord element = iterator.next();
-						if (listImg.get(i).getArea() < element.getArea()) {
-							if(placementImage(element, i) == true){
-								listPattern.remove(element);
-//								this.decoupagePattern();
-								break;
-							}
-							
+			while (amount > 0) {
+				int j = 0;
 
+				ListIterator<PatternWithCoord> iterator = listPattern
+						.listIterator();
+				while (iterator.hasNext()) {
+					PatternWithCoord element = iterator.next();
+					if (listImg.get(i).getArea() < element.getArea()) {
+						if (placementImage(element, i) == true) {
+//							this.decoupagePattern(element, i);
+							listPattern.remove(element);
+							this.getPatternsOrderAsc();
+							isPlaced = true;
+							break;
 						}
-						this.getImgOrderDesc();
-						this.getPatternsOrderAsc();
-						j++;
 					}
-			        amount--;
+					j++;
 				}
+
+				// Si l'image est implaçable
+				if (isPlaced == false && listImg.get(i).getAmount() > 0) {
+					return null;
+				}
+				isPlaced = false;
+
+				amount--;
+			}
 			i++;
 		}
-		return null;
+
+		// Fabrication du Patter
+		newPattern.setListImg(listImg);
+
+		return newPattern;
 	}
 
 	/**
-	 * Verif si hauteur & largeur rentre (pattern-image) (en placent en bas  à droite)
-	 * Si oui, on place, sinon rotation image 90° et reteste
+	 * Verif si hauteur & largeur rentre (pattern-image) (en placent en bas à
+	 * droite) Si oui, on place, sinon rotation image 90° et reteste
+	 * 
 	 * @param p
 	 * @param iImage
 	 */
-	protected boolean placementImage(PatternWithCoord p, int iImage) {
+	protected boolean placementImage(PatternWithCoord p, int iImage) { // Bas Droite
+		Vector v = null; // image courrente
+		boolean isRotate = false;
 
-		// Verification si rentre dans le Pattern sinon on tourne l'image de 90°C, on place si possible (met coord image)
-		if((p.getSize().getX() > listImg.get(iImage).getSize().getX() && (p.getSize().getY() > listImg.get(iImage).getSize().getY())) && listImg.get(iImage).isRotated()!=true){ // Hauteur Largeur
-			listImg.get(iImage).getPositions().add(new Vector(p.getCoord().getX(), p.getCoord().getY()));
-			if(p.getListImg() == null){
-				p.setListImg(new ArrayList<Image>());
-			}
-			listImg.get(iImage).getPositions().add(new Vector(p.getCoord().getX(), p.getCoord().getY()));
-			return true;
-		}else{
-			 listImg.get(iImage).setRotated(true);
+		// Verification si rentre dans le Pattern sinon on tourne l'image de
+		// 90°C, on place si possible (met coord image)
+		if ((p.getSize().getX() > listImg.get(iImage).getSize().getX() && (p
+				.getSize().getY() > listImg.get(iImage).getSize().getY()))
+				&& isRotate != true) { // Hauteur Largeur
+			v = new Vector(p.getCoord().getX(), p.getCoord().getY());
+		} else {
+			isRotate = true;
 		}
-		
-		if((p.getSize().getY() > listImg.get(iImage).getSize().getY() && p.getSize().getX() >  listImg.get(iImage).getSize().getX()) &&  listImg.get(iImage).isRotated()==true){ // Hauteur Largeur
-			listImg.get(iImage).getPositions().add(new Vector(p.getCoord().getX(), p.getCoord().getY()));
+
+		if ((p.getSize().getX() > listImg.get(iImage).getSize().getY() && p
+				.getSize().getY() > listImg.get(iImage).getSize().getX())
+				&& isRotate == true) { // Hauteur Largeur
+			v = new Vector(p.getCoord().getX(), p.getCoord().getY(), true);
+		} else {
+			isRotate = false;
+		}
+
+		// Si l'image est placé on découpe le pattern
+		if (v != null) {
+			PatternWithCoord n1, n2;
+			
+			// Découpage horizontal
+			if (!v.isRotated()) {
+				
+				n1 = new PatternWithCoord(new Vector(p.getSize().getX()
+						- listImg.get(iImage).getSize().getX(), p.getSize().getY()), new Vector(p.getCoord().getX()+listImg.get(iImage).getSize().getX(),p.getCoord().getY()));
+				n2 = new PatternWithCoord(new Vector(p.getSize().getX(), p
+						.getSize().getY()
+						- listImg.get(iImage).getSize().getY()), new Vector(p.getCoord().getX(),listImg.get(iImage).getSize().getY()+p.getCoord().getY()));
+			} else {
+				n1 = new PatternWithCoord(new Vector(p.getSize().getX()
+						- listImg.get(iImage).getSize().getY(), p.getSize().getY()), new Vector(p.getCoord().getX()+listImg.get(iImage).getSize().getY(),p.getCoord().getY()));
+				n2 = new PatternWithCoord(new Vector(p.getSize().getX(), p
+						.getSize().getY()
+						- listImg.get(iImage).getSize().getX()), new Vector(p.getCoord().getX(),listImg.get(iImage).getSize().getX()+p.getCoord().getY()));
+			}
+			this.addListPattern(n1);
+			this.addListPattern(n2);
+
+			listImg.get(iImage).getPositions().add(v);
+
 			return true;
-		}else{
-			 listImg.get(iImage).setRotated(false);
 		}
 		return false;
 	}
 
-	protected ArrayList<PatternWithCoord> decoupagePattern(PatternWithCoord p, Image i) {
-		PatternWithCoord n1, n2, n3;
-		
-		if (!i.isRotated()) {
-			// Haut Gauche
-			n1 = new PatternWithCoord(
-					new Vector(p.getSize().getX() - i.getSize().getX(), i
-							.getSize().getY()));
-			n2 = new PatternWithCoord(new Vector(
-					p.getSize().getX() - i.getSize().getX(), p.getSize().getX()
-							- i.getSize().getY()));
-			n3 = new PatternWithCoord(new Vector(p.getSize().getX(), p.getSize().getY()
-					- i.getSize().getY()));
-		} else {
-			n1 = new PatternWithCoord(
-					new Vector(p.getSize().getY() - i.getSize().getY(), i
-							.getSize().getX()));
-			n2 = new PatternWithCoord(new Vector(
-					p.getSize().getY() - i.getSize().getY(), p.getSize().getY()
-							- i.getSize().getX()));
-			n3 = new PatternWithCoord(new Vector(p.getSize().getY(), p.getSize().getX()
-					- i.getSize().getX()));
-		}
-		this.addListPattern(n1);
-		this.addListPattern(n2);
-		this.addListPattern(n3);
-		
-		return listPattern;
-	}
-	
-	private void addListPattern(PatternWithCoord p){
-		if(p.getCoord() != null){
+	private void addListPattern(PatternWithCoord p) {
+		if (p.getCoord() != null) {
 			listPattern.add(p);
 		}
 	}
