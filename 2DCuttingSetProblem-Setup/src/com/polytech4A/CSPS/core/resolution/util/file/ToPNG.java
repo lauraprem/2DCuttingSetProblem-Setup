@@ -2,6 +2,7 @@ package com.polytech4A.CSPS.core.resolution.util.file;
 
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
+import com.polytech4A.CSPS.core.model.Position;
 import com.polytech4A.CSPS.core.model.Vector;
 import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.util.Log;
@@ -245,7 +246,7 @@ public class ToPNG extends FileMethod {
         }
     }
 
-    private void printImage(BufferedImage img, int length, Image placedBox, Vector position, int coeff) {
+    private void printImage(BufferedImage img, int length, Image placedBox, Position position, int coeff) {
         if (position != null) {
             int num = placedBox.getId().intValue();
             Vector size = placedBox.getSize();

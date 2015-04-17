@@ -1,16 +1,10 @@
 package com.polytech4A.CSPS.core.method.verification;
 
-import com.polytech4A.CSPS.core.model.Image;
-import com.polytech4A.CSPS.core.model.Pattern;
-import com.polytech4A.CSPS.core.model.PatternWithCoord;
-import com.polytech4A.CSPS.core.model.Solution;
-import com.polytech4A.CSPS.core.model.Vector;
+import com.polytech4A.CSPS.core.model.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ListIterator;
-
-import javax.swing.text.Position;
 
 /**
  * 
@@ -136,7 +130,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 * @param iImage
 	 */
 	protected boolean placementImage(PatternWithCoord p, int iImage) { // Bas Droite
-		Vector v = null; // image courrente
+		Position position = null; // image courrente
 		boolean isRotate = false;
 
 		// Verification si rentre dans le Pattern sinon on tourne l'image de
@@ -144,7 +138,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 		if ((p.getSize().getX() > listImg.get(iImage).getSize().getX() && (p
 				.getSize().getY() > listImg.get(iImage).getSize().getY()))
 				&& isRotate != true) { // Hauteur Largeur
-			v = new Vector(p.getCoord().getX(), p.getCoord().getY());
+			position = new Position(p.getCoord().getX(), p.getCoord().getY());
 		} else {
 			isRotate = true;
 		}
@@ -152,17 +146,17 @@ public class VerificationMethodImpl implements IVerificationMethod {
 		if ((p.getSize().getX() > listImg.get(iImage).getSize().getY() && p
 				.getSize().getY() > listImg.get(iImage).getSize().getX())
 				&& isRotate == true) { // Hauteur Largeur
-			v = new Vector(p.getCoord().getX(), p.getCoord().getY(), true);
+			position = new Position(p.getCoord().getX(), p.getCoord().getY(), true);
 		} else {
 			isRotate = false;
 		}
 
 		// Si l'image est placé on découpe le pattern
-		if (v != null) {
+		if (position != null) {
 			PatternWithCoord n1, n2;
 			
 			// Découpage horizontal
-			if (!v.isRotated()) {
+			if (!position.isRotated()) {
 				
 				n1 = new PatternWithCoord(new Vector(p.getSize().getX()
 						- listImg.get(iImage).getSize().getX(), p.getSize().getY()), new Vector(p.getCoord().getX()+listImg.get(iImage).getSize().getX(),p.getCoord().getY()));
@@ -179,7 +173,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 			this.addListPattern(n1);
 			this.addListPattern(n2);
 
-			listImg.get(iImage).getPositions().add(v);
+			listImg.get(iImage).getPositions().add(position);
 
 			return true;
 		}
