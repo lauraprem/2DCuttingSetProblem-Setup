@@ -20,7 +20,7 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 	/**
 	 * Nombre de fois qu'il faut imprimer le pattern
 	 */
-	private Long amount;
+	private Long amount = 0L;
 
 	/**
 	 * Les images présente dans le pattern
