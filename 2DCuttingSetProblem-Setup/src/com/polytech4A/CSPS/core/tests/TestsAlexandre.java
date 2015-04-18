@@ -1,7 +1,7 @@
 package com.polytech4A.CSPS.core.tests;
 
 import com.polytech4A.CSPS.core.method.LinearResolutionMethod;
-import com.polytech4A.CSPS.core.model.Image;
+import com.polytech4A.CSPS.core.method.verification.VerificationMethodImpl;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.Resolution;
@@ -23,11 +23,12 @@ public class TestsAlexandre {
         Tests tests = new Tests();
         Context context = tests.getContext(0);
         Pattern pattern = tests.getSolution(0).getPatterns().get(0);
-        Image img = pattern.getListImg().get(0);
         Solution solution = tests.getSolution(0);
+        solution = new VerificationMethodImpl().getPlaced(solution);
         LinearResolutionMethod linearResolutionMethod = new LinearResolutionMethod(context);
-        ArrayList<Long> count = linearResolutionMethod.getCount(tests.getSolution(0));
+        ArrayList<Long> count = linearResolutionMethod.getCount(solution);
         count.stream().forEach(c -> System.out.println(c));
+        solution = new VerificationMethodImpl().getPlaced(solution);
         LinearResolutionMethod.check(count, context, solution);
         Resolution resolution = new Resolution(context);
         resolution.setSolution(solution);
