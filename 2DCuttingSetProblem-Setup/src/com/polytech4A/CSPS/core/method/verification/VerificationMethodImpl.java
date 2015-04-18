@@ -165,7 +165,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 				if (processPlacement(i, true) == true) {
 				} else { // change les bin
 					if (processPlacement(i, false) == false) {
-						return null;
+//						return null;
 					}
 				}
 				amount--;
@@ -249,6 +249,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
 				}
 			}
 		}
+		getListBinHorizOrderAsc();
+		getListBinVertiOrderAsc();
 	}
 
 	/**
@@ -355,8 +357,16 @@ public class VerificationMethodImpl implements IVerificationMethod {
 	 * Tri la liste des patterns par ordre croissant (de la plus petite taille à
 	 * la plus grande)
 	 */
-	protected void getPatternsOrderAsc() {
+	protected void getListBinHorizOrderAsc() {
 		Collections.sort(listBinHoriz, Pattern.PatternNameComparator);
+	}
+	
+	/**
+	 * Tri la liste des patterns par ordre croissant (de la plus petite taille à
+	 * la plus grande)
+	 */
+	protected void getListBinVertiOrderAsc() {
+		Collections.sort(listBinVerti, Pattern.PatternNameComparator);
 	}
 
 	/**
