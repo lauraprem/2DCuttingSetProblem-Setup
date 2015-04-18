@@ -32,6 +32,11 @@ public class TestsCorinne {
         LinearResolutionMethod.check(count, context, solution);
         Resolution resolution = new Resolution(context);
 //        resolution.setSolution(solution);
+        
+//        ArrayList<Pattern> listPattern = new ArrayList<Pattern>();
+//        listPattern.add(v.getPlacedPattern(tests.getSolution(0).getPatterns().get(3)));
+//        Solution s = new Solution(listPattern);
+//        resolution.setSolution(s);
         resolution.setSolution(v.getPlaced(tests.getSolution(0)));
         System.out.println(v.getPlaced(solution));
         new ToPNG().save("test", resolution);

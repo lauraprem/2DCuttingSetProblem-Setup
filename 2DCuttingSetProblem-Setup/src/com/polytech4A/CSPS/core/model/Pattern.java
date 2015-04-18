@@ -15,17 +15,17 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 	/**
 	 * taille du pattern
 	 */
-	private Vector size;
+	protected Vector size;
 
 	/**
 	 * Nombre de fois qu'il faut imprimer le pattern
 	 */
-	private Long amount = 0L;
+	protected Long amount = 0L;
 
 	/**
 	 * Les images présente dans le pattern
 	 */
-	private ArrayList<Image> listImg;
+	protected ArrayList<Image> listImg;
 	
 	public Pattern(Vector size) {
 		super();
@@ -104,8 +104,10 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		Pattern cloned = new Pattern(this.size, this.amount);
 		cloned.listImg = new ArrayList<Image>();
-		for (Image image : this.listImg) {
-			cloned.listImg.add((Image) image.clone());
+		if(listImg != null){
+			for (int i = 0; i < listImg.size(); i++) {
+				cloned.listImg.add((Image) listImg.get(i).clone());
+			}
 		}
 		return cloned;
 	}
