@@ -26,7 +26,7 @@ public interface IVerificationMethod {
 	 * renvoie 'null'. Pour information, le placement de l'image est fixé en bas
 	 * à gauche & le placement de l'image ce fait verticalement (en priorité).
 	 * 
-	 * @param solution
+	 * @param pattern
 	 * @return Pattern si c'est possible, 'null' sinon
 	 */
 	public Pattern getPlacedPattern(Pattern pattern);

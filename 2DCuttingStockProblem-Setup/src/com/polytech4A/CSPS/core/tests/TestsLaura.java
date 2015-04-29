@@ -1,12 +1,12 @@
 package com.polytech4A.CSPS.core.tests;
 
-import java.util.ArrayList;
-
 import com.polytech4A.CSPS.core.method.verification.VerificationMethodImpl;
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Vector;
 import com.polytech4A.CSPS.core.util.PatternUtil;
+
+import java.util.ArrayList;
 
 /**
  * @author Alexandre

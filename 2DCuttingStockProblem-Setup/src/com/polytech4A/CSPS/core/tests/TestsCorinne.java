@@ -1,7 +1,5 @@
 package com.polytech4A.CSPS.core.tests;
 
-import java.util.ArrayList;
-
 import com.polytech4A.CSPS.core.method.LinearResolutionMethod;
 import com.polytech4A.CSPS.core.method.verification.VerificationMethodImpl;
 import com.polytech4A.CSPS.core.model.Image;
@@ -10,6 +8,8 @@ import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.resolution.util.file.ToPNG;
+
+import java.util.ArrayList;
 
 
 
