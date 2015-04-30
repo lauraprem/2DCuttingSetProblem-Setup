@@ -2,7 +2,6 @@ package com.polytech4A.CSPS.core.method.strategy;
 
 import com.polytech4A.CSPS.core.method.LinearResolutionMethod;
 import com.polytech4A.CSPS.core.method.verification.IVerificationMethod;
-import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 
@@ -16,29 +15,19 @@ import com.polytech4A.CSPS.core.resolution.util.context.Context;
 public abstract class StrategyMethod implements Runnable {
 	
 	/**
-	 * cout d'un Pattern
+	 * Context
 	 */
-	private Long costOfPattern;
-	
-	/**
-	 * cout d'une feuille d'impression
-	 */
-	private Long costOfPrinting;
-	
-	/**
-	 * liste d'image a placer
-	 */
-	private Image[] goal;
+	private Context context;
 	
 	/**
 	 * Permet de verifie si on peut placer les images dans les patterns
 	 */
-	private IVerificationMethod listVerifMethode;
+	private IVerificationMethod verificationMethod;
 	
 	/**
 	 * Permet de calculer la fitness d'une solution
 	 */
-	private LinearResolutionMethod listResolMethode;
+	private LinearResolutionMethod linearResolutionMethod;
 
 	/**
 	 *
@@ -68,5 +57,23 @@ public abstract class StrategyMethod implements Runnable {
 	 */
 	public Solution getSolution(Context context) {
 		return getSolution(context, new Solution());
+	}
+
+	public StrategyMethod(Context context, IVerificationMethod verificationMethod) {
+		this.context = context;
+		this.verificationMethod = verificationMethod;
+		linearResolutionMethod = new LinearResolutionMethod(context);
+	}
+
+	protected Context getContext() {
+		return context;
+	}
+
+	protected IVerificationMethod getVerificationMethod() {
+		return verificationMethod;
+	}
+
+	protected LinearResolutionMethod getLinearResolutionMethod() {
+		return linearResolutionMethod;
 	}
 }

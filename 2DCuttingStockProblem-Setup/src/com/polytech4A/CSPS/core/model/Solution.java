@@ -11,6 +11,16 @@ import static com.polytech4A.CSPS.core.util.Util.escToString;
  */
 public class Solution {
 
+    private Long fitness = -1L;
+
+    public Long getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(Long fitness) {
+        this.fitness = fitness;
+    }
+
     /**
      * liste des pattern qui forment la solution
      */

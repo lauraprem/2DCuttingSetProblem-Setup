@@ -37,11 +37,6 @@ import java.util.ArrayList;
 public class Context {
 
 	/**
-	 * Scale of the project
-	 */
-	private Long scale;
-
-	/**
 	 * Id of the context
 	 */
 	private String label;
@@ -61,6 +56,10 @@ public class Context {
 	 */
 	private Vector patternSize;
 
+	private Integer minPattern;
+
+	private Integer maxPattern;
+
 	/**
 	 * Boxes with size and amount to print, not the amount per pattern.
 	 */
@@ -76,7 +75,13 @@ public class Context {
 		this.sheetCost = sheetCost;
 		this.images = images;
 		this.patternSize = patternSize;
-		this.scale = scale;
+		maxPattern = images.size();
+		Double imagesAera = 0.0;
+		Long patternAera = patternSize.getX()*patternSize.getY();
+		for(Image i : this.images) {
+			imagesAera += i.getArea();
+		}
+		minPattern = ((Double) Math.ceil(imagesAera/patternAera)).intValue();
 	}
 
 	public String getLabel() {
@@ -99,11 +104,11 @@ public class Context {
 		return patternSize;
 	}
 
-	public Long getScale() {
-		return scale;
+	public Integer getMinPattern() {
+		return minPattern;
 	}
 
-	public void setScale(Long scale) {
-		this.scale = scale;
+	public Integer getMaxPattern() {
+		return maxPattern;
 	}
 }

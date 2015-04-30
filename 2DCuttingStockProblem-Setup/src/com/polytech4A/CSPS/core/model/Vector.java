@@ -7,7 +7,7 @@ package com.polytech4A.CSPS.core.model;
  */
 public class Vector {
 
-    private static Long SCALE = 1000L;
+    public final static Long SCALE = 1000L;
 
     /**
      * Valeur de X
