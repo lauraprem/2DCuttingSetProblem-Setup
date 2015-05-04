@@ -54,10 +54,19 @@ public class Vector {
     }
 
 
-    @Override
+    /*@Override
     public String toString() {
         return "VECTOR\n"
                 + "X:" + X + " Y:" + Y;
+    }*/
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Vector{");
+        sb.append("X=").append(X);
+        sb.append(", Y=").append(Y);
+        sb.append("}\n");
+        return sb.toString();
     }
 
     @Override

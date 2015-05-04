@@ -32,7 +32,7 @@ public class CoupleIterator implements Iterator<Couple> {
         if (generation.size() < 2) return false;
         if (current == null) current = new Couple(generation.get(0), generation.get(1));
         return
-                generation.indexOf(current.getS1()) != generation.size() - 2
+                generation.indexOf(current.getS1()) != generation.size() - 1
                         || generation.indexOf(current.getS2()) != generation.size() - 1;
     }
 
@@ -48,7 +48,7 @@ public class CoupleIterator implements Iterator<Couple> {
         if (current == null) current = new Couple(generation.get(0), generation.get(1));
         int indexS1 = generation.indexOf(current.getS1()),
                 indexS2 = generation.indexOf(current.getS2());
-        if (indexS1 == generation.size() - 2 && indexS2 == generation.size() - 1) throw new NoSuchElementException();
+        if (indexS1 == generation.size() - 1 && indexS2 == generation.size() - 1) throw new NoSuchElementException();
         if(indexS2 == generation.size() - 1) {
             indexS1++;
             indexS2 = indexS1++;

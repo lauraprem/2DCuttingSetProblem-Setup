@@ -6,10 +6,7 @@ import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -51,11 +48,13 @@ public class SolutionUtil {
             } while (!suceed);
         }
         for(Integer index: patternIndexes) {
-            for(int i = 0; i < 4; i++) {
+           /* for(int i = 0; i < 4; i++) {
                 PatternUtil.addImage(patterns.get(index), imageIds.get(random.nextInt(imageIds.size())), verificationMethod);
+            }*/
+            Pattern p = patterns.get(index);
+            while(PatternUtil.addImage(p, imageIds.get(random.nextInt(imageIds.size())), verificationMethod)) {
+                patterns.set(index, p);
             }
-
-            //while(PatternUtil.addImage(patterns.get(index), imageIds.get(random.nextInt(imageIds.size())), verificationMethod));
         }
         solution.setPatterns(patterns);
         return solution;
@@ -72,10 +71,19 @@ public class SolutionUtil {
                     break;
                 }
             }
+            if(Boolean.TRUE.equals(toDelete)) indexes.add(i);
         }
         Collections.sort(indexes);
         for (int i = indexes.size() - 1; i >= 0; i--) {
             solution.getPatterns().remove(indexes.get(i));
         }
+    }
+
+    public static Boolean isSolvable(Context context, Solution solution) {
+        Set<Long> ids = Collections.<Long>synchronizedSet(new HashSet<>());
+        solution.getPatterns().forEach(p -> p.getListImg().forEach(i -> {
+            if(i.getAmount() != 0L)
+                ids.add(i.getId());}));
+        return ids.size() < context.getImages().size();
     }
 }

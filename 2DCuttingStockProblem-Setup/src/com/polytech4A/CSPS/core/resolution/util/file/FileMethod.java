@@ -59,4 +59,8 @@ public abstract class FileMethod {
         file += '.' + extension;
         return file;
     }
+
+    public String getExtension() {
+        return extension;
+    }
 }

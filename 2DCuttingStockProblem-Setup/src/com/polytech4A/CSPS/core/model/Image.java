@@ -95,7 +95,7 @@ public class Image implements Comparable<Image> {
         return size.getX() * size.getY();
     }
 
-    @Override
+    /*@Override
     public String toString() {
         StringBuilder stringPosition = new StringBuilder("positions : \n");
         String detail = "IMAGE " + id + "\n" +
@@ -116,6 +116,21 @@ public class Image implements Comparable<Image> {
                 + "goal : " + escToString(goal) + "\n";
 
         return detail;
+    }*/
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Image{");
+        sb.append("id=").append(id);
+        sb.append(", amount=").append(amount);
+        if(positions != null) {
+            if(positions.size() != 0) sb.append(", positions=").append(positions);
+            else sb.append(", positions=").append("<empty>");
+        }
+        sb.append(", size=").append(size);
+        sb.append(", goal=").append(goal);
+        sb.append("}\n");
+        return sb.toString();
     }
 
     @Override

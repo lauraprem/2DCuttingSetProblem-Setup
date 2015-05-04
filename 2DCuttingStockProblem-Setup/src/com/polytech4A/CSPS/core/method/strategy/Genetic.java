@@ -69,13 +69,13 @@ public class Genetic extends StrategyMethod {
      */
     @Override
     public void run() {
-        while(generation.size() < populationSize) {
+        while (generation.size() < populationSize) {
             generation.add(GeneticUtil.getRandomViableSolution(getContext(), getVerificationMethod()));
         }
-        for(Integer i = 0; i < amountOfGeneration; i++) {
+        for (Integer i = 0; i < amountOfGeneration; i++) {
             generation.stream().forEach(s -> {
-                if(s.getFitness() == -1L)
-                s.setFitness(getFitness(s));
+                if (s.getFitness() == -1L)
+                    s.setFitness(getFitness(s));
             });
             generation = generation.parallelStream()
                     .sorted((o1, o2) -> {
@@ -89,8 +89,8 @@ public class Genetic extends StrategyMethod {
             CoupleIterator coupleIterator = new CoupleIterator(generation);
             Couple c;
             Solution s;
-            while(generation.size() < populationSize) {
-                if(!coupleIterator.hasNext()) coupleIterator.reset();
+            while (generation.size() < populationSize) {
+                if (!coupleIterator.hasNext()) coupleIterator.reset();
                 c = coupleIterator.next();
                 s = getViableCrossedSolution(c);
                 if (random.nextDouble() % 100 <= mutationFrequency) s = getViableMutatedSolution(s);
@@ -102,7 +102,7 @@ public class Genetic extends StrategyMethod {
     private Long getFitness(Solution solution) {
         Long fit = getLinearResolutionMethod().getFitness(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
         solution.setFitness(fit);
-        if(bestSolution == null || bestSolution.getFitness() < solution.getFitness()) {
+        if (bestSolution == null || bestSolution.getFitness() < solution.getFitness()) {
             bestSolution = solution;
         }
         return fit;
@@ -111,6 +111,7 @@ public class Genetic extends StrategyMethod {
     private Solution getViableMutatedSolution(Solution s) {
         return GeneticUtil.getViableMutatedSolution(getContext(), getVerificationMethod(), s);
     }
+
     private Solution getViableCrossedSolution(Couple c) {
         return GeneticUtil.getViableCrossedSolution(getContext(), getVerificationMethod(), c.getS1(), c.getS2());
     }

@@ -34,4 +34,13 @@ public class Resolution extends Thread {
 	@Override public void run() {
 
 	}
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("Resolution{");
+		sb.append("context=").append(context);
+		sb.append(", solution=").append(solution);
+		sb.append("}\n");
+		return sb.toString();
+	}
 }

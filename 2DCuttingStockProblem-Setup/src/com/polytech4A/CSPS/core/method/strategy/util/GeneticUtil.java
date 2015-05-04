@@ -73,8 +73,9 @@ public class GeneticUtil extends SolutionUtil {
                     }
                 }
                 solution.addPattern(pattern);
+                SolutionUtil.removeUselessPatterns(solution);
             }
-        } while (!verificationMethod.isViable(solution));
+        } while (isSolvable(context, solution) && !verificationMethod.isViable(solution));
         return solution;
     }
 

@@ -54,9 +54,11 @@ public class Solution {
 
     @Override
     public String toString() {
-        return "SOLUTION\n"
-                + (fitness != -1L ? "fitness : " + fitness + "\n" : "")
-                + "Patterns : " + escToString(patterns) + "\n";
+        final StringBuffer sb = new StringBuffer("Solution{");
+        if(fitness != -1L) sb.append("fitness=").append(fitness);
+        sb.append(", patterns=").append(patterns);
+        sb.append("}\n");
+        return sb.toString();
     }
 
     /**

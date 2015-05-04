@@ -5,6 +5,7 @@ import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.util.Log;
+import com.polytech4A.CSPS.core.util.SolutionUtil;
 import org.apache.commons.math.optimization.GoalType;
 import org.apache.commons.math.optimization.OptimizationException;
 import org.apache.commons.math.optimization.RealPointValuePair;
@@ -14,8 +15,7 @@ import org.apache.commons.math.optimization.linear.Relationship;
 import org.apache.commons.math.optimization.linear.SimplexSolver;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class LinearResolutionMethod {
 
@@ -38,10 +38,12 @@ public class LinearResolutionMethod {
 
     public ArrayList<Long> getCount(Solution solution) {
         ArrayList<Long> count = minimize(solution);
-        for(int i = 0; i < count.size();i++) {
-            solution.getPatterns().get(i).setAmount(count.get(i));
+        if(count != null) {
+            for (int i = 0; i < count.size(); i++) {
+                solution.getPatterns().get(i).setAmount(count.get(i));
+            }
         }
-        return minimize(solution);
+        return count;
     }
 
 

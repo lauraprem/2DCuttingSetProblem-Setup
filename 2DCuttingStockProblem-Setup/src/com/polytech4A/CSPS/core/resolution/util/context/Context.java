@@ -111,4 +111,26 @@ public class Context {
 	public Integer getMaxPattern() {
 		return maxPattern;
 	}
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("Context{");
+		sb.append("label='").append(label).append('\'');
+		sb.append(", patternCost=").append(patternCost);
+		sb.append(", sheetCost=").append(sheetCost);
+		sb.append(", patternSize=").append(patternSize);
+		sb.append(", minPattern=").append(minPattern);
+		sb.append(", maxPattern=").append(maxPattern);
+		sb.append(", images=[");
+		for(Image i : images) {
+			sb.append("Image{");
+			sb.append("id=").append(i.getId());
+			sb.append(", size=").append(i.getSize());
+			sb.append(", goal=").append(i.getGoal());
+			sb.append("}\n");
+		}
+		sb.append("]");
+		sb.append("}\n");
+		return sb.toString();
+	}
 }

@@ -26,12 +26,12 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 	 * Les images présente dans le pattern
 	 */
 	protected ArrayList<Image> listImg;
-	
+
 	public Pattern(Vector size) {
 		super();
 		this.size = size;
 	}
-	
+
 	public Pattern(Vector size, Long amount) {
 		super();
 		this.size = size;
@@ -71,7 +71,7 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 		return size.getX() * size.getY();
 	}
 
-	@Override
+	/*@Override
 	public String toString() {
 		StringBuilder listImgString = new StringBuilder();
 		String patternString = "PATTERN\n" + "size : " + escToString(size)
@@ -93,6 +93,23 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 		patternString = patternString + listImgString.toString();
 
 		return patternString;
+	}*/
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("Pattern{");
+		sb.append("size=").append(size);
+		sb.append(", amount=").append(amount);
+		if(listImg != null) {
+			if(listImg.size() != 0) {
+                sb.append(", listImg=[");
+                listImg.forEach(i -> {if(i.getAmount() != 0L) sb.append(i.toString());});
+                sb.append("]");
+			}
+			else sb.append(", listImg=").append("<empty>");
+		}
+		sb.append('}');
+		return sb.toString();
 	}
 
 	public void setPattern(Pattern pattern) {

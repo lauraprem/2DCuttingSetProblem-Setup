@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -241,6 +242,22 @@ public class ToPNG extends FileMethod {
                 e.printStackTrace();
             }
             y++;
+        }
+
+        try {
+            filename = getFilename(subDir, baseFilename, date);
+            filename = filename.substring(0, filename.lastIndexOf("." + getExtension()));
+            filename += ".txt";
+            File file = new File(filename);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream out = new FileOutputStream(file);
+            out.write(resolution.toString().getBytes());
+            out.close();
+            logger.info("Create new file " + file.getPath());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

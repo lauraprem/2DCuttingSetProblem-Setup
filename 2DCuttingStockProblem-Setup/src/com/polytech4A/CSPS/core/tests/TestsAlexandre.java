@@ -20,8 +20,8 @@ public class TestsAlexandre {
     private static final Logger logger = Log.getLogger(TestsAlexandre.class);
 
     public static void main(String[] args) {
-        /*
-        Tests tests = new Tests();
+
+        /*Tests tests = new Tests();
         Context context = tests.getContext(0);
         Solution solution = tests.getSolution(0);
         solution = new VerificationMethodImpl().getPlaced(solution);
@@ -34,7 +34,7 @@ public class TestsAlexandre {
         resolution.setSolution(solution);
         logger.trace("test");
         new ToPNG().save("test", resolution);*/
-        Tests tests = new Tests();
+         Tests tests = new Tests();
         Context context = tests.getContext(0);
         Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 10, 10);
         genetic.run();
