@@ -239,6 +239,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
      * à droite du pattern puis découpe pour guillotine => listPattern =
      * plusieurs pattern
      */
+    @Override
     public Pattern getPlacedPatternRecursive(Pattern pattern, int maxEssais) {
         
         nbSteps = 0;

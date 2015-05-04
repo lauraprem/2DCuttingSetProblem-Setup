@@ -29,7 +29,7 @@ public class PatternUtil {
 			for (Image image : patternTemp.getListImg()) {
 				if (image.getId().equals(imageId)) {
 					image.setAmount(image.getAmount() + 1);
-					patternTemp = verif.getPlacedPattern(patternTemp);
+					patternTemp = verif.getPlacedPatternRecursive(patternTemp,0);
 					if (patternTemp != null) {
 						pattern.setPattern(patternTemp);
 

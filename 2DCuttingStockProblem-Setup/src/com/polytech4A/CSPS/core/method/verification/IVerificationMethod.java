@@ -30,4 +30,14 @@ public interface IVerificationMethod {
 	 * @return Pattern si c'est possible, 'null' sinon
 	 */
 	public Pattern getPlacedPattern(Pattern pattern);
+	
+	/**
+	 * Donne le placement des images dans 1 Pattern si c'est possible, sinon
+	 * renvoie 'null'. Pour information, le placement de l'image est fixé en bas
+	 * à gauche & le placement de l'image ce fait verticalement (en priorité).
+	 * 
+	 * @param pattern
+	 * @return Pattern si c'est possible, 'null' sinon
+	 */
+	public Pattern getPlacedPatternRecursive(Pattern pattern, int maxEssais);
 }
