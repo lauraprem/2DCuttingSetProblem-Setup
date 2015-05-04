@@ -277,7 +277,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
         //System.out.println("listBinHoriz" + listBinHoriz.get(0).getArea());
         ///////////////////// Recursive call ///////////////////////////
         ArrayList<Image> result = new ArrayList<Image>();
-        if (!processPlacementRecursive(getNextImageIndex(0, -1, listImg), 0, listImg, listBinHoriz, 0, result)) {
+        int idImg = getNextImageIndex(0, -1, listImg);
+        if ((idImg <0) || (!processPlacementRecursive(idImg, 0, listImg, listBinHoriz, 0, result))) {
             System.out.println("No pattern found");
             return null;
         }else{
