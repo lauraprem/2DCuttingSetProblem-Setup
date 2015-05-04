@@ -47,4 +47,11 @@ public class Position extends Vector {
         return !(rotated != null ? !rotated.equals(position.rotated) : position.rotated != null);
 
     }
+    
+    @Override
+     public Object clone() throws CloneNotSupportedException {
+        Position cloned = new Position(getX(),getY());
+        cloned.rotated = rotated; 
+        return cloned;
+    }
 }
