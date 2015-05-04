@@ -1,5 +1,7 @@
 package com.polytech4A.CSPS.core.tests;
 
+import java.util.ArrayList;
+
 import com.polytech4A.CSPS.core.method.LinearResolutionMethod;
 import com.polytech4A.CSPS.core.method.verification.VerificationMethodImpl;
 import com.polytech4A.CSPS.core.model.Image;
@@ -8,8 +10,6 @@ import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.resolution.util.file.ToPNG;
-
-import java.util.ArrayList;
 
 
 
@@ -37,8 +37,9 @@ public class TestsCorinne {
 //        listPattern.add(v.getPlacedPattern(tests.getSolution(0).getPatterns().get(3)));
 //        Solution s = new Solution(listPattern);
 //        resolution.setSolution(s);
-        resolution.setSolution(v.getPlaced(tests.getSolution(0)));
-        System.out.println(v.getPlaced(solution));
+        Solution s = v.getPlaced(tests.getSolution(0));
+        resolution.setSolution(s);
+        System.out.println("Final : "+s);
         new ToPNG().save("test", resolution);
 	}
 }

@@ -150,9 +150,9 @@ public class VerificationMethodImpl implements IVerificationMethod {
             System.out.println(solution.getPatterns().get(i));
             if (p != null) {
                 newSolution.addPattern(p);
-            }/*
-             * else { return null; }
-             */
+            }
+              else { return null; }
+             
 
             // TODO Test
 //			if(listBinHoriz.size()>0)
@@ -267,6 +267,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
         }
         
         this.maxSteps = maxEssais*nbTotImage;
+//        this.maxSteps = 1;
 
         ResetBin(newBin);
 
