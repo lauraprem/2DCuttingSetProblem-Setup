@@ -55,6 +55,7 @@ public class Solution {
     @Override
     public String toString() {
         return "SOLUTION\n"
+                + (fitness != -1L ? "fitness : " + fitness + "\n" : "")
                 + "Patterns : " + escToString(patterns) + "\n";
     }
 

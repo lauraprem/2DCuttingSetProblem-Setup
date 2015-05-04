@@ -205,7 +205,7 @@ public class ToPNG extends FileMethod {
         Date date = new Date();
         mkdir(subDir, date);
         ArrayList<Pattern> patterns = resolution.getSolution().getPatterns();
-        int coeff = (int) Math.ceil(800 * Vector.SCALE / Math
+        int coeff = (int) Math.ceil(800 / Math
                 .max(patterns.get(0).getSize().getWidth(),
                         patterns.get(0).getSize().getHeight()));
         Long y = 0L;

@@ -26,50 +26,55 @@ public class SolutionUtil {
         Solution solution = new Solution();
         ArrayList<Pattern> patterns = new ArrayList<>();
         for (int i = 0; i < amountOfPattern; i++) {
-            patterns.add(new Pattern(context.getPatternSize()));
+            patterns.add(new Pattern(context.getPatternSize(), context.getImages()));
         }
         List<Integer> patternIndexes = new ArrayList<>();
         for (Integer i = 0; i < patterns.size(); i++) patternIndexes.add(i);
         List<Long> imageIds = context.getImages().stream()
                 .map(Image::getId)
                 .collect(Collectors.toList());
-        do {
-            Boolean suceed = Boolean.FALSE;
-            Collections.shuffle(imageIds);
-            for (Long imageId : imageIds) {
-                do {
-                    Collections.shuffle(patternIndexes);
-                    for (Integer index : patternIndexes) {
-                        if (PatternUtil.addImage(patterns.get(index), imageId, verificationMethod)) {
-                            suceed = Boolean.TRUE;
-                            break;
-                        }
+        Boolean suceed = Boolean.FALSE;
+        Collections.shuffle(imageIds);
+        for (Long imageId : imageIds) {
+            do {
+                Collections.shuffle(patternIndexes);
+                for (Integer index : patternIndexes) {
+                    if (PatternUtil.addImage(patterns.get(index), imageId, verificationMethod)) {
+                        suceed = Boolean.TRUE;
+                        break;
                     }
-                    if (!suceed) {
-                        patterns.add(new Pattern(context.getPatternSize()));
-                        patternIndexes.add(patternIndexes.size());
-                    }
-                } while (!suceed);
+                }
+                if (!suceed) {
+                    patterns.add(new Pattern(context.getPatternSize()));
+                    patternIndexes.add(patternIndexes.size());
+                }
+            } while (!suceed);
+        }
+        for(Integer index: patternIndexes) {
+            for(int i = 0; i < 4; i++) {
+                PatternUtil.addImage(patterns.get(index), imageIds.get(random.nextInt(imageIds.size())), verificationMethod);
             }
-            // TODO : Endthis
-        } while (false);
+
+            //while(PatternUtil.addImage(patterns.get(index), imageIds.get(random.nextInt(imageIds.size())), verificationMethod));
+        }
+        solution.setPatterns(patterns);
         return solution;
     }
 
     public static void removeUselessPatterns(Solution solution) {
         List<Integer> indexes = new ArrayList<>();
         Boolean toDelete;
-        for(int i = 0; i < solution.getPatterns().size(); i++) {
+        for (int i = 0; i < solution.getPatterns().size(); i++) {
             toDelete = Boolean.TRUE;
-            for(Image image : solution.getPatterns().get(i).getListImg()) {
-                if(image.getAmount() !=0) {
+            for (Image image : solution.getPatterns().get(i).getListImg()) {
+                if (image.getAmount() != 0) {
                     toDelete = Boolean.FALSE;
                     break;
                 }
             }
         }
         Collections.sort(indexes);
-        for(int i = indexes.size() -1; i >= 0; i--) {
+        for (int i = indexes.size() - 1; i >= 0; i--) {
             solution.getPatterns().remove(indexes.get(i));
         }
     }

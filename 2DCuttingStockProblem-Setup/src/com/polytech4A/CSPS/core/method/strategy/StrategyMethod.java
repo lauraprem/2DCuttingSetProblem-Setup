@@ -76,4 +76,8 @@ public abstract class StrategyMethod implements Runnable {
 	protected LinearResolutionMethod getLinearResolutionMethod() {
 		return linearResolutionMethod;
 	}
+
+	public Solution getBestSolution() {
+		return bestSolution;
+	}
 }

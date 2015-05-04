@@ -1,6 +1,7 @@
 package com.polytech4A.CSPS.core.tests;
 
 import com.polytech4A.CSPS.core.method.LinearResolutionMethod;
+import com.polytech4A.CSPS.core.method.strategy.Genetic;
 import com.polytech4A.CSPS.core.method.verification.VerificationMethodImpl;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.Resolution;
@@ -19,6 +20,7 @@ public class TestsAlexandre {
     private static final Logger logger = Log.getLogger(TestsAlexandre.class);
 
     public static void main(String[] args) {
+        /*
         Tests tests = new Tests();
         Context context = tests.getContext(0);
         Solution solution = tests.getSolution(0);
@@ -31,6 +33,14 @@ public class TestsAlexandre {
         Resolution resolution = new Resolution(context);
         resolution.setSolution(solution);
         logger.trace("test");
-        new ToPNG().save("test", resolution);
+        new ToPNG().save("test", resolution);*/
+        Tests tests = new Tests();
+        Context context = tests.getContext(0);
+        Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 10, 10);
+        genetic.run();
+        Solution solution = genetic.getBestSolution();
+        Resolution resolution = new Resolution(context);
+        resolution.setSolution(solution);
+        new ToPNG().save("genetic", resolution);
     }
 }

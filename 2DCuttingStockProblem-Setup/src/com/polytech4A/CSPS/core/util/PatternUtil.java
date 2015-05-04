@@ -29,7 +29,8 @@ public class PatternUtil {
 			for (Image image : patternTemp.getListImg()) {
 				if (image.getId().equals(imageId)) {
 					image.setAmount(image.getAmount() + 1);
-					if ((patternTemp = verif.getPlacedPattern(patternTemp)) != null) {
+					patternTemp = verif.getPlacedPattern(patternTemp);
+					if (patternTemp != null) {
 						pattern.setPattern(patternTemp);
 
 						return true;

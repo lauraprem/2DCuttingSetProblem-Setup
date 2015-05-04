@@ -79,8 +79,8 @@ public class GeneticUtil extends SolutionUtil {
     }
 
     public static Solution getViableMutatedSolution(Context context, IVerificationMethod verificationMethod, Solution s) {
-        // TODO : this
-        return null;
+        // TODO : mutation returns base solution for now
+        return s;
     }
 
     private static Long getNumberOfGenes(Solution s1, Solution s2) {

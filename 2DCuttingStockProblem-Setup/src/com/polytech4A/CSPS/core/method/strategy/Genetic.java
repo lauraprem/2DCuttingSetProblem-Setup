@@ -37,6 +37,7 @@ public class Genetic extends StrategyMethod {
         this.bestPartPercentage = bestPartPercentage;
         this.mutationFrequency = mutationFrequency;
         this.amountOfGeneration = amountOfGeneration;
+        random = new Random();
     }
 
     public Genetic(Context context, IVerificationMethod verificationMethod,
@@ -72,15 +73,15 @@ public class Genetic extends StrategyMethod {
             generation.add(GeneticUtil.getRandomViableSolution(getContext(), getVerificationMethod()));
         }
         for(Integer i = 0; i < amountOfGeneration; i++) {
-            generation.parallelStream().forEach(s -> {
+            generation.stream().forEach(s -> {
                 if(s.getFitness() == -1L)
                 s.setFitness(getFitness(s));
             });
             generation = generation.parallelStream()
                     .sorted((o1, o2) -> {
                         Long fit1 = o1.getFitness(), fit2 = o2.getFitness();
-                        if (fit1 > fit2) return -1;
-                        if (fit2 > fit1) return 1;
+                        if (fit1 > fit2) return 1;
+                        if (fit2 > fit1) return -1;
                         return 0;
                     })
                     .collect(Collectors.toList())
@@ -96,8 +97,6 @@ public class Genetic extends StrategyMethod {
                 generation.add(s);
             }
         }
-        // TODO : End that
-
     }
 
     private Long getFitness(Solution solution) {
