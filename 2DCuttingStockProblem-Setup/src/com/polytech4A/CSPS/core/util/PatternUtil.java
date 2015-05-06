@@ -120,4 +120,38 @@ public class PatternUtil {
 		return false;
 	}
 
+	/**
+	 * echange deux images entre deux patterns
+	 * @param pattern1
+	 * @param pattern2
+	 * @param imageId1 image a ajouter dans le pattern1
+	 * @param imageId2 image a ajouter dans le pattern2
+	 * @param verif
+	 * @return
+	 */
+	public static boolean crossImage(Pattern pattern1, Pattern pattern2, Long imageId1, Long imageId2, IVerificationMethod verif) {
+
+		Pattern pattern1Temp;
+		Pattern pattern2Temp;
+
+		try {
+			pattern1Temp = (Pattern) pattern1.clone();
+			pattern2Temp = (Pattern) pattern2.clone();
+
+			if (addImage(pattern1Temp, imageId1, verif)) {
+				if (addImage(pattern2Temp, imageId2, verif)) {
+					if (supressImage(pattern1Temp, imageId2, verif)) {
+						if (supressImage(pattern2Temp, imageId1, verif)) {
+							return true;
+						}
+					}
+				}
+			}
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
 }
