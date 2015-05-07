@@ -16,7 +16,7 @@ public class PatternUtil {
 	 * 
 	 * @param pattern
 	 *            auquel on veut ajouter une image
-	 * @param image
+	 * @param imageId
 	 *            que l'on veut ajouter
 	 * @param verif
 	 *            methode de vérification souhaitée

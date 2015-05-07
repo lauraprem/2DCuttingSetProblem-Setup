@@ -73,11 +73,12 @@ public class Genetic extends StrategyMethod {
             generation.add(GeneticUtil.getRandomViableSolution(getContext(), getVerificationMethod()));
         }
         for (Integer i = 0; i < amountOfGeneration; i++) {
-            generation.stream().forEach(s -> {
+
+            generation.parallelStream().forEach(s -> {
                 if (s.getFitness() == -1L)
                     s.setFitness(getFitness(s));
             });
-            generation = generation.parallelStream()
+            generation = generation.stream()
                     .sorted((o1, o2) -> {
                         Long fit1 = o1.getFitness(), fit2 = o2.getFitness();
                         if (fit1 > fit2) return 1;
@@ -93,9 +94,12 @@ public class Genetic extends StrategyMethod {
                 if (!coupleIterator.hasNext()) coupleIterator.reset();
                 c = coupleIterator.next();
                 s = getViableCrossedSolution(c);
-                if (random.nextDouble() % 100 <= mutationFrequency) s = getViableMutatedSolution(s);
-                generation.add(s);
+                if(s != null) {
+                    if (random.nextDouble() % 100 <= mutationFrequency) s = getViableMutatedSolution(s);
+                    generation.add(s);
+                }
             }
+            System.out.println("Gï¿½nï¿½ration : " + i);
         }
     }
 
@@ -118,13 +122,13 @@ public class Genetic extends StrategyMethod {
 
 
     /**
-     * Prendre une population de N solutions aléatoires (valides)
-     * Prendre les X% meilleures sont croisées entre elles
-     * de manière aléatoires avec un facteur de mutation avec une
-     * fréquence F (et une proportion P).
-     * Des solutions viables sont produites de jusqu'à obtenir une
+     * Prendre une population de N solutions alï¿½atoires (valides)
+     * Prendre les X% meilleures sont croisï¿½es entre elles
+     * de maniï¿½re alï¿½atoires avec un facteur de mutation avec une
+     * frï¿½quence F (et une proportion P).
+     * Des solutions viables sont produites de jusqu'ï¿½ obtenir une
      * population de N solutions (les anciennes incluses) et on
-     * recommence sur G générations.
+     * recommence sur G gï¿½nï¿½rations.
      *
      */
 }

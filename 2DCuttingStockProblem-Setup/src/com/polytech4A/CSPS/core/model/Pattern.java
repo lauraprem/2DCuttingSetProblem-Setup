@@ -71,6 +71,11 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 		return size.getX() * size.getY();
 	}
 
+	public Image getImage(Long id) {
+		for(Image image : listImg) if(id.equals(image.getId())) return image;
+		return null;
+	}
+
 	/*@Override
 	public String toString() {
 		StringBuilder listImgString = new StringBuilder();
@@ -112,7 +117,7 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 		return sb.toString();
 	}
 
-	public void setPattern(Pattern pattern) {
+	public synchronized void setPattern(Pattern pattern) {
 		this.amount = pattern.getAmount();
 		this.listImg = pattern.getListImg();
 		this.size = pattern.getSize();

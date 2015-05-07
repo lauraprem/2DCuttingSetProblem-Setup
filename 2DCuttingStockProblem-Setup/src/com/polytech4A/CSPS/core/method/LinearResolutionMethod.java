@@ -38,6 +38,11 @@ public class LinearResolutionMethod {
 
     public ArrayList<Long> getCount(Solution solution) {
         ArrayList<Long> count = minimize(solution);
+        return count;
+    }
+
+    public ArrayList<Long> getCountAndSetSolution(Solution solution) {
+        ArrayList<Long> count = minimize(solution);
         if(count != null) {
             for (int i = 0; i < count.size(); i++) {
                 solution.getPatterns().get(i).setAmount(count.get(i));
@@ -50,6 +55,17 @@ public class LinearResolutionMethod {
     public Long getFitness(Solution solution, Long costOfPattern,
                            Long costOfPrinting) {
         ArrayList<Long> count = getCount(solution);
+        Long prints = count
+                .parallelStream()
+                .mapToLong(i -> i.longValue()).sum();
+        Long fitness = prints * costOfPrinting + count.size() * costOfPattern;
+        logger.trace(String.format("fitness = %s", fitness));
+        return fitness;
+    }
+
+    public Long getFitnessAndSetSolution(Solution solution, Long costOfPattern,
+                           Long costOfPrinting) {
+        ArrayList<Long> count = getCountAndSetSolution(solution);
         Long prints = count
                 .parallelStream()
                 .mapToLong(i -> i.longValue()).sum();
