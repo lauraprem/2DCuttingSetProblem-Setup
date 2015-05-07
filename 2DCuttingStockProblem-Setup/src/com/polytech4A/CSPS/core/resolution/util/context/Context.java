@@ -27,9 +27,6 @@ import com.sun.istack.internal.NotNull;
 import java.util.ArrayList;
 
 /**
- * Created by Antoine CARON on 12/03/2015.
- *
- * @author Antoine CARON
  * @version 1.0
  *          <p>
  *          Context Objet for Serialization in XML file.

@@ -3,13 +3,14 @@ package com.polytech4A.CSPS.core.tests;
 import java.util.ArrayList;
 
 import com.polytech4A.CSPS.core.method.LinearResolutionMethod;
+import com.polytech4A.CSPS.core.method.verification.VerificationMethodGuillotineSimple;
 import com.polytech4A.CSPS.core.method.verification.VerificationMethodImpl;
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
-import com.polytech4A.CSPS.core.resolution.util.file.ToPNG;
+import com.polytech4A.CSPS.core.util.SolutionUtil;
 
 
 
@@ -28,18 +29,19 @@ public class TestsCorinne {
         img.toString();
         LinearResolutionMethod linearResolutionMethod = new LinearResolutionMethod(context);
         ArrayList<Long> count = linearResolutionMethod.getCount(tests.getSolution(0));
-        count.stream().forEach(c -> System.out.println(c));
+//        count.stream().forEach(c -> System.out.println(c));
         LinearResolutionMethod.check(count, context, solution);
         Resolution resolution = new Resolution(context);
-//        resolution.setSolution(solution);
         
-//        ArrayList<Pattern> listPattern = new ArrayList<Pattern>();
-//        listPattern.add(v.getPlacedPattern(tests.getSolution(0).getPatterns().get(3)));
-//        Solution s = new Solution(listPattern);
+        SolutionUtil s = new SolutionUtil();
+        System.out.println("Solution : "+s.makeSolvable(context, solution,v));
+//        long time = System.nanoTime()/1000;
+//        Solution s = v.getPlaced(tests.getSolution(0));
+//        long time2 = System.nanoTime()/1000;
+//        System.out.println("Temps : "+(time2-time)+" micro secondes");
+        
 //        resolution.setSolution(s);
-        Solution s = v.getPlaced(tests.getSolution(0));
-        resolution.setSolution(s);
-        System.out.println("Final : "+s);
-        new ToPNG().save("test", resolution);
+//        System.out.println("Final : "+s);
+//        new ToPNG().save("test", resolution);
 	}
 }

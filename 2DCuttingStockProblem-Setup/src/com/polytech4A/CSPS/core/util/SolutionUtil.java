@@ -1,14 +1,19 @@
 package com.polytech4A.CSPS.core.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.polytech4A.CSPS.core.method.verification.IVerificationMethod;
-import com.polytech4A.CSPS.core.model.Bin;
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Alexandre
@@ -16,9 +21,9 @@ import java.util.stream.Collectors;
  */
 public class SolutionUtil {
 
-    public static Boolean makeSolvable(Context context, Solution solution) {
-        return makeSolvable(context, solution, null);
-    }
+	public static Boolean makeSolvable(Context context, Solution solution) {
+		return makeSolvable(context, solution, null);
+	}
 
     public static Boolean makeSolvable(Context context, Solution solution, IVerificationMethod verificationMethod) {
          
@@ -80,8 +85,103 @@ public class SolutionUtil {
     	
     	return false;
     }
-    
-    public static void removeUselessPatterns(Solution solution) {
+    public static Solution getRandomViableSolution(Context context, IVerificationMethod verificationMethod) {
+		Random random = new Random();
+		Integer amountOfPattern = random.nextInt(context.getMaxPattern() - context.getMinPattern()) + context.getMinPattern();
+		Solution solution = new Solution();
+		ArrayList<Pattern> patterns = new ArrayList<>();
+		for (int i = 0; i < amountOfPattern; i++) {
+			patterns.add(new Pattern(context.getPatternSize(), context.getImages()));
+		}
+		List<Integer> patternIndexes = new ArrayList<>();
+		for (Integer i = 0; i < patterns.size(); i++)
+			patternIndexes.add(i);
+		List<Long> imageIds = context.getImages().stream().map(Image::getId).collect(Collectors.toList());
+		Boolean suceed = Boolean.FALSE;
+		Collections.shuffle(imageIds);
+		for (Long imageId : imageIds) {
+			do {
+				Collections.shuffle(patternIndexes);
+				for (Integer index : patternIndexes) {
+					if (PatternUtil.addImage(patterns.get(index), imageId, verificationMethod)) {
+						suceed = Boolean.TRUE;
+						break;
+					}
+				}
+				if (!suceed) {
+					patterns.add(new Pattern(context.getPatternSize()));
+					patternIndexes.add(patternIndexes.size());
+				}
+			} while (!suceed);
+		}
+		for (Integer index : patternIndexes) {
+			/*
+			 * for(int i = 0; i < 4; i++) {
+			 * PatternUtil.addImage(patterns.get(index),
+			 * imageIds.get(random.nextInt(imageIds.size())),
+			 * verificationMethod); }
+			 */
+			Pattern p = patterns.get(index);
+			while (PatternUtil.addImage(p, imageIds.get(random.nextInt(imageIds.size())), verificationMethod)) {
+				patterns.set(index, p);
+			}
+		}
+		solution.setPatterns(patterns);
+		return solution;
+	}
+
+	public static Solution getRandomViableSolution2(Context context, IVerificationMethod verificationMethod, int nbRandomImageMin, int nbRandomImageMax) {
+		Solution s = new Solution();
+		Random random = new Random();
+		int nbImageRandom;
+		int id;
+		ArrayList<Image> images = new ArrayList<Image>();
+
+		try {
+			for (Image image : context.getImages()) {
+				images.add((Image) image.clone());
+			}
+			// Generate random list of image
+			nbImageRandom = random.nextInt(nbRandomImageMax - nbRandomImageMin + 1) + nbRandomImageMin;
+			for (int i = 0; i < nbImageRandom; i++) {
+				id = random.nextInt(context.getImages().size());
+				images.get(id).incrementAmoutByOne();
+			}
+			ArrayList<Pattern> patterns = new ArrayList<Pattern>();
+			Pattern pattern = new Pattern(context.getPatternSize(), context.getImages());
+			int imageId = random.nextInt(images.size());
+
+			// Add every image one time
+			for (Image image : context.getImages()) {
+				if (!PatternUtil.addImage(pattern, image.getId(), verificationMethod)) {
+					patterns.add((Pattern) pattern.clone());
+					pattern = new Pattern(context.getPatternSize(), context.getImages());
+					PatternUtil.addImage(pattern, images.get(imageId).getId(), verificationMethod);
+				}
+			}
+
+			// Add the random images, either until every is added or until we
+			// reach the maximum number of patterns
+			for (int i = 0; i != images.size() && patterns.size() < context.getMaxPattern(); imageId = random.nextInt(images.size())) {
+				if (!PatternUtil.addImage(pattern, images.get(imageId).getId(), verificationMethod)) {
+					patterns.add((Pattern) pattern.clone());
+					pattern = new Pattern(context.getPatternSize(), context.getImages());
+					PatternUtil.addImage(pattern, images.get(imageId).getId(), verificationMethod);
+					images.get(imageId).decrementAmoutByOne();
+					if (images.get(imageId).getAmount() == 0) {
+						images.remove(imageId);
+					}
+				}
+			}
+			s.setPatterns(patterns);
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+
+		return s;
+	}
+
+	public static void removeUselessPatterns(Solution solution) {
 		List<Integer> indexes = new ArrayList<>();
 		Boolean toDelete;
 		for (int i = 0; i < solution.getPatterns().size(); i++) {
