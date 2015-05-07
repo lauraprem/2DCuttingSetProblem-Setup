@@ -135,17 +135,17 @@ public class VerificationMethodImpl implements IVerificationMethod {
     public Solution getPlaced(Solution solution) {
         Solution newSolution = new Solution();
 
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("VerificationMethodImpl starting...");
+//        System.out.println("");
+//        System.out.println("");
+//        System.out.println("");
+//        System.out.println("");
+//        System.out.println("VerificationMethodImpl starting...");
 
         for (int i = 0; i < solution.getPatterns().size(); i++) {
-            System.out.println("Prossessing patern" + i);
+//            System.out.println("Prossessing patern" + i);
             //Pattern p = this.getPlacedPattern(solution.getPatterns().get(i));
             Pattern p = this.getPlacedPatternRecursive(solution.getPatterns().get(i),0);
-            System.out.println(solution.getPatterns().get(i));
+//            System.out.println(solution.getPatterns().get(i));
             if (p != null) {
                 newSolution.addPattern(p);
             }
@@ -180,7 +180,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
             nbTotImage += immag.getAmount();
             
             if (immag.getAmount() > 0) {
-                System.out.println("Image nb: " + ite + " size" + immag.getSize() + " amount" +  immag.getAmount());
+//                System.out.println("Image nb: " + ite + " size" + immag.getSize() + " amount" +  immag.getAmount());
             }
             ite++;
 
@@ -198,10 +198,10 @@ public class VerificationMethodImpl implements IVerificationMethod {
         ArrayList<Image> result = new ArrayList<Image>();
         int idImg = getNextImageIndex(0, -1, listImg);
         if ((idImg <0) || (!processPlacementRecursive(idImg, 0, listImg, listBinHoriz, 0, result))) {
-            System.out.println("packing fail");
+//            System.out.println("packing fail");
             return null;
         }else{
-            System.out.println("Succeed to match pattern");
+//            System.out.println("Succeed to match pattern");
         }
         
         newBin.setListImg(result);

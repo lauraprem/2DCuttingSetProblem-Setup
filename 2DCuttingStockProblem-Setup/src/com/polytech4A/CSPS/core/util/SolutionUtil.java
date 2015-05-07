@@ -279,11 +279,31 @@ public class SolutionUtil {
 	}
 
 	public static Boolean isSolvable(Context context, Solution solution) {
-		Set<Long> ids = Collections.<Long> synchronizedSet(new HashSet<>());
-		solution.getPatterns().forEach(p -> p.getListImg().forEach(i -> {
-			if (i.getAmount() != 0L)
-				ids.add(i.getId());
-		}));
-		return ids.size() < context.getImages().size();
+		
+		// Récupération id de la liste d'images qui doivent être présent
+    	int nbImage = context.getImages().size();
+    	ArrayList<Image> listIdImg = new ArrayList<Image>();
+    	for (int i = 0; i <nbImage; i++) {
+    		listIdImg.add(new Image(context.getImages().get(i).getId(),context.getImages().get(i).getSize(),context.getImages().get(i).getAmount()));
+    	}
+         
+    	Iterator itr = listIdImg.iterator(); 
+    	while(itr.hasNext()) {
+           Image e = (Image)itr.next();
+            for (int j = 0; j < solution.getPatterns().size(); j++) {
+            	int k;
+            	for(k=0;k < solution.getPatterns().get(j).getListImg().size(); k++){
+                    if((solution.getPatterns().get(j).getListImg().get(k).getId() == e.getId())
+                    		&& (solution.getPatterns().get(j).getListImg().get(k).getAmount()>0)){
+                    	itr.remove();
+                    	break;
+                    }
+            	}
+            	if(k < solution.getPatterns().get(j).getListImg().size()){
+            		break;
+            	}
+            }
+        }
+    	return (listIdImg.size() == 0);
 	}
 }
