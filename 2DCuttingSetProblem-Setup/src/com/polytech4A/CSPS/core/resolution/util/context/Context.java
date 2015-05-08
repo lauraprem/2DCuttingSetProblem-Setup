@@ -60,6 +60,10 @@ public class Context {
 	 * Size of a Pattern.
 	 */
 	private Vector patternSize;
+	
+	private Integer minPattern;
+
+	private Integer maxPattern;
 
 	/**
 	 * Boxes with size and amount to print, not the amount per pattern.
@@ -77,6 +81,14 @@ public class Context {
 		this.images = images;
 		this.patternSize = patternSize;
 		this.scale = scale;
+		
+		maxPattern = images.size();
+		Double imagesAera = 0.0;
+		Long patternAera = patternSize.getX()*patternSize.getY();
+		for(Image i : this.images) {
+			imagesAera += i.getArea();
+		}
+		minPattern = ((Double) Math.ceil(imagesAera/patternAera)).intValue();
 	}
 
 	public String getLabel() {
@@ -105,5 +117,21 @@ public class Context {
 
 	public void setScale(Long scale) {
 		this.scale = scale;
+	}
+
+	public Integer getMinPattern() {
+		return minPattern;
+	}
+
+	public void setMinPattern(Integer minPattern) {
+		this.minPattern = minPattern;
+	}
+
+	public Integer getMaxPattern() {
+		return maxPattern;
+	}
+
+	public void setMaxPattern(Integer maxPattern) {
+		this.maxPattern = maxPattern;
 	}
 }

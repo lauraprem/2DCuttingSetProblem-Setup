@@ -3,8 +3,6 @@ package com.polytech4A.CSPS.core.model;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import static com.polytech4A.CSPS.core.util.Util.escToString;
-
 /**
  * Image à positionner dans un pattern
  *
@@ -12,160 +10,181 @@ import static com.polytech4A.CSPS.core.util.Util.escToString;
  */
 public class Image implements Comparable<Image> {
 
-    /**
-     * nombre de fois que l'image est présente dans un pattern
-     */
-    private Long id = 0L;
+	/**
+	 * nombre de fois que l'image est présente dans un pattern
+	 */
+	private Long id = 0L;
 
-    /**
-     * nombre de fois que l'image est présente dans un pattern
-     */
-    private Long amount = 0L;
+	/**
+	 * nombre de fois que l'image est présente dans un pattern
+	 */
+	private Long amount = 0L;
 
-    /**
-     * Liste des positions pour chaque fois que l'image est pr�sente dans un
-     * pattern (amount)
-     */
-    private ArrayList<Position> positions = new ArrayList<>();
+	/**
+	 * Liste des positions pour chaque fois que l'image est pr�sente dans un
+	 * pattern (amount)
+	 */
+	private ArrayList<Position> positions = new ArrayList<>();
 
-    /**
-     * Taille de l'image
-     */
-    private Vector size;
+	/**
+	 * Taille de l'image
+	 */
+	private Vector size;
 
-    /**
-     * nombre de fois que l'on veut imprimer l'image au total
-     */
-    private Long goal = -1L;
+	/**
+	 * nombre de fois que l'on veut imprimer l'image au total
+	 */
+	private Long goal = -1L;
 
-    public Image(Long _id, Long _amount, ArrayList<Position> _positions,
-                 Vector _size, Long _goal) {
-        if(_amount != null) amount = _amount;
-        positions = _positions == null ? new ArrayList<>() : _positions;
-        size = _size;
-        goal = _goal;
-        id = _id == null ? 0L : _id;
-    }
+	public Image(Long _id, Long _amount, ArrayList<Position> _positions, Vector _size, Long _goal) {
+		if (_amount != null)
+			amount = _amount;
+		positions = _positions == null ? new ArrayList<>() : _positions;
+		size = _size;
+		goal = _goal;
+		id = _id == null ? 0L : _id;
+	}
 
-    public Image(Vector size, Long goal) {
-        this(null, null, null, size, goal);
-    }
+	public Image(Vector size, Long goal) {
+		this(null, null, null, size, goal);
+	}
 
-    public Image(Long id, Vector size, Long goal) {
-        this(id, null, null, size, goal);
-    }
+	public Image(Long id, Vector size, Long goal) {
+		this(id, null, null, size, goal);
+	}
 
-    public Long getAmount() {
-        return amount;
-    }
+	public Long getAmount() {
+		return amount;
+	}
 
-    public void setAmount(Long amount) {
-        this.amount = amount;
-    }
+	public void setAmount(Long amount) {
+		this.amount = amount;
+	}
 
-    public ArrayList<Position> getPositions() {
-        return positions;
-    }
+	public void incrementAmoutByOne() {
+		this.amount++;
+	}
 
-    public void setPositions(ArrayList<Position> positions) {
-        this.positions = positions;
-    }
+	public void decrementAmoutByOne() {
+		this.amount--;
+	}
 
-    public Vector getSize() {
-        return size;
-    }
+	public ArrayList<Position> getPositions() {
+		return positions;
+	}
 
-    public void setSize(Vector size) {
-        this.size = size;
-    }
+	public void setPositions(ArrayList<Position> positions) {
+		this.positions = positions;
+	}
 
-    public Long getGoal() {
-        return goal;
-    }
+	public Vector getSize() {
+		return size;
+	}
 
-    public void setGoal(Long goal) {
-        this.goal = goal;
-    }
+	public void setSize(Vector size) {
+		this.size = size;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getGoal() {
+		return goal;
+	}
 
-    public Long getArea() {
-        return size.getX() * size.getY();
-    }
+	public void setGoal(Long goal) {
+		this.goal = goal;
+	}
 
-    @Override
-    public String toString() {
-        StringBuilder stringPosition = new StringBuilder("positions : \n");
-        String detail = "IMAGE " + id + "\n" +
-                "amount : " + escToString(amount) + "\n";
-        if (positions == null) {
-            stringPosition.append("<null>\n");
-        } else if (positions.size() == 0) {
-            stringPosition.append("<empty>\n");
-        } else {
-            for (Vector vec : positions) {
-                stringPosition.append(escToString(vec));
-                stringPosition.append('\n');
-            }
-        }
+	public Long getId() {
+		return id;
+	}
 
-        detail = detail + stringPosition
-                + "size : " + size.toString() + "\n"
-                + "goal : " + escToString(goal) + "\n";
+	public Long getArea() {
+		return size.getX() * size.getY();
+	}
 
-        return detail;
-    }
+	/*
+	 * @Override public String toString() { StringBuilder stringPosition = new
+	 * StringBuilder("positions : \n"); String detail = "IMAGE " + id + "\n" +
+	 * "amount : " + escToString(amount) + "\n"; if (positions == null) {
+	 * stringPosition.append("<null>\n"); } else if (positions.size() == 0) {
+	 * stringPosition.append("<empty>\n"); } else { for (Vector vec : positions)
+	 * { stringPosition.append(escToString(vec)); stringPosition.append('\n'); }
+	 * }
+	 * 
+	 * detail = detail + stringPosition + "size : " + size.toString() + "\n" +
+	 * "goal : " + escToString(goal) + "\n";
+	 * 
+	 * return detail; }
+	 */
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("Image{");
+		sb.append("id=").append(id);
+		sb.append(", amount=").append(amount);
+		if (positions != null) {
+			if (positions.size() != 0)
+				sb.append(", positions=").append(positions);
+			else
+				sb.append(", positions=").append("<empty>");
+		}
+		sb.append(", size=").append(size);
+		sb.append(", goal=").append(goal);
+		sb.append("}\n");
+		return sb.toString();
+	}
 
-        Image image = (Image) o;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        if (!id.equals(image.id)) return false;
-        if (!size.equals(image.size)) return false;
-        return goal.equals(image.goal);
+		Image image = (Image) o;
 
-    }
+		if (!id.equals(image.id))
+			return false;
+		if (!size.equals(image.size))
+			return false;
+		return goal.equals(image.goal);
 
-    @Override
-    public int compareTo(Image o) {
-        if (this.getArea() < o.getArea()) {
-            return 0;
-        }
-        return 1;
-    }
+	}
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        Image cloned = new Image((Vector) size.clone(), goal);
-        cloned.id = id;
-        cloned.setAmount(amount);
-        cloned.positions = new ArrayList<Position>();
-        for (Position position : positions) {
-            cloned.positions.add((Position) position.clone());
-        }
-        return cloned;
-    }
+	@Override
+	public int compareTo(Image o) {
+		if (this.getArea() < o.getArea()) {
+			return 0;
+		}
+		return 1;
+	}
 
-    public final static Comparator<Image> ImageNameComparator = new Comparator<Image>() {
-        public int compare(Image img1, Image img2) {
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		Image cloned = new Image((Vector) size.clone(), goal);
+		cloned.id = id;
+		cloned.setAmount(amount);
+		cloned.positions = new ArrayList<Position>();
+		for (Position position : positions) {
+			cloned.positions.add((Position) position.clone());
+		}
+		return cloned;
+	}
 
-            Long ImgArea1 = img1.getArea();
-            Long ImgArea2 = img2.getArea();
+	public final static Comparator<Image> ImageNameComparator = new Comparator<Image>() {
+		public int compare(Image img1, Image img2) {
 
-            // ascending
-            // order
-            // return
-            // ImgArea1.compareTo(ImgArea2);
+			Long ImgArea1 = img1.getArea();
+			Long ImgArea2 = img2.getArea();
 
-            // descending
-            // order
-            return ImgArea2.compareTo(ImgArea1);
-        }
+			// ascending
+			// order
+			// return
+			// ImgArea1.compareTo(ImgArea2);
 
-    };
+			// descending
+			// order
+			return ImgArea2.compareTo(ImgArea1);
+		}
+
+	};
 }

@@ -11,6 +11,16 @@ import static com.polytech4A.CSPS.core.util.Util.escToString;
  */
 public class Solution {
 
+    private Long fitness = -1L;
+
+    public Long getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(Long fitness) {
+        this.fitness = fitness;
+    }
+
     /**
      * liste des pattern qui forment la solution
      */
@@ -44,8 +54,11 @@ public class Solution {
 
     @Override
     public String toString() {
-        return "SOLUTION\n"
-                + "Patterns : " + escToString(patterns) + "\n";
+        final StringBuffer sb = new StringBuffer("Solution{");
+        if(fitness != -1L) sb.append("fitness=").append(fitness);
+        sb.append(", patterns=").append(patterns);
+        sb.append("}\n");
+        return sb.toString();
     }
 
     /**
@@ -109,7 +122,7 @@ public class Solution {
      * @see Cloneable
      */
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 }

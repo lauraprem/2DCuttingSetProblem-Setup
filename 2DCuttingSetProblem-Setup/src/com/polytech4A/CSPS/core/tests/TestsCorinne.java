@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.polytech4A.CSPS.core.method.LinearResolutionMethod;
 import com.polytech4A.CSPS.core.method.verification.VerificationMethodImpl;
-import com.polytech4A.CSPS.core.method.verification.VerificationMethodImpl0;
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
@@ -29,7 +28,7 @@ public class TestsCorinne {
         img.toString();
         LinearResolutionMethod linearResolutionMethod = new LinearResolutionMethod(context);
         ArrayList<Long> count = linearResolutionMethod.getCount(tests.getSolution(0));
-        count.stream().forEach(c -> System.out.println(c));
+//        count.stream().forEach(c -> System.out.println(c));
         LinearResolutionMethod.check(count, context, solution);
         Resolution resolution = new Resolution(context);
 //        resolution.setSolution(solution);
