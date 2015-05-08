@@ -5,6 +5,7 @@ import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.util.Log;
+
 import org.apache.commons.math.optimization.GoalType;
 import org.apache.commons.math.optimization.OptimizationException;
 import org.apache.commons.math.optimization.RealPointValuePair;
@@ -76,6 +77,11 @@ public class LinearResolutionMethod {
         updateFunction(solution);
         updateConstraints(solution);
         try {
+//        	for (int i = 0; i < constraints.size(); i++) {
+//        		System.out.println("constraints : "+constraints.get(i).getCoefficients());
+//			}
+//        	System.out.println("function : "+function.getCoefficients());
+        	
             RealPointValuePair result = new SimplexSolver().optimize(function, constraints, GoalType.MINIMIZE, true);
             double[] points = result.getPoint();
             ArrayList<Long> count = new ArrayList<>();

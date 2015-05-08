@@ -85,7 +85,15 @@ public class GeneticUtil extends SolutionUtil {
             isPackable = isSolvable(context, solution) && verificationMethod.isViable(solution);
             time = System.nanoTime() - start;
         } while (tentative <= maxTentatives && !isPackable);
-        return !isPackable ? null : solution;
+        
+        
+        if(!isPackable){
+        	makeSolvable(context, solution);
+        }
+        return solution;
+        
+        
+//        return !isPackable ? null : solution;
     }
 
     public static Solution getViableMutatedSolution(Context context, IVerificationMethod verificationMethod, Solution solution) {

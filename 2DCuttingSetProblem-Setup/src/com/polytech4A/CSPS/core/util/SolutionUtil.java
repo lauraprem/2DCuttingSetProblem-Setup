@@ -34,6 +34,7 @@ public class SolutionUtil {
     		listIdImg.add(new Image(context.getImages().get(i).getId(),context.getImages().get(i).getSize(),context.getImages().get(i).getAmount()));
     	}
          
+    	int nbRemoved = 0;
     	Iterator itr = listIdImg.iterator(); 
     	while(itr.hasNext()) {
            Image e = (Image)itr.next();
@@ -43,6 +44,7 @@ public class SolutionUtil {
                     if((solution.getPatterns().get(j).getListImg().get(k).getId() == e.getId())
                     		&& (solution.getPatterns().get(j).getListImg().get(k).getAmount()>0)){
                     	itr.remove();
+                    	
                     	break;
                     }
             	}
@@ -77,7 +79,10 @@ public class SolutionUtil {
 	    	
 	    	// création d'un nouveau pattern
 	    	if(i >= solution.getPatterns().size()){
-	    		solution.addPattern(new Pattern(solution.getPatterns().get(0).getSize(),context.getImages()));
+	    		Pattern pattern = new Pattern(solution.getPatterns().get(0).getSize(),context.getImages());
+	    		pattern.addImg(e);
+    			solution.addPattern(pattern);
+    			
 	    		iter.remove();
 	    	}
     	}
@@ -135,8 +140,8 @@ public class SolutionUtil {
 		int nbRandomImageMax = context.getImages().size();
 		Solution s = new Solution();
 		Random random = new Random();
-		int nbImageRandom;
-		int id;
+		int nbImageRandom = 0;
+//		int id;
 		ArrayList<Image> images = new ArrayList<Image>();
 
 		try {
@@ -145,37 +150,50 @@ public class SolutionUtil {
 			}
 			// Generate random list of image
 			nbImageRandom = random.nextInt(nbRandomImageMax - nbRandomImageMin + 1) + nbRandomImageMin;
-			for (int i = 0; i < nbImageRandom; i++) {
-				id = random.nextInt(context.getImages().size());
-				images.get(id).incrementAmoutByOne();
-			}
+//			for (int i = 0; i < nbImageRandom; i++) {
+//				id = random.nextInt(context.getImages().size());
+//				images.get(id).incrementAmoutByOne();
+//			}
 			ArrayList<Pattern> patterns = new ArrayList<Pattern>();
 			Pattern pattern = new Pattern(context.getPatternSize(), context.getImages());
 			int imageId = random.nextInt(images.size());
 
 			// Add every image one time
-			for (Image image : context.getImages()) {
-				if (!PatternUtil.addImage(pattern, image.getId(), verificationMethod)) {
-					patterns.add((Pattern) pattern.clone());
-					pattern = new Pattern(context.getPatternSize(), context.getImages());
-					PatternUtil.addImage(pattern, images.get(imageId).getId(), verificationMethod);
-				}
-			}
+//			for (Image image : context.getImages()) {
+//				if (!PatternUtil.addImage(pattern, image.getId(), verificationMethod)) {
+//					patterns.add((Pattern) pattern.clone());
+//					pattern = new Pattern(context.getPatternSize(), context.getImages());
+//					PatternUtil.addImage(pattern, images.get(imageId).getId(), verificationMethod);
+//				}
+//			}
 
 			// Add the random images, either until every is added or until we
 			// reach the maximum number of patterns
-			for (int i = 0; i != images.size() && patterns.size() < context.getMaxPattern(); imageId = random.nextInt(images.size())) {
+//			for (; 0 != images.size() && patterns.size() < context.getMaxPattern(); imageId = random.nextInt(images.size())) {
+//				if (!PatternUtil.addImage(pattern, images.get(imageId).getId(), verificationMethod)) {
+//					patterns.add((Pattern) pattern.clone());
+//					pattern = new Pattern(context.getPatternSize(), context.getImages());
+//					PatternUtil.addImage(pattern, images.get(imageId).getId(), verificationMethod);
+//					images.get(imageId).decrementAmoutByOne();
+//					if (images.get(imageId).getAmount() == 0) {
+//						images.remove(imageId);
+//					}
+//				}
+//			}
+			
+			int i=0;
+			for (;i < nbImageRandom; imageId = random.nextInt(images.size())) {
 				if (!PatternUtil.addImage(pattern, images.get(imageId).getId(), verificationMethod)) {
 					patterns.add((Pattern) pattern.clone());
 					pattern = new Pattern(context.getPatternSize(), context.getImages());
 					PatternUtil.addImage(pattern, images.get(imageId).getId(), verificationMethod);
 					images.get(imageId).decrementAmoutByOne();
-					if (images.get(imageId).getAmount() == 0) {
-						images.remove(imageId);
-					}
+					i++;
 				}
 			}
 			s.setPatterns(patterns);
+			makeSolvable(context,s,verificationMethod);
+			
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}

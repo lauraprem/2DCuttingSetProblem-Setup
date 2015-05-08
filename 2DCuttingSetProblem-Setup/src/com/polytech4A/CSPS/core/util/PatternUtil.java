@@ -93,6 +93,13 @@ public class PatternUtil {
 		try {
 			originTemp = (Pattern) originPattern.clone();
 			destinaionTemp = (Pattern) destinationPattern.clone();
+			
+			if(originTemp == null){
+				System.out.println("originTemp null");
+			}
+			if(originTemp.getListImg() == null){
+				System.out.println("gListImg null");
+			}
 			// suppress from origin pattern
 			for (int i = 0; i < originTemp.getListImg().size(); i++) {
 				if (originTemp.getListImg().get(i).getId().equals(imageId) && (amount = originTemp.getListImg().get(i).getAmount()) > 0) {
@@ -109,6 +116,8 @@ public class PatternUtil {
 							originPattern.setPattern(originTemp);
 							return true;
 						}
+					}else{
+						return false;
 					}
 				}
 			}

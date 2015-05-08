@@ -47,7 +47,7 @@ public class TestsCorinne {
         
         Tests tests = new Tests();
         Context context = tests.getContext(0);
-        Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 10, 5);
+        Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 10, 15);
         genetic.run();
         Solution solution = genetic.getBestSolution();
         LinearResolutionMethod linearResolutionMethod = new LinearResolutionMethod(context);
