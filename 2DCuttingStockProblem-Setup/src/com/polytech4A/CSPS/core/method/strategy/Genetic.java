@@ -6,11 +6,13 @@ import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.model.couple.Couple;
 import com.polytech4A.CSPS.core.model.couple.CoupleIterator;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
+import com.polytech4A.CSPS.core.util.SolutionUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 
 /**
@@ -72,7 +74,7 @@ public class Genetic extends StrategyMethod {
         while (generation.size() < populationSize) {
             generation.add(new Solution());
         }
-        Semaphore semaphore = new Semaphore(- populationSize);
+        Semaphore semaphore = new Semaphore(- populationSize + 1);
         for (int index = 0; index < generation.size(); index++) {
             //new RandomSolution(getContext(), getVerificationMethod(), generation, index, semaphore).start();
             generation.set(index, SolutionUtil.getRandomViableSolution(getContext(), getVerificationMethod()));
@@ -84,14 +86,17 @@ public class Genetic extends StrategyMethod {
             e.printStackTrace();
         }
         for (Integer i = 0; i < amountOfGeneration; i++) {
-
-            generation.forEach(s -> {
-                if (s.getFitness() == -1L)
-                    s.setFitness(getFitness(s));
-            });
             generation = generation.parallelStream()
-                    .sorted((o1, o2) -> {
-                        Long fit1 = o1.getFitness(), fit2 = o2.getFitness();
+                    .sorted((s1, s2) -> {
+                        Long fit1 = s1.getFitness(), fit2 = s2.getFitness();
+                        if(fit1 == -1L) {
+                            s1.setFitness(getFitness(s1));
+                            fit1 = s1.getFitness();
+                        }
+                        if(fit2 == -1L) {
+                            s2.setFitness(getFitness(s2));
+                            fit2 = s2.getFitness();
+                        }
                         if (fit1 > fit2) return 1;
                         if (fit2 > fit1) return -1;
                         return 0;
@@ -110,14 +115,16 @@ public class Genetic extends StrategyMethod {
                     generation.add(s);
                 }
             }
-            System.out.println("Génération : " + i);
+            System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
         }
+
     }
 
     private Long getFitness(Solution solution) {
         Long fit = getLinearResolutionMethod().getFitness(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
         solution.setFitness(fit);
         if (bestSolution == null || bestSolution.getFitness() < solution.getFitness()) {
+            getLinearResolutionMethod().getFitnessAndSetAmount(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
             bestSolution = solution;
         }
         return fit;
@@ -133,13 +140,13 @@ public class Genetic extends StrategyMethod {
 
 
     /**
-     * Prendre une population de N solutions al�atoires (valides)
-     * Prendre les X% meilleures sont crois�es entre elles
-     * de mani�re al�atoires avec un facteur de mutation avec une
-     * fr�quence F (et une proportion P).
-     * Des solutions viables sont produites de jusqu'� obtenir une
+     * Prendre une population de N solutions aléatoires (valides)
+     * Prendre les X% meilleures sont croisées entre elles
+     * de manière aléatoires avec un facteur de mutation avec une
+     * fréquence F (et une proportion P).
+     * Des solutions viables sont produites de jusqu'à obtenir une
      * population de N solutions (les anciennes incluses) et on
-     * recommence sur G g�n�rations.
+     * recommence sur G générations.
      *
      */
 }
