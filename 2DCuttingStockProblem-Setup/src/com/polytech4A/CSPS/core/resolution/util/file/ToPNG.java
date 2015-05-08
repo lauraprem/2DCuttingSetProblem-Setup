@@ -6,9 +6,11 @@ import com.polytech4A.CSPS.core.model.Position;
 import com.polytech4A.CSPS.core.model.Vector;
 import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.util.Log;
+
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -284,7 +286,7 @@ public class ToPNG extends FileMethod {
     }
 
     private void printFooter(BufferedImage img, final int HEIGHT, final int WIDTH, final int sizeOfFooter, final Long num, final Pattern cur_patt) {
-        drawRectangle(img, 0,
+    	drawRectangle(img, 0,
                 HEIGHT - sizeOfFooter,
                 WIDTH,
                 sizeOfFooter,

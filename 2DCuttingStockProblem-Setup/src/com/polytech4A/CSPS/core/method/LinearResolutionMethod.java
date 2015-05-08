@@ -5,7 +5,6 @@ import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.util.Log;
-import com.polytech4A.CSPS.core.util.SolutionUtil;
 import org.apache.commons.math.optimization.GoalType;
 import org.apache.commons.math.optimization.OptimizationException;
 import org.apache.commons.math.optimization.RealPointValuePair;
@@ -15,7 +14,8 @@ import org.apache.commons.math.optimization.linear.Relationship;
 import org.apache.commons.math.optimization.linear.SimplexSolver;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LinearResolutionMethod {
 
@@ -38,34 +38,16 @@ public class LinearResolutionMethod {
 
     public ArrayList<Long> getCount(Solution solution) {
         ArrayList<Long> count = minimize(solution);
-        return count;
-    }
-
-    public ArrayList<Long> getCountAndSetSolution(Solution solution) {
-        ArrayList<Long> count = minimize(solution);
-        if(count != null) {
-            for (int i = 0; i < count.size(); i++) {
-                solution.getPatterns().get(i).setAmount(count.get(i));
-            }
+        for(int i = 0; i < count.size();i++) {
+            solution.getPatterns().get(i).setAmount(count.get(i));
         }
-        return count;
+        return minimize(solution);
     }
 
 
     public Long getFitness(Solution solution, Long costOfPattern,
                            Long costOfPrinting) {
         ArrayList<Long> count = getCount(solution);
-        Long prints = count
-                .parallelStream()
-                .mapToLong(i -> i.longValue()).sum();
-        Long fitness = prints * costOfPrinting + count.size() * costOfPattern;
-        logger.trace(String.format("fitness = %s", fitness));
-        return fitness;
-    }
-
-    public Long getFitnessAndSetSolution(Solution solution, Long costOfPattern,
-                           Long costOfPrinting) {
-        ArrayList<Long> count = getCountAndSetSolution(solution);
         Long prints = count
                 .parallelStream()
                 .mapToLong(i -> i.longValue()).sum();
@@ -155,7 +137,7 @@ public class LinearResolutionMethod {
             pattern = solution.getPatterns().get(i);
             for (Image image : pattern.getListImg()) {
                 index = image.getId().intValue();
-                countImage.set(index, countImage.get(index) + count.get(i) * image.getAmount());
+//                countImage.set(index, countImage.get(index) + count.get(i) * image.getAmount());
             }
         }
         Boolean check = Boolean.TRUE;

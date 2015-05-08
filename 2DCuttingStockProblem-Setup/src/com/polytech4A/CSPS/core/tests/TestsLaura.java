@@ -54,11 +54,11 @@ public class TestsLaura {
 		Context context = tests.getContext(0);
 		IVerificationMethod verif = new VerificationMethodImpl();
 
-		Solution s = SolutionUtil.getRandomViableSolution2(context, verif, 2, 2);
-		System.out.println(SolutionUtil.isSolvable(context, s));
+//		Solution s = SolutionUtil.getRandomViableSolution2(context, verif, 2, 2);
+//		System.out.println(SolutionUtil.isSolvable(context, s));
 		// System.out.println(s);
 		Resolution resolution = new Resolution(context);
-		resolution.setSolution(s);
+//		resolution.setSolution(s);
 		new ToPNG().save("genetic", resolution);
 
 	}
