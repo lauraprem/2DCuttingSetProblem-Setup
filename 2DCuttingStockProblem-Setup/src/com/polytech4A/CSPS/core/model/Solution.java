@@ -13,11 +13,11 @@ public class Solution {
 
     private Long fitness = -1L;
 
-    public Long getFitness() {
+    public synchronized Long getFitness() {
         return fitness;
     }
 
-    public void setFitness(Long fitness) {
+    public synchronized void setFitness(Long fitness) {
         this.fitness = fitness;
     }
 

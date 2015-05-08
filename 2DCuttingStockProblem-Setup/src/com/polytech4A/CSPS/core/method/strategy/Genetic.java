@@ -78,6 +78,7 @@ public class Genetic extends StrategyMethod {
         for (int index = 0; index < generation.size(); index++) {
             //new RandomSolution(getContext(), getVerificationMethod(), generation, index, semaphore).start();
             generation.set(index, SolutionUtil.getRandomViableSolution(getContext(), getVerificationMethod()));
+            //generation.set(index, SolutionUtil.getRandomViableSolution2(getContext(), getVerificationMethod(), 0, 10));
             semaphore.release();
         }
         try {
@@ -121,10 +122,9 @@ public class Genetic extends StrategyMethod {
     }
 
     private Long getFitness(Solution solution) {
-        Long fit = getLinearResolutionMethod().getFitness(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
+        Long fit = getLinearResolutionMethod().getFitnessAndRemoveUseless(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
         solution.setFitness(fit);
         if (bestSolution == null || bestSolution.getFitness() < solution.getFitness()) {
-            getLinearResolutionMethod().getFitnessAndSetAmount(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
             bestSolution = solution;
         }
         return fit;

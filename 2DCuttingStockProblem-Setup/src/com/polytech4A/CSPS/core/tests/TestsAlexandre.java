@@ -36,7 +36,7 @@ public class TestsAlexandre {
         new ToPNG().save("test", resolution);*/
          Tests tests = new Tests();
         Context context = tests.getContext(0);
-        Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 10, 10);
+        Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 10, 100);
         genetic.run();
         Solution solution = genetic.getBestSolution();
         Resolution resolution = new Resolution(context);

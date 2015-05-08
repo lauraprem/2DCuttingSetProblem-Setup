@@ -36,12 +36,6 @@ public class LinearResolutionMethod {
      */
     private Context context;
 
-    public ArrayList<Long> getCount(Solution solution) {
-        ArrayList<Long> count = minimize(solution);
-        return minimize(solution);
-    }
-
-
     public Long getFitness(Solution solution, Long costOfPattern,
                            Long costOfPrinting) {
         ArrayList<Long> count = getCount(solution);
@@ -53,7 +47,7 @@ public class LinearResolutionMethod {
         return fitness;
     }
 
-    public ArrayList<Long> getCountAndSetAmount(Solution solution) {
+    public ArrayList<Long> getCount(Solution solution) {
         ArrayList<Long> count = minimize(solution);
         for(int i = 0; i < count.size();i++) {
             solution.getPatterns().get(i).setAmount(count.get(i));
@@ -62,15 +56,17 @@ public class LinearResolutionMethod {
     }
 
 
-    public Long getFitnessAndSetAmount(Solution solution, Long costOfPattern,
+    public Long getFitnessAndRemoveUseless(Solution solution, Long costOfPattern,
                            Long costOfPrinting) {
-        ArrayList<Long> count = getCountAndSetAmount(solution);
-        Long prints = count
-                .parallelStream()
-                .mapToLong(i -> i.longValue()).sum();
-        Long fitness = prints * costOfPrinting + count.size() * costOfPattern;
-        logger.trace(String.format("fitness = %s", fitness));
-        return fitness;
+        Long fitness = getFitness(solution, costOfPattern, costOfPrinting);
+        Boolean changed = Boolean.FALSE;
+        for(int i = 0; i < solution.getPatterns().size(); i++)
+            if(solution.getPatterns().get(i).getAmount() == 0L) {
+                solution.getPatterns().remove(i);
+                changed = Boolean.TRUE;
+                i--;
+            }
+        return changed ? getFitness(solution, costOfPattern, costOfPrinting) : fitness;
     }
 
 
