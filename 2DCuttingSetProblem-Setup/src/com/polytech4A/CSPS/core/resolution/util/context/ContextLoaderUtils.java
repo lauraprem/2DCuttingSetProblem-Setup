@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by Antoine CARON on 20/03/2015.
- *
- * @author Antoine CARON
  * @version 1.0
  *          <p>
  *          Loader of Context files.

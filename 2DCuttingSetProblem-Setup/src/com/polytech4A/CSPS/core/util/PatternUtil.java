@@ -16,7 +16,7 @@ public class PatternUtil {
 	 * 
 	 * @param pattern
 	 *            auquel on veut ajouter une image
-	 * @param image
+	 * @param imageId
 	 *            que l'on veut ajouter
 	 * @param verif
 	 *            methode de vérification souhaitée
@@ -29,7 +29,14 @@ public class PatternUtil {
 			for (Image image : patternTemp.getListImg()) {
 				if (image.getId().equals(imageId)) {
 					image.setAmount(image.getAmount() + 1);
-					if ((patternTemp = verif.getPlacedPattern(patternTemp)) != null) {
+					if (verif != null) {
+						patternTemp = verif.getPlacedPatternRecursive(patternTemp, 0);
+						if (patternTemp != null) {
+							pattern.setPattern(patternTemp);
+
+							return true;
+						}
+					} else {
 						pattern.setPattern(patternTemp);
 
 						return true;
@@ -53,7 +60,7 @@ public class PatternUtil {
 			for (int i = 0; i < patternTemp.getListImg().size(); i++) {
 				if (patternTemp.getListImg().get(i).getId().equals(imageId) && (amount = patternTemp.getListImg().get(i).getAmount()) > 0) {
 					patternTemp.getListImg().get(i).setAmount(amount - 1);
-					if ((patternTemp = verif.getPlacedPattern(patternTemp)) != null) {
+					if ((patternTemp = verif.getPlacedPatternRecursive(patternTemp, 0)) != null) {
 						pattern.setPattern(patternTemp);
 
 						return true;
@@ -69,6 +76,14 @@ public class PatternUtil {
 		return false;
 	}
 
+	/**
+	 * passe une image d'un pattern à l'autre
+	 * @param originPattern
+	 * @param destinationPattern
+	 * @param imageId
+	 * @param verif
+	 * @return
+	 */
 	public static boolean exchangeImage(Pattern originPattern, Pattern destinationPattern, Long imageId, IVerificationMethod verif) {
 
 		Pattern originTemp;
@@ -82,13 +97,13 @@ public class PatternUtil {
 			for (int i = 0; i < originTemp.getListImg().size(); i++) {
 				if (originTemp.getListImg().get(i).getId().equals(imageId) && (amount = originTemp.getListImg().get(i).getAmount()) > 0) {
 					originTemp.getListImg().get(i).setAmount(amount - 1);
-					if ((originTemp = verif.getPlacedPattern(originTemp)) != null) {
+					if ((originTemp = verif.getPlacedPatternRecursive(originTemp, 0)) != null) {
 						// add to destination pattern
 						for (Image image : destinaionTemp.getListImg()) {
 							if (image.getId().equals(imageId))
 								image.setAmount(image.getAmount() + 1);
 						}
-						if ((destinaionTemp = verif.getPlacedPattern(destinaionTemp)) != null) {
+						if ((destinaionTemp = verif.getPlacedPatternRecursive(destinaionTemp, 0)) != null) {
 							// modify real patterns
 							destinationPattern.setPattern(destinaionTemp);
 							originPattern.setPattern(originTemp);
@@ -104,7 +119,7 @@ public class PatternUtil {
 
 		return false;
 	}
-	
+
 	/**
 	 * echange deux images entre deux patterns
 	 * @param pattern1
@@ -138,4 +153,5 @@ public class PatternUtil {
 
 		return false;
 	}
+
 }

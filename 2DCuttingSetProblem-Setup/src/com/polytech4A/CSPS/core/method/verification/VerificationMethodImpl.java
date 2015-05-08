@@ -135,36 +135,21 @@ public class VerificationMethodImpl implements IVerificationMethod {
     public Solution getPlaced(Solution solution) {
         Solution newSolution = new Solution();
 
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("VerificationMethodImpl starting...");
-		// TODO Test
-//		listBin = new ArrayList<Pattern>();
+//        System.out.println("");
+//        System.out.println("");
+//        System.out.println("");
+//        System.out.println("");
+//        System.out.println("VerificationMethodImpl starting...");
 
         for (int i = 0; i < solution.getPatterns().size(); i++) {
-            System.out.println("Prossessing patern" + i);
+//            System.out.println("Prossessing patern" + i);
             //Pattern p = this.getPlacedPattern(solution.getPatterns().get(i));
             Pattern p = this.getPlacedPatternRecursive(solution.getPatterns().get(i),0);
-            System.out.println(solution.getPatterns().get(i));
+//            System.out.println(solution.getPatterns().get(i));
             if (p != null) {
                 newSolution.addPattern(p);
-            }/*
-             * else { return null; }
-             */
-
-            // TODO Test
-//			if(listBinHoriz.size()>0)
-//			for (int j = 0; j < listBin.size(); j++) {
-//				ArrayList<Image> listimgTest = new ArrayList<Image>();
-//				listimgTest.add(new Image(listBin.get(j).getSize(),1L));
-//				listBin.get(j).setListImg(listimgTest);
-//				newSolution.addPattern(listBin.get(j));
-//				
-//			}
-//			break;
-
+            }
+              else { return null; }
         }
         return newSolution;
     }
@@ -174,73 +159,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
      * à droite du pattern puis découpe pour guillotine => listPattern =
      * plusieurs pattern
      */
-    public Pattern getPlacedPattern(Pattern pattern) {
-
-        // Initialisation des variables pour placer un pattern
-        Bin newBin = new Bin(pattern.getSize(), pattern.getAmount());
-        listImg = (ArrayList<Image>) pattern.getListImg().clone();
-        
-
-        System.out.println("Pattern size " + pattern.getSize());
-        System.out.println("Images list " + listImg.size());
-        int ite = 0;
-        for (Image immag : listImg) {
-            if (immag.getAmount() > 0) {
-                System.out.println("Image nb: " + ite + " size" + immag.getSize());
-            }
-            ite++;
-
-        }
-
-        ResetBin(newBin);
-        
-        System.out.println("listBinHoriz" + listBinHoriz.get(0).getArea());
-
-        this.getImgOrderDesc();
-
-        int i = 0;
-        while (i < listImg.size()) {
-            Long amount = listImg.get(i).getAmount();
-            while (amount > 0) {
-                if (processPlacement(i, true, false) == true) {
-                } else { // change les bin
-                    if (processPlacement(i, false, false) == false) {
-
-						// Recommencer à placer en mettant les images
-                        // verticalement
-                        // ResetBin(newBin);
-                        // if (processPlacement(i, true,true) == true) {
-                        // } else { // change les bin
-                        // if (processPlacement(i, false,true) == false) {
-                        // // return null;
-                        // }
-                        // }
-                    }
-                }
-                amount--;
-
-                // TODO test
-//				if(listBinHoriz.size()>0)
-//				for (int j = 0; j < listBinHoriz.size(); j++) {
-//					listBin.add(listBinHoriz.get(j));
-//				}
-            }
-            i++;
-        }
-
-        // Fabrication du Pattern
-        newBin.setListImg(listImg);
-
-        return newBin;
-    }
-
-    /**
-     * decoupagePattern() add et remove ceux avec img TODO place l'image en bas
-     * à droite du pattern puis découpe pour guillotine => listPattern =
-     * plusieurs pattern
-     */
+    @Override
     public Pattern getPlacedPatternRecursive(Pattern pattern, int maxEssais) {
-        
         nbSteps = 0;
         // Initialisation des variables pour placer un pattern
         Bin newBin = new Bin(pattern.getSize(), pattern.getAmount());
@@ -260,13 +180,14 @@ public class VerificationMethodImpl implements IVerificationMethod {
             nbTotImage += immag.getAmount();
             
             if (immag.getAmount() > 0) {
-                System.out.println("Image nb: " + ite + " size" + immag.getSize() + " amount" +  immag.getAmount());
+//                System.out.println("Image nb: " + ite + " size" + immag.getSize() + " amount" +  immag.getAmount());
             }
             ite++;
 
         }
         
         this.maxSteps = maxEssais*nbTotImage;
+//        this.maxSteps = 1;
 
         ResetBin(newBin);
 
@@ -275,46 +196,14 @@ public class VerificationMethodImpl implements IVerificationMethod {
         //System.out.println("listBinHoriz" + listBinHoriz.get(0).getArea());
         ///////////////////// Recursive call ///////////////////////////
         ArrayList<Image> result = new ArrayList<Image>();
-        if (!processPlacementRecursive(getNextImageIndex(0, -1, listImg), 0, listImg, listBinHoriz, 0, result)) {
-            System.out.println("No pattern found");
+        int idImg = getNextImageIndex(0, -1, listImg);
+        if ((idImg <0) || (!processPlacementRecursive(idImg, 0, listImg, listBinHoriz, 0, result))) {
+//            System.out.println("packing fail");
             return null;
         }else{
-            System.out.println("Succeed to match pattern");
+//            System.out.println("Succeed to match pattern");
         }
-
-                ////////////////////////////////////////////////////////////////
-//		int i = 0;
-//		while (i < listImg.size()) {
-//			Long amount = listImg.get(i).getAmount();
-//			while (amount > 0) {
-// 				if (processPlacement(i, true, false) == true) {
-//				} else { // change les bin
-//					if (processPlacement(i, false, false) == false) {
-//
-//						// Recommencer à placer en mettant les images
-//						// verticalement
-//						// ResetBin(newBin);
-//						// if (processPlacement(i, true,true) == true) {
-//						// } else { // change les bin
-//						// if (processPlacement(i, false,true) == false) {
-//						// // return null;
-//						// }
-//						// }
-//					}
-//				}
-//				amount--;
-//				
-//				// TODO test
-////				if(listBinHoriz.size()>0)
-////				for (int j = 0; j < listBinHoriz.size(); j++) {
-////					listBin.add(listBinHoriz.get(j));
-////				}
-//			}
-//			i++;
-//		}
-//
-//		// Fabrication du Pattern
-//		newBin.setListImg(listImg);
+        
         newBin.setListImg(result);
 
         return newBin;
@@ -342,46 +231,6 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 listImg.get(i).getPositions().clear();
             }
         }
-    }
-
-    private boolean processPlacement(int i, boolean isHoriz, boolean isRotate) {
-        ListIterator<Bin> iterator;
-
-        if (isHoriz == true) {
-            iterator = ((ArrayList<Bin>) listBinHoriz.clone()).listIterator();
-        } else {
-            iterator = ((ArrayList<Bin>) listBinVerti.clone()).listIterator();
-        }
-
-        while (iterator.hasNext()) {
-            Bin element = iterator.next();
-//            if (i == 17) {
-//                System.out.println("MicprocessPlacement17: " + element.toString());
-//            }
-
-            if (listImg.get(i).getArea() <= element.getArea()) {
-//                if (i == 17) {
-//                    System.out.println("MicprocessPlacement17 found pattern: " + element);
-//                    //System.out.println("image size: " + listImg.get(i).getSize() + " bin size:" +  element.getSize());
-//                }
-                if (isRotate == false) {
-                    if (placementImage(element, i) == true) {
-                        this.mergeBin(element, isHoriz);
-
-                        // this.getPatternsOrderAsc();
-                        return true;
-                    }
-                } else {
-                    if (placementImageTournee(element, i) == true) {
-                        this.mergeBin(element, isHoriz);
-
-                        // this.getPatternsOrderAsc();
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     private int getNextImageIndex(int currentImageIndex, int currentImageCount, ArrayList<Image> images) {
@@ -851,106 +700,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
         }
         return false;
     }
-
-    /**
-     * Verif si hauteur & largeur rentre (pattern-image) (en placent en bas à
-     * droite) Si oui, on place, sinon rotation image 90° et reteste
-     *
-     * @param p
-     * @param iImage
-     */
-    protected boolean placementImageTournee(Bin p, int iImage) { // Bas Droite
-        Position position = null; // image courrente
-
-        // Verification si rentre dans le Pattern sinon on tourne l'image de
-        if ((p.getSize().getX() > listImg.get(iImage).getSize().getY() && p
-                .getSize().getY() > listImg.get(iImage).getSize().getX())) { // ROTATION
-            position = new Position(p.getCoord().getX(), p.getCoord().getY(),
-                    true);
-        } else if ((p.getSize().getX() > listImg.get(iImage).getSize().getX() && (p
-                .getSize().getY() > listImg.get(iImage).getSize().getY()))) {
-            position = new Position(p.getCoord().getX(), p.getCoord().getY());
-        }
-
-        // Si l'image est placé on découpe le pattern
-        if (position != null) {
-            Bin bin1, bin2, bin3, bin4;
-
-            // Découpage horizontal
-            if (!position.isRotated()) {
-
-                bin1 = new Bin(new Vector(p.getSize().getX()
-                        - listImg.get(iImage).getSize().getX(), p.getSize()
-                        .getY()), new Vector(p.getCoord().getX()
-                                + listImg.get(iImage).getSize().getX(), p.getCoord()
-                                .getY()));
-                bin2 = new Bin(new Vector(listImg.get(iImage).getSize().getX(),
-                        p.getSize().getY()
-                        - listImg.get(iImage).getSize().getY()),
-                        new Vector(p.getCoord().getX(), listImg.get(iImage)
-                                .getSize().getY()
-                                + p.getCoord().getY()));
-            } else { // Rotation
-                bin1 = new Bin(new Vector(p.getSize().getX()
-                        - listImg.get(iImage).getSize().getY(), p.getSize()
-                        .getY()), new Vector(p.getCoord().getX()
-                                + listImg.get(iImage).getSize().getY(), p.getCoord()
-                                .getY()));
-                bin2 = new Bin(new Vector(listImg.get(iImage).getSize().getY(),
-                        p.getSize().getY()
-                        - listImg.get(iImage).getSize().getX()),
-                        new Vector(p.getCoord().getX(), listImg.get(iImage)
-                                .getSize().getX()
-                                + p.getCoord().getY()));
-            }
-            bin1.setClasse(p.getClasse() + 1);
-            bin2.setClasse(p.getClasse() + 1);
-            int id1 = compteur++;
-            bin1.setId(id1);
-            int id2 = compteur++;
-            bin2.setId(id2);
-            this.addListBinHoriz(bin1);
-            this.addListBinHoriz(bin2);
-
-            // Découpage verticale
-            if (!position.isRotated()) {
-
-                bin3 = new Bin(new Vector(p.getSize().getX()
-                        - listImg.get(iImage).getSize().getX(), listImg
-                        .get(iImage).getSize().getY()), new Vector(p.getCoord()
-                                .getX() + listImg.get(iImage).getSize().getX(), p
-                                .getCoord().getY()));
-                bin4 = new Bin(new Vector(p.getSize().getX(), p.getSize()
-                        .getY() - listImg.get(iImage).getSize().getY()),
-                        new Vector(p.getCoord().getX(), listImg.get(iImage)
-                                .getSize().getY()
-                                + p.getCoord().getY()));
-            } else { // Rotation
-                bin3 = new Bin(new Vector(p.getSize().getX()
-                        - listImg.get(iImage).getSize().getY(), listImg
-                        .get(iImage).getSize().getX()), new Vector(p.getCoord()
-                                .getX() + listImg.get(iImage).getSize().getX(), p
-                                .getCoord().getY()));
-                bin4 = new Bin(new Vector(p.getSize().getX(), p.getSize()
-                        .getY() - listImg.get(iImage).getSize().getX()),
-                        new Vector(p.getCoord().getX(), listImg.get(iImage)
-                                .getSize().getY()
-                                + p.getCoord().getY()));
-            }
-            bin3.setClasse(p.getClasse() + 1);
-            bin4.setClasse(p.getClasse() + 1);
-            bin3.setId(id1);
-            bin4.setId(id2);
-            this.addListBinVerti(bin3);
-            this.addListBinVerti(bin4);
-
-            listImg.get(iImage).getPositions().add(position);
-
-            return true;
-        }
-        return false;
-    }
-
+    
     /**
      * Tri la liste des patterns par ordre croissant (de la plus petite taille à
      * la plus grande)
@@ -974,4 +724,9 @@ public class VerificationMethodImpl implements IVerificationMethod {
     protected void getImgOrderDesc() {
         Collections.sort(listImg, Image.ImageNameComparator);
     }
+
+	@Override
+	public Pattern getPlacedPattern(Pattern pattern) {
+		return null;
+	}
 }

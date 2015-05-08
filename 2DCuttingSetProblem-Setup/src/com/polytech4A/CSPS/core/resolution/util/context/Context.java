@@ -1,23 +1,3 @@
-/*
- *
- *  * Project to resolve 2D cutting stock problem for Discreet Optimizations course at Polytech Lyon
- *  * Copyright (C) 2015.  CARON Antoine and CHAUSSENDE Adrien
- *  *
- *  * This program is free software: you can redistribute it and/or modify
- *  * it under the terms of the GNU Affero General Public License as
- *  * published by the Free Software Foundation, either version 3 of the
- *  * License, or (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU Affero General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU Affero General Public License
- *  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.polytech4A.CSPS.core.resolution.util.context;
 
 import com.polytech4A.CSPS.core.model.Image;
@@ -27,19 +7,11 @@ import com.sun.istack.internal.NotNull;
 import java.util.ArrayList;
 
 /**
- * Created by Antoine CARON on 12/03/2015.
- *
- * @author Antoine CARON
  * @version 1.0
  *          <p>
  *          Context Objet for Serialization in XML file.
  */
 public class Context {
-
-	/**
-	 * Scale of the project
-	 */
-	private Long scale;
 
 	/**
 	 * Id of the context
@@ -60,7 +32,7 @@ public class Context {
 	 * Size of a Pattern.
 	 */
 	private Vector patternSize;
-	
+
 	private Integer minPattern;
 
 	private Integer maxPattern;
@@ -80,8 +52,6 @@ public class Context {
 		this.sheetCost = sheetCost;
 		this.images = images;
 		this.patternSize = patternSize;
-		this.scale = scale;
-		
 		maxPattern = images.size();
 		Double imagesAera = 0.0;
 		Long patternAera = patternSize.getX()*patternSize.getY();
@@ -111,27 +81,33 @@ public class Context {
 		return patternSize;
 	}
 
-	public Long getScale() {
-		return scale;
-	}
-
-	public void setScale(Long scale) {
-		this.scale = scale;
-	}
-
 	public Integer getMinPattern() {
 		return minPattern;
-	}
-
-	public void setMinPattern(Integer minPattern) {
-		this.minPattern = minPattern;
 	}
 
 	public Integer getMaxPattern() {
 		return maxPattern;
 	}
 
-	public void setMaxPattern(Integer maxPattern) {
-		this.maxPattern = maxPattern;
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("Context{");
+		sb.append("label='").append(label).append('\'');
+		sb.append(", patternCost=").append(patternCost);
+		sb.append(", sheetCost=").append(sheetCost);
+		sb.append(", patternSize=").append(patternSize);
+		sb.append(", minPattern=").append(minPattern);
+		sb.append(", maxPattern=").append(maxPattern);
+		sb.append(", images=[");
+		for(Image i : images) {
+			sb.append("Image{");
+			sb.append("id=").append(i.getId());
+			sb.append(", size=").append(i.getSize());
+			sb.append(", goal=").append(i.getGoal());
+			sb.append("}\n");
+		}
+		sb.append("]");
+		sb.append("}\n");
+		return sb.toString();
 	}
 }

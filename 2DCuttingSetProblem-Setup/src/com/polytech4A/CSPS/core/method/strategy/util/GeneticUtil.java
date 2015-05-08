@@ -45,7 +45,9 @@ public class GeneticUtil extends SolutionUtil {
                 first.add(new Random().nextBoolean());
                 numberOfGenes++;
             }
+
             if (first.size() != numberOfGenes) throw new RuntimeException();
+
             Collections.shuffle(first);
             */
             Long start = System.nanoTime();

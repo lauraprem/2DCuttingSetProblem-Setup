@@ -130,7 +130,9 @@ public class SolutionUtil {
 		return solution;
 	}
 
-	public static Solution getRandomViableSolution2(Context context, IVerificationMethod verificationMethod, int nbRandomImageMin, int nbRandomImageMax) {
+	public static Solution getRandomViableSolution2(Context context, IVerificationMethod verificationMethod) {
+		int nbRandomImageMin = 1;
+		int nbRandomImageMax = context.getImages().size();
 		Solution s = new Solution();
 		Random random = new Random();
 		int nbImageRandom;

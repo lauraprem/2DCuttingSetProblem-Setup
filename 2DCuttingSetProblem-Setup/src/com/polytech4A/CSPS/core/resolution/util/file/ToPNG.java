@@ -6,13 +6,16 @@ import com.polytech4A.CSPS.core.model.Position;
 import com.polytech4A.CSPS.core.model.Vector;
 import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.util.Log;
+
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -205,7 +208,7 @@ public class ToPNG extends FileMethod {
         Date date = new Date();
         mkdir(subDir, date);
         ArrayList<Pattern> patterns = resolution.getSolution().getPatterns();
-        int coeff = (int) Math.ceil(800 * resolution.getContext().getScale() / Math
+        int coeff = (int) Math.ceil(800 / Math
                 .max(patterns.get(0).getSize().getWidth(),
                         patterns.get(0).getSize().getHeight()));
         Long y = 0L;
@@ -242,6 +245,22 @@ public class ToPNG extends FileMethod {
             }
             y++;
         }
+
+        try {
+            filename = getFilename(subDir, baseFilename, date);
+            filename = filename.substring(0, filename.lastIndexOf("." + getExtension()));
+            filename += ".txt";
+            File file = new File(filename);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream out = new FileOutputStream(file);
+            out.write(resolution.toString().getBytes());
+            out.close();
+            logger.info("Create new file " + file.getPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void printImage(BufferedImage img, int length, Image placedBox, Position position, int coeff) {
@@ -267,7 +286,7 @@ public class ToPNG extends FileMethod {
     }
 
     private void printFooter(BufferedImage img, final int HEIGHT, final int WIDTH, final int sizeOfFooter, final Long num, final Pattern cur_patt) {
-        drawRectangle(img, 0,
+    	drawRectangle(img, 0,
                 HEIGHT - sizeOfFooter,
                 WIDTH,
                 sizeOfFooter,

@@ -137,7 +137,7 @@ public class LinearResolutionMethod {
             pattern = solution.getPatterns().get(i);
             for (Image image : pattern.getListImg()) {
                 index = image.getId().intValue();
-                countImage.set(index, countImage.get(index) + count.get(i) * image.getAmount());
+//                countImage.set(index, countImage.get(index) + count.get(i) * image.getAmount());
             }
         }
         Boolean check = Boolean.TRUE;

@@ -70,11 +70,11 @@ public class Genetic extends StrategyMethod {
     @Override
     public void run() {
         while (generation.size() < populationSize) {
-            generation.add(GeneticUtil.getRandomViableSolution(getContext(), getVerificationMethod()));
+            generation.add(GeneticUtil.getRandomViableSolution2(getContext(), getVerificationMethod()));
         }
         for (Integer i = 0; i < amountOfGeneration; i++) {
 
-            generation.parallelStream().forEach(s -> {
+            generation.forEach(s -> {
                 if (s.getFitness() == -1L)
                     s.setFitness(getFitness(s));
             });
@@ -99,7 +99,7 @@ public class Genetic extends StrategyMethod {
                     generation.add(s);
                 }
             }
-            System.out.println("G�n�ration : " + i);
+            System.out.println("Génération : " + i);
         }
     }
 
