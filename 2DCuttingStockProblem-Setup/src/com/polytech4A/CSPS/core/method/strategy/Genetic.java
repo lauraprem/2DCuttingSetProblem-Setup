@@ -70,7 +70,18 @@ public class Genetic extends StrategyMethod {
     @Override
     public void run() {
         while (generation.size() < populationSize) {
-            generation.add(GeneticUtil.getRandomViableSolution2(getContext(), getVerificationMethod()));
+            generation.add(new Solution());
+        }
+        Semaphore semaphore = new Semaphore(- populationSize);
+        for (int index = 0; index < generation.size(); index++) {
+            //new RandomSolution(getContext(), getVerificationMethod(), generation, index, semaphore).start();
+            generation.set(index, SolutionUtil.getRandomViableSolution(getContext(), getVerificationMethod()));
+            semaphore.release();
+        }
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         for (Integer i = 0; i < amountOfGeneration; i++) {
 
@@ -78,7 +89,7 @@ public class Genetic extends StrategyMethod {
                 if (s.getFitness() == -1L)
                     s.setFitness(getFitness(s));
             });
-            generation = generation.stream()
+            generation = generation.parallelStream()
                     .sorted((o1, o2) -> {
                         Long fit1 = o1.getFitness(), fit2 = o2.getFitness();
                         if (fit1 > fit2) return 1;
@@ -94,7 +105,7 @@ public class Genetic extends StrategyMethod {
                 if (!coupleIterator.hasNext()) coupleIterator.reset();
                 c = coupleIterator.next();
                 s = getViableCrossedSolution(c);
-                if(s != null) {
+                if (s != null) {
                     if (random.nextDouble() % 100 <= mutationFrequency) s = getViableMutatedSolution(s);
                     generation.add(s);
                 }

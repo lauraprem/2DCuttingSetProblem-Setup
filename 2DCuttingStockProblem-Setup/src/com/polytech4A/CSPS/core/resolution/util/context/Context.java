@@ -61,7 +61,7 @@ public class Context {
 		minPattern = ((Double) Math.ceil(imagesAera/patternAera)).intValue();
 	}
 
-	public String getLabel() {
+	public synchronized String getLabel() {
 		return label;
 	}
 
@@ -73,19 +73,19 @@ public class Context {
 		return sheetCost;
 	}
 
-	public ArrayList<Image> getImages() {
+	public synchronized ArrayList<Image> getImages() {
 		return images;
 	}
 
-	public Vector getPatternSize() {
+	public synchronized Vector getPatternSize() {
 		return patternSize;
 	}
 
-	public Integer getMinPattern() {
+	public synchronized Integer getMinPattern() {
 		return minPattern;
 	}
 
-	public Integer getMaxPattern() {
+	public synchronized Integer getMaxPattern() {
 		return maxPattern;
 	}
 
