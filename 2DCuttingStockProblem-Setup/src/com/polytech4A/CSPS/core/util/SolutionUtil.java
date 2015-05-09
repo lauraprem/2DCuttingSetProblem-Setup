@@ -101,7 +101,16 @@ public class SolutionUtil {
 	    		iter.remove();
 	    	}
     	}
-//    	if(listIdImg.size() == 0) return true;
+    	
+    	
+//    	boolean bool = (verificationMethod.getPlaced(solution) !=null);
+//    	if((bool ==false) || (listIdImg.size() != 0)){
+//    		System.out.println("Null - Verif : "+bool+" lineare : "+listIdImg.size());
+//    	}else{
+//			System.out.println("SO good ! ;-)");
+//    	}
+    	
+    	if(listIdImg.size() == 0) return true;
     	
     	return false;
     }
@@ -138,8 +147,10 @@ public class SolutionUtil {
 //    			}
 //    		}
 //		}
-    	solution = getRandomViableSolution2(context,verificationMethod);
-    	return makeSolvable(context, solution);
+    	solution.setSolution(getRandomViableSolution2(context,verificationMethod));
+//    	if(verificationMethod.getPlaced(solution) ==null)
+//    		System.out.println("Pas packable, mais enfin !!");
+    	return verificationMethod.getPlaced(solution) !=null;
     }
     
     public static Solution getRandomViableSolution(Context context, IVerificationMethod verificationMethod) {

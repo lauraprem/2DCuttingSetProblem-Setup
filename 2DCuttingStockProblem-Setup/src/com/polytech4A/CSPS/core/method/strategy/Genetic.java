@@ -119,7 +119,7 @@ public class Genetic extends StrategyMethod {
                     generation.add(s);
                 }
             }
-            System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
+            System.out.println("Génération : "+ i +", Fitness : " + bestSolution.getFitness()); 
         }
 
     }
@@ -127,7 +127,8 @@ public class Genetic extends StrategyMethod {
     	
     	// Génération de la population de départ
         while (generation.size() < populationSize) {
-            generation.add(GeneticUtil.getRandomViableSolution2(getContext(), getVerificationMethod()));
+        	Solution solution = GeneticUtil.getRandomViableSolution2(getContext(), getVerificationMethod());
+            generation.add(solution);
         }
         
         // Génération i
@@ -162,7 +163,7 @@ public class Genetic extends StrategyMethod {
                 }
             }
             
-            System.out.println("Génération : " + i);
+            System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
         }
     }
 
@@ -170,6 +171,9 @@ public class Genetic extends StrategyMethod {
         Long fit = getLinearResolutionMethod().getFitnessAndRemoveUseless(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
         solution.setFitness(fit);
         if (bestSolution == null || solution.getFitness() < bestSolution.getFitness()) {
+        	if(getVerificationMethod().getPlaced(solution)==null){
+        		System.out.println("Non packable");
+        	}
             bestSolution = solution;
             new ToPNG().save("solution-" + solution.getFitness(), new Resolution(getContext(), solution));
         }

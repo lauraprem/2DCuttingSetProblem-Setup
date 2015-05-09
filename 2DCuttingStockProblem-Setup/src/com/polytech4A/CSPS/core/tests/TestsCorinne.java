@@ -59,7 +59,7 @@ public class TestsCorinne {
 
 	        Resolution resolution = new Resolution(context);
 	        Solution tmp = v.getPlaced(solution);
-//	        System.out.println("Solution final : "+tmp);
+	        System.out.println("Solution final : "+tmp);
 	        resolution.setSolution(tmp);
 	        new ToPNG().save("genetic", resolution);
 	}

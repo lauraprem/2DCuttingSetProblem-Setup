@@ -25,7 +25,6 @@ public class Solution {
      * liste des pattern qui forment la solution
      */
     private ArrayList<Pattern> patterns = new ArrayList<Pattern>();
-
     public Solution(Solution solution) {
         this.patterns = (ArrayList<Pattern>) solution.patterns.clone();
     }
@@ -59,6 +58,11 @@ public class Solution {
         sb.append(", patterns=").append(patterns);
         sb.append("}\n");
         return sb.toString();
+    }
+    
+    public void setSolution(Solution s) {
+    	patterns = s.getPatterns();
+        Long fitness = s.getFitness();
     }
 
     /**

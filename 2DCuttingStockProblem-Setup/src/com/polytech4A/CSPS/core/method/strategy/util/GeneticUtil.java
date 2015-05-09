@@ -110,16 +110,22 @@ public class GeneticUtil extends SolutionUtil {
                 }
             }
             for(Pattern p : patterns) solution.addPattern(p);
-            makeSolvable(context, solution);
+            makeSolvable(context, solution, verificationMethod);
             SolutionUtil.removeUselessPatterns(solution);
             tentative++;
             isPackable = verificationMethod.isViable(solution);
-        } while (tentative <= maxTentatives && !isPackable);
+        } while (tentative <= maxTentatives && !(verificationMethod.getPlaced(solution) == null));
         
         
-        if(!isPackable){
+//        if(verificationMethod.getPlaced(solution) == null){
         	makePackable(context,solution, verificationMethod);
-        }
+//        	if(verificationMethod.getPlaced(solution) == null){
+//        		System.out.println("Null");
+//        	}
+//        }
+        	 if(verificationMethod.getPlaced(solution) == null){
+        		 System.out.println("Null");
+        	 }
         return solution;
     }
 
