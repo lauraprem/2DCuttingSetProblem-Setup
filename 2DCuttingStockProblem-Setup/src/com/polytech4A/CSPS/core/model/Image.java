@@ -42,7 +42,7 @@ public class Image implements Comparable<Image> {
 		positions = _positions == null ? new ArrayList<>() : _positions;
 		size = _size;
 		goal = _goal;
-		id = _id == null ? 0L : _id;
+		id = (_id == null ? 0L : _id);
 	}
 
 	public Image(Vector size, Long goal) {

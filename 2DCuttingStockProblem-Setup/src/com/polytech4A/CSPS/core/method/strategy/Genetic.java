@@ -12,7 +12,9 @@ import com.polytech4A.CSPS.core.method.verification.IVerificationMethod;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.model.couple.Couple;
 import com.polytech4A.CSPS.core.model.couple.CoupleIterator;
+import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
+import com.polytech4A.CSPS.core.resolution.util.file.ToPNG;
 import com.polytech4A.CSPS.core.util.SolutionUtil;
 
 /**
@@ -77,7 +79,7 @@ public class Genetic extends StrategyMethod {
         Semaphore semaphore = new Semaphore(- populationSize + 1);
         for (int index = 0; index < generation.size(); index++) {
             //new RandomSolution(getContext(), getVerificationMethod(), generation, index, semaphore).start();
-            generation.set(index, SolutionUtil.getRandomViableSolution(getContext(), getVerificationMethod()));
+            generation.set(index, SolutionUtil.getRandomViableSolution2(getContext(), getVerificationMethod()));
             //generation.set(index, SolutionUtil.getRandomViableSolution2(getContext(), getVerificationMethod(), 0, 10));
             semaphore.release();
         }
@@ -113,7 +115,7 @@ public class Genetic extends StrategyMethod {
                 s = getViableCrossedSolution(c);
                 if (s != null) {
                     // TODO : Décommenter quand fonctionnel
-                    //if (random.nextDouble() % 100 <= mutationFrequency) s = getViableMutatedSolution(s);
+                    //if (random.nextDouble() * 100 <= mutationFrequency) s = getViableMutatedSolution(s);
                     generation.add(s);
                 }
             }
@@ -165,10 +167,11 @@ public class Genetic extends StrategyMethod {
     }
 
     private Long getFitness(Solution solution) {
-        Long fit = getLinearResolutionMethod().getFitness(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
+        Long fit = getLinearResolutionMethod().getFitnessAndRemoveUseless(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
         solution.setFitness(fit);
-        if (bestSolution == null || bestSolution.getFitness() < solution.getFitness()) {
+        if (bestSolution == null || solution.getFitness() < bestSolution.getFitness()) {
             bestSolution = solution;
+            new ToPNG().save("solution-" + solution.getFitness(), new Resolution(getContext(), solution));
         }
         return fit;
     }
@@ -179,6 +182,10 @@ public class Genetic extends StrategyMethod {
 
     private Solution getViableCrossedSolution(Couple c) {
         return GeneticUtil.getViableCrossedSolution(getContext(), getVerificationMethod(), c.getS1(), c.getS2());
+    }
+
+    private Solution getViableCrossedSolution2(Couple c) {
+        return GeneticUtil.getViableCrossedSolution2(getContext(), getVerificationMethod(), c.getS1(), c.getS2());
     }
 
 

@@ -42,7 +42,7 @@ public class ToPNG extends FileMethod {
     /**
      * Pattern Legend or Not.
      */
-    public static boolean PATTERN_LEGEND = true;
+    public final static boolean PATTERN_LEGEND = true;
     /**
      * Background color.
      */

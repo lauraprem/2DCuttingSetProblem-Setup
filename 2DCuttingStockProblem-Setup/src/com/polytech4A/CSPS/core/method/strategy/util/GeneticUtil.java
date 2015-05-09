@@ -1,6 +1,7 @@
 package com.polytech4A.CSPS.core.method.strategy.util;
 
 import com.polytech4A.CSPS.core.method.verification.IVerificationMethod;
+import com.polytech4A.CSPS.core.model.GeneticSolution;
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
@@ -18,6 +19,37 @@ import java.util.Random;
  *         29/04/2015
  */
 public class GeneticUtil extends SolutionUtil {
+
+    public static Solution getViableCrossedSolution2(Context context, IVerificationMethod verificationMethod, Solution s1, Solution s2) {
+        Solution solution;
+        Boolean isPackable;
+        Long maxTentatives = 100L, tentative = 0L;
+        Random random = new Random();
+        GeneticSolution.setBasePattern(context);
+        GeneticSolution gs1 = GeneticSolution.encode(s1), gs2 = GeneticSolution.encode(s2);
+        GeneticSolution.normalizeCouple(gs1, gs2);
+        GeneticSolution gs = new GeneticSolution();
+        while (gs.size() < gs1.size()) gs.addPattern();
+        do {
+            for(int i = 0; i < gs.size(); i++) {
+                ArrayList<ArrayList<Boolean>> patterns = gs1.get(i);
+                for(int j = 0; j < patterns.size(); j++) {
+                    ArrayList<Boolean> images = patterns.get(j);
+                    for(int k = 0; k < images.size(); k++) gs.get(i).get(j).add(
+                            random.nextBoolean() ? gs1.get(i).get(j).get(k) : gs2.get(i).get(j).get(k)
+                    );
+                }
+            }
+            solution = GeneticSolution.decode(gs);
+            makeSolvable(context, solution);
+            removeUselessPatterns(solution);
+            isPackable = verificationMethod.isViable(solution);
+            tentative++;
+        } while (tentative <= maxTentatives && !isPackable);
+
+        return !isPackable ? null : solution;
+    }
+
 
     public static Solution getViableCrossedSolution(Context context, IVerificationMethod verificationMethod, Solution s1, Solution s2) {
         Random random = new Random();
@@ -50,7 +82,6 @@ public class GeneticUtil extends SolutionUtil {
 
             Collections.shuffle(first);
             */
-            Long start = System.nanoTime();
             Integer maxPatterns = Math.max(s1.getPatterns().size(), s2.getPatterns().size());
             Integer nbImages = context.getImages().size();
             ArrayList<Image> base = context.getImages();
@@ -82,21 +113,14 @@ public class GeneticUtil extends SolutionUtil {
             makeSolvable(context, solution);
             SolutionUtil.removeUselessPatterns(solution);
             tentative++;
-            isPackable = isSolvable(context, solution) && verificationMethod.isViable(solution);
-            time = System.nanoTime() - start;
+            isPackable = verificationMethod.isViable(solution);
         } while (tentative <= maxTentatives && !isPackable);
         
         
         if(!isPackable){
         	makePackable(context,solution, verificationMethod);
         }
-        
-        if(!isPackable){
-        	makePackable(context,solution, verificationMethod);
-        }
         return solution;
-        
-//        return !isPackable ? null : solution;
     }
 
     public static Solution getViableMutatedSolution(Context context, IVerificationMethod verificationMethod, Solution solution) {

@@ -14,6 +14,10 @@ public class Resolution extends Thread {
 	public Resolution(Context context) {
 		this.context = context;
 	}
+	public Resolution(Context context, Solution solution) {
+		this.context = context;
+		this.solution = solution;
+	}
 
 	public Context getContext() {
 		return context;
