@@ -66,7 +66,7 @@ public class SolutionUtil {
 				try {
 					testPattern = (Pattern) solution.getPatterns().get(i).clone();
 					testPattern.addImg(e);
-					if(verificationMethod.getPlacedPattern(testPattern)!=null){
+					if(verificationMethod.getPlacedPatternRecursive(testPattern,0)!=null){
 						solution.getPatterns().get(i).addImg(e);
 						iter.remove();
 						break;
