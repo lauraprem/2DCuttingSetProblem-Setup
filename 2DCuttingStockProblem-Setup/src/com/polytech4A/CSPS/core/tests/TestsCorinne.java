@@ -45,17 +45,22 @@ public class TestsCorinne {
 //        new ToPNG().save("test", resolution);
         
         
-        Tests tests = new Tests();
-        Context context = tests.getContext(0);
-        Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 10, 10);
-        genetic.run();
-        Solution solution = genetic.getBestSolution();
-        LinearResolutionMethod linearResolutionMethod = new LinearResolutionMethod(context);
-        ArrayList<Long> count = linearResolutionMethod.getCount(tests.getSolution(0));
-        LinearResolutionMethod.check(count, context, solution);
+		 Tests tests = new Tests();
+	        Context context = tests.getContext(0);
+	        Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 10, 10);
+	        genetic.run();
+	        Solution solution = genetic.getBestSolution();
+	        LinearResolutionMethod linearResolutionMethod = new LinearResolutionMethod(context);
+	        ArrayList<Long> count = linearResolutionMethod.getCount(solution);
+	        LinearResolutionMethod.check(count, context, solution);
+	        
+//	        System.out.println(solution.toString());
+//	        System.out.println(solution.getFitness());
 
-        Resolution resolution = new Resolution(context);
-        resolution.setSolution(solution);
-        new ToPNG().save("genetic", resolution);
+	        Resolution resolution = new Resolution(context);
+	        Solution tmp = v.getPlaced(solution);
+//	        System.out.println("Solution final : "+tmp);
+	        resolution.setSolution(tmp);
+	        new ToPNG().save("genetic", resolution);
 	}
 }

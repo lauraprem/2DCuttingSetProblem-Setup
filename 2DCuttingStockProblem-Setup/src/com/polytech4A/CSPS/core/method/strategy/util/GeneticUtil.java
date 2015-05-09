@@ -50,6 +50,7 @@ public class GeneticUtil extends SolutionUtil {
 
             Collections.shuffle(first);
             */
+            Long start = System.nanoTime();
             Integer maxPatterns = Math.max(s1.getPatterns().size(), s2.getPatterns().size());
             Integer nbImages = context.getImages().size();
             ArrayList<Image> base = context.getImages();
@@ -81,24 +82,44 @@ public class GeneticUtil extends SolutionUtil {
             makeSolvable(context, solution);
             SolutionUtil.removeUselessPatterns(solution);
             tentative++;
-            isPackable = //isSolvable(context, solution) &&
-            verificationMethod.isViable(solution);
+            isPackable = isSolvable(context, solution) && verificationMethod.isViable(solution);
+            time = System.nanoTime() - start;
         } while (tentative <= maxTentatives && !isPackable);
-        return !isPackable ? null : solution;
+        
+        
+        if(!isPackable){
+        	makePackable(context,solution, verificationMethod);
+        }
+        
+        if(!isPackable){
+        	makePackable(context,solution, verificationMethod);
+        }
+        return solution;
+        
+//        return !isPackable ? null : solution;
     }
 
     public static Solution getViableMutatedSolution(Context context, IVerificationMethod verificationMethod, Solution solution) {
         Random r = new Random();
         int method = r.nextInt(4);
+        Solution s = null;
         switch (method) {
             case 0:
-                return GeneticUtil.getViableAddNeighbor(solution, verificationMethod);
+            	s = GeneticUtil.getViableAddNeighbor(solution, verificationMethod);
+            	makePackable(context,s, verificationMethod);
+                return s;
             case 1:
-                return GeneticUtil.getViableCrossedNeighbor(solution, verificationMethod);
+            	s = GeneticUtil.getViableCrossedNeighbor(solution, verificationMethod);
+            	makePackable(context,s, verificationMethod);
+                return s;
             case 2:
-                return GeneticUtil.getViableExchangeNeighbor(solution, verificationMethod);
+                s = GeneticUtil.getViableExchangeNeighbor(solution, verificationMethod);
+                makePackable(context,s, verificationMethod);
+                return s;
             default:
-                return GeneticUtil.getViableSupressNeighbor(solution, verificationMethod);
+            	 s = GeneticUtil.getViableSupressNeighbor(solution, verificationMethod);
+            	 makePackable(context,s, verificationMethod);
+                 return s;
         }
     }
 
