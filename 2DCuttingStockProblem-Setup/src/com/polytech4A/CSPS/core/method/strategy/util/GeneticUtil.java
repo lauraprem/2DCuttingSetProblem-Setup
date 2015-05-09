@@ -50,7 +50,6 @@ public class GeneticUtil extends SolutionUtil {
 
             Collections.shuffle(first);
             */
-            Long start = System.nanoTime();
             Integer maxPatterns = Math.max(s1.getPatterns().size(), s2.getPatterns().size());
             Integer nbImages = context.getImages().size();
             ArrayList<Image> base = context.getImages();
@@ -66,15 +65,14 @@ public class GeneticUtil extends SolutionUtil {
                     long
                             amount1 = s1.getPatterns().size() <= k ? 0L : s1.getPatterns().get(k).getListImg().get(j).getAmount(),
                             amount2 = s2.getPatterns().size() <= k ? 0L : s2.getPatterns().get(k).getListImg().get(j).getAmount(),
-                            maxAmount = //Math.max(amount1, amount2);
-                                    (amount1 + amount2)/2;
+                            maxAmount = Math.max(amount1, amount2);
                     long imageId = context.getImages().get(j).getId();
                     for (int l = 0; l < maxAmount; l++) {
                         /*Boolean choice = first.get(first.size() - 1);
                         first.remove(first.size() - 1);*/
-                        /*Boolean choice = random.nextBoolean();
+                        Boolean choice = random.nextBoolean();
                         Boolean choice1 = (amount1 >= l), choice2 = (amount2 >= l);
-                        if (choice && choice1 || !choice && choice2)*/
+                        if (choice && choice1 || !choice && choice2)
                             PatternUtil.addImage(patterns.get(k), imageId, null);
                     }
                 }
@@ -85,9 +83,8 @@ public class GeneticUtil extends SolutionUtil {
             tentative++;
             isPackable = //isSolvable(context, solution) &&
             verificationMethod.isViable(solution);
-            time = System.nanoTime() - start;
         } while (tentative <= maxTentatives && !isPackable);
-        return !isPackable ? getRandomViableSolution(context, verificationMethod) : solution;
+        return !isPackable ? null : solution;
     }
 
     public static Solution getViableMutatedSolution(Context context, IVerificationMethod verificationMethod, Solution solution) {
