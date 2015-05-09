@@ -88,7 +88,7 @@ public class GeneticUtil extends SolutionUtil {
         
         
         if(!isPackable){
-        	makeSolvable(context, solution);
+        	makePackable(context,solution, verificationMethod);
         }
         return solution;
         
@@ -99,15 +99,24 @@ public class GeneticUtil extends SolutionUtil {
     public static Solution getViableMutatedSolution(Context context, IVerificationMethod verificationMethod, Solution solution) {
         Random r = new Random();
         int method = r.nextInt(4);
+        Solution s = null;
         switch (method) {
             case 0:
-                return GeneticUtil.getViableAddNeighbor(solution, verificationMethod);
+            	s = GeneticUtil.getViableAddNeighbor(solution, verificationMethod);
+            	makePackable(context,s, verificationMethod);
+                return s;
             case 1:
-                return GeneticUtil.getViableCrossedNeighbor(solution, verificationMethod);
+            	s = GeneticUtil.getViableCrossedNeighbor(solution, verificationMethod);
+            	makePackable(context,s, verificationMethod);
+                return s;
             case 2:
-                return GeneticUtil.getViableExchangeNeighbor(solution, verificationMethod);
+                s = GeneticUtil.getViableExchangeNeighbor(solution, verificationMethod);
+                makePackable(context,s, verificationMethod);
+                return s;
             default:
-                return GeneticUtil.getViableSupressNeighbor(solution, verificationMethod);
+            	 s = GeneticUtil.getViableSupressNeighbor(solution, verificationMethod);
+            	 makePackable(context,s, verificationMethod);
+                 return s;
         }
     }
 

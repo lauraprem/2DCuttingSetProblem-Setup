@@ -142,7 +142,17 @@ public class LinearResolutionMethod {
         for (int i = 0; i < solution.getPatterns().size(); i++) {
             pattern = solution.getPatterns().get(i);
             for (Image image : pattern.getListImg()) {
-                index = image.getId().intValue();
+//                index = image.getId().intValue();
+                
+                int indexList = 0;
+                for (int j = 0; j < countImage.size(); j++) {
+                	if(image.getId() == countImage.get(j)){
+                		indexList = j;
+                	}
+				}
+                
+                countImage.set(indexList, countImage.get(indexList) + count.get(i) * image.getAmount());
+                
 //                countImage.set(index, countImage.get(index) + count.get(i) * image.getAmount());
             }
         }

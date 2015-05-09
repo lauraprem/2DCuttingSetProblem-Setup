@@ -69,11 +69,16 @@ public class Genetic extends StrategyMethod {
      */
     @Override
     public void run() {
+    	
+    	// Génération de la population de départ
         while (generation.size() < populationSize) {
             generation.add(GeneticUtil.getRandomViableSolution2(getContext(), getVerificationMethod()));
         }
+        
+        // Génération i
         for (Integer i = 0; i < amountOfGeneration; i++) {
-
+        	
+        	// Récupération des meilleurs solutions
             generation.forEach(s -> {
                 if (s.getFitness() == -1L)
                     s.setFitness(getFitness(s));
@@ -90,15 +95,20 @@ public class Genetic extends StrategyMethod {
             CoupleIterator coupleIterator = new CoupleIterator(generation);
             Couple c;
             Solution s;
+            
+            // Croisement et mutation
             while (generation.size() < populationSize) {
                 if (!coupleIterator.hasNext()) coupleIterator.reset();
                 c = coupleIterator.next();
                 s = getViableCrossedSolution(c);
+//                s = GeneticUtil.getRandomViableSolution2(getContext(), getVerificationMethod());
                 if(s != null) {
                     if (random.nextDouble() % 100 <= mutationFrequency) s = getViableMutatedSolution(s);
+//                    s = GeneticUtil.getRandomViableSolution2(getContext(), getVerificationMethod());
                     generation.add(s);
                 }
             }
+            
             System.out.println("Génération : " + i);
         }
     }

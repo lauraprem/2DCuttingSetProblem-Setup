@@ -75,6 +75,16 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 		}
 	}
 	
+	public void deleteImg(Image img) {
+		for (int i = 0; i < listImg.size(); i++) {
+			if(listImg.get(i).getId() == img.getId()){
+				if(listImg.get(i).getAmount() > 0){
+					listImg.get(i).setAmount(listImg.get(i).getAmount()-1);
+				}
+			}
+		}
+	}
+	
 	public Long getArea() {
 		return size.getX() * size.getY();
 	}
