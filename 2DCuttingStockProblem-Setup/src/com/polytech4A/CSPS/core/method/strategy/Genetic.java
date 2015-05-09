@@ -112,7 +112,8 @@ public class Genetic extends StrategyMethod {
                 c = coupleIterator.next();
                 s = getViableCrossedSolution(c);
                 if (s != null) {
-                    if (random.nextDouble() % 100 <= mutationFrequency) s = getViableMutatedSolution(s);
+                    // TODO : Décommenter quand fonctionnel
+                    //if (random.nextDouble() % 100 <= mutationFrequency) s = getViableMutatedSolution(s);
                     generation.add(s);
                 }
             }
