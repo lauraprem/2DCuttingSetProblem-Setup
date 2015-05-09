@@ -47,7 +47,7 @@ public class TestsCorinne {
         
 		 Tests tests = new Tests();
 	        Context context = tests.getContext(0);
-	        Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 10, 10);
+	        Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 20, 100);
 	        genetic.run();
 	        Solution solution = genetic.getBestSolution();
 	        LinearResolutionMethod linearResolutionMethod = new LinearResolutionMethod(context);
@@ -59,7 +59,9 @@ public class TestsCorinne {
 
 	        Resolution resolution = new Resolution(context);
 	        Solution tmp = v.getPlaced(solution);
-	        System.out.println("Solution final : "+tmp);
+	        tmp.setFitness(genetic.getFitness(tmp));
+	        System.out.println("Fitness Best : "+tmp.getFitness());
+//	        System.out.println("Solution final : "+tmp);
 	        resolution.setSolution(tmp);
 	        new ToPNG().save("genetic", resolution);
 	}

@@ -94,7 +94,7 @@ public class Tests {
 
 
     private Context context0() {
-        return new Context("test", 400, 2, images0(), new Vector(140000L, 70000L));
+        return new Context("test", 20, 1, images0(), new Vector(140000L, 70000L));
     }
 
     private ArrayList<Image> images0() {

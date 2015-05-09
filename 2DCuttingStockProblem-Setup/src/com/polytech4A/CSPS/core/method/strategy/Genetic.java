@@ -167,15 +167,15 @@ public class Genetic extends StrategyMethod {
         }
     }
 
-    private Long getFitness(Solution solution) {
+    public Long getFitness(Solution solution) {
         Long fit = getLinearResolutionMethod().getFitnessAndRemoveUseless(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
         solution.setFitness(fit);
         if (bestSolution == null || solution.getFitness() < bestSolution.getFitness()) {
-        	if(getVerificationMethod().getPlaced(solution)==null){
-        		System.out.println("Non packable");
-        	}
+//        	if(getVerificationMethod().getPlaced(solution)==null){
+//        		System.out.println("Non packable");
+//        	}
             bestSolution = solution;
-            new ToPNG().save("solution-" + solution.getFitness(), new Resolution(getContext(), solution));
+//            new ToPNG().save("solution-" + solution.getFitness(), new Resolution(getContext(), solution));
         }
         return fit;
     }
