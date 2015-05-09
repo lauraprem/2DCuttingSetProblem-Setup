@@ -214,11 +214,13 @@ public class ToPNG extends FileMethod {
         Long y = 0L;
         final int length = patterns.get(0).getListImg().size();
         int WIDTH, HEIGHT;
-        final int sizeOfFooter = 10 * coeff;
+        int sizeOfFooter;
         for (Pattern cur_patt : patterns) {
             filename = getFilename(subDir, baseFilename, date, y);
             WIDTH = (int) (patterns.get(0).getSize().getWidth() * coeff);
-            HEIGHT = (int) (patterns.get(0).getSize().getHeight() * coeff) + (PATTERN_LEGEND ? sizeOfFooter : 0);
+            HEIGHT = (int) (patterns.get(0).getSize().getHeight() * coeff);
+            sizeOfFooter = HEIGHT/10;
+            HEIGHT  += (PATTERN_LEGEND ? sizeOfFooter : 0);
             BufferedImage img = new BufferedImage(
                     WIDTH, HEIGHT,
                     BufferedImage.TYPE_INT_RGB);
