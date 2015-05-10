@@ -91,90 +91,53 @@ public class Genetic extends StrategyMethod {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for (Integer i = 0; i < amountOfGeneration; i++) {
-            generation = generation.parallelStream()
-                    .sorted((s1, s2) -> {
-                        Long fit1 = s1.getFitness(), fit2 = s2.getFitness();
-                        if(fit1 == -1L) {
-                            s1.setFitness(getFitness(s1));
-                            fit1 = s1.getFitness();
-                        }
-                        if(fit2 == -1L) {
-                            s2.setFitness(getFitness(s2));
-                            fit2 = s2.getFitness();
-                        }
-                        if (fit1 > fit2) return 1;
-                        if (fit2 > fit1) return -1;
-                        return 0;
-                    })
-                    .collect(Collectors.toList())
-                    .subList(0, (int) (generation.size() * bestPartPercentage));
-            statistics[0].add(generation.stream().mapToLong(value -> value.getFitness()).min().getAsLong());
-            statistics[1].add(generation.stream().mapToLong(value -> value.getFitness()).sum()/generation.size());
-            statistics[2].add(generation.stream().mapToLong(value -> value.getFitness()).max().getAsLong());
-            CoupleIterator coupleIterator = new CoupleIterator(generation);
-            Couple c;
-            Solution s;
-            while (generation.size() < populationSize) {
-                if (!coupleIterator.hasNext()) coupleIterator.reset();
-                c = coupleIterator.next();
-                s = getViableCrossedSolution(c);
-                if (s != null) {
-                    // TODO : Décommenter quand fonctionnel
-                    //if (random.nextDouble() * 100 <= mutationFrequency) s = getViableMutatedSolution(s);
-                    generation.add(s);
+        try {
+            for (Integer i = 0; i < amountOfGeneration; i++) {
+                generation = generation.parallelStream()
+                        .sorted((s1, s2) -> {
+                            Long fit1 = s1.getFitness(), fit2 = s2.getFitness();
+                            if (fit1 == -1L) {
+                                s1.setFitness(getFitness(s1));
+                                fit1 = s1.getFitness();
+                            }
+                            if (fit2 == -1L) {
+                                s2.setFitness(getFitness(s2));
+                                fit2 = s2.getFitness();
+                            }
+                            if (fit1 > fit2) return 1;
+                            if (fit2 > fit1) return -1;
+                            return 0;
+                        })
+                        .collect(Collectors.toList())
+                        .subList(0, (int) (generation.size() * bestPartPercentage));
+                statistics[0].add(generation.stream().mapToLong(value -> value.getFitness()).min().getAsLong());
+                statistics[1].add(generation.stream().mapToLong(value -> value.getFitness()).sum() / generation.size());
+                statistics[2].add(generation.stream().mapToLong(value -> value.getFitness()).max().getAsLong());
+                CoupleIterator coupleIterator = new CoupleIterator(generation);
+                Couple c;
+                Solution s;
+                while (generation.size() < populationSize) {
+                    c = coupleIterator.next();
+                    s = getViableCrossedSolution(c);
+                    if (s != null) {
+                        // TODO : Décommenter quand fonctionnel
+                        //if (random.nextDouble() * 100 <= mutationFrequency) s = getViableMutatedSolution(s);
+                        generation.add(s);
+                    }
                 }
+            /*generation.parallelStream().forEach(solution -> {
+                if (random.nextDouble() <= mutationFrequency) solution = getViableMutatedSolution(solution);
+            });*/
+                generation.parallelStream()
+                        .filter(tempSolution -> random.nextDouble() <= mutationFrequency)
+                        .forEach(solution -> solution = getViableMutatedSolution(solution));
+                System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
             }
-            System.out.println("Génération : "+ i +", Fitness : " + bestSolution.getFitness()); 
-        }
-
-        Resolution resolution = new Resolution(getContext());
-        resolution.setSolution(bestSolution);
-        String filepath = new ToPNG().save("genetic", resolution);
-        Report.makeStatisticReport(filepath, statistics[0], statistics[1], statistics[2]);
-    }
-
-    public void fonctionne() {
-    	
-    	// Génération de la population de départ
-        while (generation.size() < populationSize) {
-        	Solution solution = GeneticUtil.getRandomViableSolution2(getContext(), getVerificationMethod());
-            generation.add(solution);
-        }
-        
-        // Génération i
-        for (Integer i = 0; i < amountOfGeneration; i++) {
-        	
-        	// Récupération des meilleurs solutions
-            generation.forEach(s -> {
-                if (s.getFitness() == -1L)
-                    s.setFitness(getFitness(s));
-            });
-            generation = generation.stream()
-                    .sorted((o1, o2) -> {
-                        Long fit1 = o1.getFitness(), fit2 = o2.getFitness();
-                        if (fit1 > fit2) return 1;
-                        if (fit2 > fit1) return -1;
-                        return 0;
-                    })
-                    .collect(Collectors.toList())
-                    .subList(0, (int) (generation.size() * bestPartPercentage));
-            CoupleIterator coupleIterator = new CoupleIterator(generation);
-            Couple c;
-            Solution s;
-            
-            // Croisement et mutation
-            while (generation.size() < populationSize) {
-                if (!coupleIterator.hasNext()) coupleIterator.reset();
-                c = coupleIterator.next();
-                s = getViableCrossedSolution(c);
-                if(s != null) {
-                    if (random.nextDouble() % 100 <= mutationFrequency) s = getViableMutatedSolution(s);
-                    generation.add(s);
-                }
-            }
-            
-            System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
+        } finally {
+            Resolution resolution = new Resolution(getContext());
+            resolution.setSolution(bestSolution);
+            String filepath = new ToPNG().save("genetic", resolution);
+            Report.makeStatisticReport(filepath, statistics[0], statistics[1], statistics[2]);
         }
     }
 
@@ -186,6 +149,9 @@ public class Genetic extends StrategyMethod {
 //        		System.out.println("Non packable");
 //        	}
             bestSolution = getVerificationMethod().getPlaced(solution);
+            Resolution resolution = new Resolution(getContext());
+            resolution.setSolution(bestSolution);
+            new ToPNG().save("genetic-inter", resolution);
 //            new ToPNG().save("solution-" + solution.getFitness(), new Resolution(getContext(), solution));
         }
         return fit;
