@@ -12,6 +12,7 @@ public class ToPDF extends FileMethod {
 	}
 
 	@Override
-	public void save(String filename, Resolution resolution) {
+	public String save(String filename, Resolution resolution) {
+		return null;
 	}
 }

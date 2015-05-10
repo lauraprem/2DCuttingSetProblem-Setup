@@ -21,7 +21,7 @@ public abstract class FileMethod {
         this.dir = dir;
     }
 
-    abstract void save(String filename, Resolution resolution);
+    abstract String save(String filename, Resolution resolution);
 
     protected boolean mkdir() {
         return mkdir("", null);

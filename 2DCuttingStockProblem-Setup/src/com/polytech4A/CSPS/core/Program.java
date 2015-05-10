@@ -32,11 +32,6 @@ public class Program {
                         amountOfGeneration = Integer.parseInt(args[3]);
                 strategyMethod = new Genetic(context, new VerificationMethodImpl(), populationSize, amountOfGeneration);
                 strategyMethod.run();
-
-                Solution solution = strategyMethod.getBestSolution();
-                Resolution resolution = new Resolution(context);
-                resolution.setSolution(solution);
-                new ToPNG().save("genetic", resolution);
             }
         } catch (IOException e) {
             e.printStackTrace();

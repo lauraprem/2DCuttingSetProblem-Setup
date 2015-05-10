@@ -200,7 +200,7 @@ public class ToPNG extends FileMethod {
      * @param resolution Solution et contexte.
      */
     @Override
-    public void save(String filename, Resolution resolution) {
+    public String save(String filename, Resolution resolution) {
         String subDir = filename;
         String baseFilename = filename;
         Date date = new Date();
@@ -248,11 +248,12 @@ public class ToPNG extends FileMethod {
 
         filename = getFilename(subDir, baseFilename, date);
         filename = filename.substring(0, filename.lastIndexOf("/"));
+        subDir = filename;
         filename += "/report-";
         filename += resolution.getContext().getLabel();
         filename += ".txt";
-        Report.make(filename, resolution);
-
+        Report.makeReport(filename, resolution);
+        return subDir;
     }
 
     private void printImage(BufferedImage img, int length, Image placedBox, Position position, int coeff) {
