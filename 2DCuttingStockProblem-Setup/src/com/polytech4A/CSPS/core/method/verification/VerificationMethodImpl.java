@@ -68,11 +68,11 @@ public class VerificationMethodImpl implements IVerificationMethod {
         this.listBinHoriz = listPattern;
     }
 
-    public ArrayList<Image> getListImg() {
+    public synchronized ArrayList<Image> getListImg() {
         return listImg;
     }
 
-    public void setListImg(ArrayList<Image> listImg) {
+    public synchronized void setListImg(ArrayList<Image> listImg) {
         this.listImg = listImg;
     }
 
@@ -404,7 +404,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
     
     public void deepCopyImageList(ArrayList<Image> imagecpy, ArrayList<Image> images){
         imagecpy.clear();
-        for(Image p : images) {
+        ArrayList<Image> imagesCp = (ArrayList<Image>) images.clone();
+        for(Image p : imagesCp) {
             try {
                 imagecpy.add(((Image) p.clone()));
             } catch (CloneNotSupportedException ex) {
@@ -415,7 +416,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
     
     public void deepCopyBinList( ArrayList<Bin> bincpy, ArrayList<Bin> listBin){
         bincpy.clear();
-        for(Bin item: listBin) {
+        ArrayList<Bin> listBinCp = (ArrayList<Bin>) listBin.clone();
+        for(Bin item: listBinCp) {
             try {
                 bincpy.add( (Bin) item.clone());
             } catch (CloneNotSupportedException ex) {
@@ -976,6 +978,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
      * la plus petite)
      */
     protected void getImgOrderDesc() {
-        Collections.sort(listImg, Image.ImageNameComparator);
+        ArrayList<Image> listImgCp = (ArrayList<Image>) getListImg().clone();
+        Collections.sort(listImgCp, Image.ImageNameComparator);
+        setListImg(listImgCp);
     }
 }

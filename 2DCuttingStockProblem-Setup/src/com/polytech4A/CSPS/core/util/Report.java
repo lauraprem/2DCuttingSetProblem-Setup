@@ -84,7 +84,7 @@ public class Report {
         int val;
         for(int i = 0; i < maxGeneration; i++) {
             Long best = bests.get(i), average = averages.get(i), worst = worsts.get(i);
-            str.append(i);
+            str.append(i+1);
             str.append(';');
             str.append(best);
             str.append(';');
