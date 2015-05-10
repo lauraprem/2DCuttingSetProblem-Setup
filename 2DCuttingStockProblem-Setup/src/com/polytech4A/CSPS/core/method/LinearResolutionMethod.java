@@ -85,18 +85,23 @@ public class LinearResolutionMethod {
     private ArrayList<Long> minimize(Solution solution) {
         updateFunction(solution);
         updateConstraints(solution);
-        PointValuePair result = new SimplexSolver().optimize(
-                new MaxIter(1000),
-                function,
-                new LinearConstraintSet(constraints),
-                GoalType.MINIMIZE,
-                new NonNegativeConstraint(true));
-        double[] points = result.getPoint();
-        ArrayList<Long> count = new ArrayList<>();
-        for (int i = 0; i < points.length; i++) {
-            count.add(Math.round(Math.ceil(points[i])));
+        try {
+            PointValuePair result = new SimplexSolver().optimize(
+                    new MaxIter(1000),
+                    function,
+                    new LinearConstraintSet(constraints),
+                    GoalType.MINIMIZE,
+                    new NonNegativeConstraint(true));
+            double[] points = result.getPoint();
+            ArrayList<Long> count = new ArrayList<>();
+            for (int i = 0; i < points.length; i++) {
+                count.add(Math.round(Math.ceil(points[i])));
+            }
+            return count;
+        } catch (NoFeasibleSolutionException e) {
+            e.printStackTrace();
         }
-        return count;
+        return null;
     }
 
     /**
