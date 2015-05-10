@@ -9,13 +9,14 @@ import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Alexandre
  *         10/05/2015
  */
 public class Report {
-    public static void make(String filename, Resolution resolution) {
+    public static void makeReport(String filename, Resolution resolution) {
         Long time = System.currentTimeMillis() - Context.getMilliStart();
         Context context = resolution.getContext();
         Solution solution = resolution.getSolution();
@@ -25,7 +26,7 @@ public class Report {
         str.append(", Found on ");
         str.append(time);
         str.append("ms (");
-        str.append(time/1000);
+        str.append(time / 1000);
         str.append("s)\n");
         for (Image image : context.getImages()) {
             str.append("Image ");
@@ -74,5 +75,36 @@ public class Report {
             e.printStackTrace();
         }
 
+    }
+
+    public static void makeStatisticReport(String filepath, List<Long> bests, List<Long> averages, List<Long> worsts) {
+        int maxGeneration = Math.max(bests.size(), Math.max(averages.size(), worsts.size()));
+        StringBuilder str = new StringBuilder();
+        str.append("Generation;Best Fitness;Average Fitness;Worst Fitness\n");
+        int val;
+        for(int i = 0; i < maxGeneration; i++) {
+            Long best = bests.get(i), average = averages.get(i), worst = worsts.get(i);
+            str.append(i);
+            str.append(';');
+            str.append(best);
+            str.append(';');
+            str.append(average);
+            str.append(';');
+            str.append(worst);
+            str.append('\n');
+        }
+
+        String filename = filepath + "/statistics.csv";
+        try {
+            File file = new File(filename);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream out = new FileOutputStream(file);
+            out.write(str.toString().getBytes());
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
