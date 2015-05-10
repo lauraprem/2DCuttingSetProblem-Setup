@@ -6,16 +6,14 @@ import com.polytech4A.CSPS.core.model.Position;
 import com.polytech4A.CSPS.core.model.Vector;
 import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.util.Log;
-
+import com.polytech4A.CSPS.core.util.Report;
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
-
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -186,8 +184,8 @@ public class ToPNG extends FileMethod {
                 .getStringBounds(label, graph);
         double stringWidth = textDimensions.getCenterX();
         double stringHeight = textDimensions.getCenterY();
-        int start_x = (int) (((double) width/ 2) - stringWidth);
-        int start_y = (int)  (((double) height/ 2) - stringHeight);
+        int start_x = (int) (((double) width / 2) - stringWidth);
+        int start_y = (int) (((double) height / 2) - stringHeight);
 
         graph.setPaint(getTextColor(color));
         graph.drawString(label, x + start_x, y + start_y);
@@ -219,8 +217,8 @@ public class ToPNG extends FileMethod {
             filename = getFilename(subDir, baseFilename, date, y);
             WIDTH = (int) (patterns.get(0).getSize().getWidth() * coeff);
             HEIGHT = (int) (patterns.get(0).getSize().getHeight() * coeff);
-            sizeOfFooter = HEIGHT/10;
-            HEIGHT  += (PATTERN_LEGEND ? sizeOfFooter : 0);
+            sizeOfFooter = HEIGHT / 10;
+            HEIGHT += (PATTERN_LEGEND ? sizeOfFooter : 0);
             BufferedImage img = new BufferedImage(
                     WIDTH, HEIGHT,
                     BufferedImage.TYPE_INT_RGB);
@@ -232,7 +230,7 @@ public class ToPNG extends FileMethod {
                             .forEach(
                                     pos -> printImage(img, length, pb, pos, coeff)));
 
-            if(PATTERN_LEGEND) printFooter(img, HEIGHT, WIDTH, sizeOfFooter, y, cur_patt);
+            if (PATTERN_LEGEND) printFooter(img, HEIGHT, WIDTH, sizeOfFooter, y, cur_patt);
 
             try {
                 File file = new File(filename);
@@ -248,21 +246,13 @@ public class ToPNG extends FileMethod {
             y++;
         }
 
-        try {
-            filename = getFilename(subDir, baseFilename, date);
-            filename = filename.substring(0, filename.lastIndexOf("." + getExtension()));
-            filename += ".txt";
-            File file = new File(filename);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileOutputStream out = new FileOutputStream(file);
-            out.write(resolution.toString().getBytes());
-            out.close();
-            logger.info("Create new file " + file.getPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        filename = getFilename(subDir, baseFilename, date);
+        filename = filename.substring(0, filename.lastIndexOf("/"));
+        filename += "/report-";
+        filename += resolution.getContext().getLabel();
+        filename += ".txt";
+        Report.make(filename, resolution);
+
     }
 
     private void printImage(BufferedImage img, int length, Image placedBox, Position position, int coeff) {
@@ -288,7 +278,7 @@ public class ToPNG extends FileMethod {
     }
 
     private void printFooter(BufferedImage img, final int HEIGHT, final int WIDTH, final int sizeOfFooter, final Long num, final Pattern cur_patt) {
-    	drawRectangle(img, 0,
+        drawRectangle(img, 0,
                 HEIGHT - sizeOfFooter,
                 WIDTH,
                 sizeOfFooter,
