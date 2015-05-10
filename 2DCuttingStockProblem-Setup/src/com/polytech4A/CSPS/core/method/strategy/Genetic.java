@@ -174,7 +174,7 @@ public class Genetic extends StrategyMethod {
 //        	if(getVerificationMethod().getPlaced(solution)==null){
 //        		System.out.println("Non packable");
 //        	}
-            bestSolution = solution;
+            bestSolution = getVerificationMethod().getPlaced(solution);
 //            new ToPNG().save("solution-" + solution.getFitness(), new Resolution(getContext(), solution));
         }
         return fit;

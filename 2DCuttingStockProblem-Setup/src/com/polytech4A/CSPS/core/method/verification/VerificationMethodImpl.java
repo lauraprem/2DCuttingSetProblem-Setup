@@ -134,6 +134,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
     @Override
     public Solution getPlaced(Solution solution) {
         Solution newSolution = new Solution();
+        newSolution.setFitness(solution.getFitness());
 
         /*System.out.println("");
         System.out.println("");
