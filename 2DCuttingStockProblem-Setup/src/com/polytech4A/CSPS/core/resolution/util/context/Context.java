@@ -37,6 +37,8 @@ public class Context {
 
 	private Integer maxPattern;
 
+	private static Long milliStart = null;
+
 	/**
 	 * Boxes with size and amount to print, not the amount per pattern.
 	 */
@@ -47,6 +49,7 @@ public class Context {
 	}
 
 	public Context(String label, int patternCost, int sheetCost, @NotNull ArrayList<Image> images, Vector patternSize, Long scale) {
+		if(milliStart == null) milliStart = System.currentTimeMillis();
 		this.label = label;
 		this.patternCost = patternCost;
 		this.sheetCost = sheetCost;
@@ -87,6 +90,10 @@ public class Context {
 
 	public synchronized Integer getMaxPattern() {
 		return maxPattern;
+	}
+
+	public static Long getMilliStart() {
+		return milliStart;
 	}
 
 	@Override
