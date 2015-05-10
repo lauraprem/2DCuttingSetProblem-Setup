@@ -20,13 +20,13 @@
   <properties>
     <log4j.version>2.2</log4j.version>
     <junit.version>4.12</junit.version>
-    <commons.apache.version>2.2</commons.apache.version>
+    <commons.apache.version>3.4.1</commons.apache.version>
     <commons.io.version>2.4</commons.io.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.apache.commons</groupId>
-      <artifactId>commons-math</artifactId>
+      <artifactId>commons-math3</artifactId>
       <version>${commons.apache.version}</version>
     </dependency>
     <dependency>

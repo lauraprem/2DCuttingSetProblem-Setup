@@ -5,13 +5,10 @@ import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.util.Log;
-import org.apache.commons.math.optimization.GoalType;
-import org.apache.commons.math.optimization.OptimizationException;
-import org.apache.commons.math.optimization.RealPointValuePair;
-import org.apache.commons.math.optimization.linear.LinearConstraint;
-import org.apache.commons.math.optimization.linear.LinearObjectiveFunction;
-import org.apache.commons.math.optimization.linear.Relationship;
-import org.apache.commons.math.optimization.linear.SimplexSolver;
+import org.apache.commons.math3.optim.MaxIter;
+import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.linear.*;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
@@ -49,7 +46,7 @@ public class LinearResolutionMethod {
 
     public ArrayList<Long> getCount(Solution solution) {
         ArrayList<Long> count = minimize(solution);
-        for(int i = 0; i < count.size();i++) {
+        for (int i = 0; i < count.size(); i++) {
             solution.getPatterns().get(i).setAmount(count.get(i));
         }
         return minimize(solution);
@@ -57,11 +54,11 @@ public class LinearResolutionMethod {
 
 
     public Long getFitnessAndRemoveUseless(Solution solution, Long costOfPattern,
-                           Long costOfPrinting) {
+                                           Long costOfPrinting) {
         Long fitness = getFitness(solution, costOfPattern, costOfPrinting);
         Boolean changed = Boolean.FALSE;
-        for(int i = 0; i < solution.getPatterns().size(); i++)
-            if(solution.getPatterns().get(i).getAmount() == 0L) {
+        for (int i = 0; i < solution.getPatterns().size(); i++)
+            if (solution.getPatterns().get(i).getAmount() == 0L) {
                 solution.getPatterns().remove(i);
                 changed = Boolean.TRUE;
                 i--;
@@ -88,18 +85,18 @@ public class LinearResolutionMethod {
     private ArrayList<Long> minimize(Solution solution) {
         updateFunction(solution);
         updateConstraints(solution);
-        try {
-            RealPointValuePair result = new SimplexSolver().optimize(function, constraints, GoalType.MINIMIZE, true);
-            double[] points = result.getPoint();
-            ArrayList<Long> count = new ArrayList<>();
-            for (int i = 0; i < points.length; i++) {
-                count.add(Math.round(Math.ceil(points[i])));
-            }
-            return count;
-        } catch (OptimizationException e) {
-            e.printStackTrace();
+        PointValuePair result = new SimplexSolver().optimize(
+                new MaxIter(1000),
+                function,
+                new LinearConstraintSet(constraints),
+                GoalType.MINIMIZE,
+                new NonNegativeConstraint(true));
+        double[] points = result.getPoint();
+        ArrayList<Long> count = new ArrayList<>();
+        for (int i = 0; i < points.length; i++) {
+            count.add(Math.round(Math.ceil(points[i])));
         }
-        return null;
+        return count;
     }
 
     /**
