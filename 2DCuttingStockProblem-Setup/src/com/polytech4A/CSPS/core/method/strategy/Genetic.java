@@ -1,11 +1,9 @@
 package com.polytech4A.CSPS.core.method.strategy;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 import com.polytech4A.CSPS.core.method.strategy.util.GeneticUtil;
 import com.polytech4A.CSPS.core.method.verification.IVerificationMethod;
@@ -15,6 +13,7 @@ import com.polytech4A.CSPS.core.model.couple.CoupleIterator;
 import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.resolution.util.file.ToPNG;
+import com.polytech4A.CSPS.core.util.Report;
 import com.polytech4A.CSPS.core.util.SolutionUtil;
 
 /**
@@ -73,6 +72,10 @@ public class Genetic extends StrategyMethod {
      */
     @Override
     public void run() {
+        List<Long>[] statistics = new ArrayList[3];
+        statistics[0] = new ArrayList<>();
+        statistics[1] = new ArrayList<>();
+        statistics[2] = new ArrayList<>();
         while (generation.size() < populationSize) {
             generation.add(new Solution());
         }
@@ -106,6 +109,9 @@ public class Genetic extends StrategyMethod {
                     })
                     .collect(Collectors.toList())
                     .subList(0, (int) (generation.size() * bestPartPercentage));
+            statistics[0].add(generation.stream().mapToLong(value -> value.getFitness()).min().getAsLong());
+            statistics[1].add(generation.stream().mapToLong(value -> value.getFitness()).sum()/generation.size());
+            statistics[2].add(generation.stream().mapToLong(value -> value.getFitness()).max().getAsLong());
             CoupleIterator coupleIterator = new CoupleIterator(generation);
             Couple c;
             Solution s;
@@ -115,14 +121,19 @@ public class Genetic extends StrategyMethod {
                 s = getViableCrossedSolution(c);
                 if (s != null) {
                     // TODO : Décommenter quand fonctionnel
-                    if (random.nextDouble() * 100 <= mutationFrequency) s = getViableMutatedSolution(s);
+                    //if (random.nextDouble() * 100 <= mutationFrequency) s = getViableMutatedSolution(s);
                     generation.add(s);
                 }
             }
             System.out.println("Génération : "+ i +", Fitness : " + bestSolution.getFitness()); 
         }
 
+        Resolution resolution = new Resolution(getContext());
+        resolution.setSolution(bestSolution);
+        String filepath = new ToPNG().save("genetic", resolution);
+        Report.makeStatisticReport(filepath, statistics[0], statistics[1], statistics[2]);
     }
+
     public void fonctionne() {
     	
     	// Génération de la population de départ
