@@ -2,10 +2,7 @@ package com.polytech4A.CSPS.core.model.couple;
 
 import com.polytech4A.CSPS.core.model.Solution;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * @author Alexandre
@@ -13,7 +10,7 @@ import java.util.NoSuchElementException;
  */
 public class CoupleIterator implements Iterator<Couple> {
     private ArrayList<Solution> generation;
-    private Couple current;
+    private Random random = new Random();
 
     public CoupleIterator(List<Solution> generation) {
         this.generation = new ArrayList<>();
@@ -29,9 +26,7 @@ public class CoupleIterator implements Iterator<Couple> {
      */
     @Override
     public boolean hasNext() {
-        if (generation.size() < 2) return false;
-        if (current == null) current = new Couple(generation.get(0), generation.get(1));
-        	return (generation.indexOf(current.getS1()) != generation.size() - 1) && (generation.indexOf(current.getS2()) != generation.size() - 1);
+        return generation.size() >= 2;
     }
 
     /**
@@ -54,19 +49,8 @@ Please sign in to comment.
     @Override
     public Couple next() {
         if (generation.size() < 2) throw new NoSuchElementException();
-        if (current == null) current = new Couple(generation.get(0), generation.get(1));
-        int indexS1 = generation.indexOf(current.getS1()),
-                indexS2 = generation.indexOf(current.getS2());
-        if (indexS1 == generation.size() - 2 && indexS2 == generation.size() - 1) throw new NoSuchElementException();
-        if(indexS2 == generation.size() - 1) {
-            indexS1++;
-            indexS2 = indexS1++;
-        } else indexS2++;
-        current = new Couple(generation.get(indexS1), generation.get(indexS2));
-        return current;
-    }
-
-    public void reset() {
-        current = null;
+        int indexS1 = random.nextInt(generation.size()), indexS2 = random.nextInt(generation.size() - 1);
+        if(indexS2 >= indexS1) indexS2++;
+        return new Couple(generation.get(indexS1), generation.get(indexS2));
     }
 }
