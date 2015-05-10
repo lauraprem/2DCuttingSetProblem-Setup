@@ -1,10 +1,10 @@
 package com.polytech4A.CSPS.core.resolution.util.context;
 
+import java.util.ArrayList;
+
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Vector;
 import com.sun.istack.internal.NotNull;
-
-import java.util.ArrayList;
 
 /**
  * @version 1.0
@@ -42,14 +42,16 @@ public class Context {
 	/**
 	 * Boxes with size and amount to print, not the amount per pattern.
 	 */
-	@NotNull private ArrayList<Image> images;
+	@NotNull
+	private ArrayList<Image> images;
 
 	public Context(String label, int patternCost, int sheetCost, @NotNull ArrayList<Image> images, Vector patternSize) {
 		this(label, patternCost, sheetCost, images, patternSize, 1L);
 	}
 
 	public Context(String label, int patternCost, int sheetCost, @NotNull ArrayList<Image> images, Vector patternSize, Long scale) {
-		if(milliStart == null) milliStart = System.currentTimeMillis();
+		if (milliStart == null)
+			milliStart = System.currentTimeMillis();
 		this.label = label;
 		this.patternCost = patternCost;
 		this.sheetCost = sheetCost;
@@ -57,11 +59,23 @@ public class Context {
 		this.patternSize = patternSize;
 		maxPattern = images.size();
 		Double imagesAera = 0.0;
-		Long patternAera = patternSize.getX()*patternSize.getY();
-		for(Image i : this.images) {
+		Long patternAera = patternSize.getX() * patternSize.getY();
+		for (Image i : this.images) {
 			imagesAera += i.getArea();
 		}
-		minPattern = ((Double) Math.ceil(imagesAera/patternAera)).intValue();
+		minPattern = ((Double) Math.ceil(imagesAera / patternAera)).intValue();
+	}
+
+	public synchronized ArrayList<Image> getCopyImages() {
+		ArrayList<Image> listImgCopy = new ArrayList<Image>();
+		for (int i = 0; i < images.size(); i++) {
+			// try {
+			listImgCopy.add(new Image(images.get(i).getId(), new Vector(images.get(i).getSize().getX(), images.get(i).getSize().getY()), images.get(i).getGoal()));
+			// } catch (CloneNotSupportedException e) {
+			// e.printStackTrace();
+			// }
+		}
+		return listImgCopy;
 	}
 
 	public synchronized String getLabel() {
@@ -106,7 +120,7 @@ public class Context {
 		sb.append(", minPattern=").append(minPattern);
 		sb.append(", maxPattern=").append(maxPattern);
 		sb.append(", images=[");
-		for(Image i : images) {
+		for (Image i : images) {
 			sb.append("Image{");
 			sb.append("id=").append(i.getId());
 			sb.append(", size=").append(i.getSize());

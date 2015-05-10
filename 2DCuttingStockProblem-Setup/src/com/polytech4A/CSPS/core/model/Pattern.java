@@ -3,8 +3,6 @@ package com.polytech4A.CSPS.core.model;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import static com.polytech4A.CSPS.core.util.Util.escToString;
-
 /**
  * Planche contenant des images
  *
@@ -66,60 +64,57 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 	public void setListImg(ArrayList<Image> listImg) {
 		this.listImg = listImg;
 	}
-	
+
 	public void addImg(Image img) {
 		for (int i = 0; i < listImg.size(); i++) {
-			if(listImg.get(i).getId().equals(img.getId())){
-				listImg.get(i).setAmount(listImg.get(i).getAmount()+1);
+			if (listImg.get(i).getId().equals(img.getId())) {
+				listImg.get(i).setAmount(listImg.get(i).getAmount() + 1);
 			}
 		}
 	}
-	
+
 	public Long getArea() {
 		return size.getX() * size.getY();
 	}
 
 	public Image getImage(Long id) {
-		for(Image image : listImg) if(id.equals(image.getId())) return image;
+		for (Image image : listImg)
+			if (id.equals(image.getId()))
+				return image;
 		return null;
 	}
 
-	/*@Override
-	public String toString() {
-		StringBuilder listImgString = new StringBuilder();
-		String patternString = "PATTERN\n" + "size : " + escToString(size)
-				+ "\n" + "amount : " + escToString(amount) + "\n"
-				+ "listImg : \n";
-
-		if (listImg != null) {
-			for (Image img : listImg) {
-				if (img != null && img.getAmount() != 0) {
-					listImgString.append(escToString(img));
-					listImgString.append('\n');
-				}
-			}
-		} else {
-			listImgString.append(escToString(listImg));
-			listImgString.append('\n');
-		}
-
-		patternString = patternString + listImgString.toString();
-
-		return patternString;
-	}*/
+	/*
+	 * @Override public String toString() { StringBuilder listImgString = new
+	 * StringBuilder(); String patternString = "PATTERN\n" + "size : " +
+	 * escToString(size) + "\n" + "amount : " + escToString(amount) + "\n" +
+	 * "listImg : \n";
+	 * 
+	 * if (listImg != null) { for (Image img : listImg) { if (img != null &&
+	 * img.getAmount() != 0) { listImgString.append(escToString(img));
+	 * listImgString.append('\n'); } } } else {
+	 * listImgString.append(escToString(listImg)); listImgString.append('\n'); }
+	 * 
+	 * patternString = patternString + listImgString.toString();
+	 * 
+	 * return patternString; }
+	 */
 
 	@Override
 	public String toString() {
 		final StringBuffer sb = new StringBuffer("Pattern{");
 		sb.append("size=").append(size);
 		sb.append(", amount=").append(amount);
-		if(listImg != null) {
-			if(listImg.size() != 0) {
-                sb.append(", listImg=[");
-                listImg.forEach(i -> {if(i.getAmount() != 0L) sb.append(i.toString());});
-                sb.append("]");
-			}
-			else sb.append(", listImg=").append("<empty>");
+		if (listImg != null) {
+			if (listImg.size() != 0) {
+				sb.append(", listImg=[");
+				listImg.forEach(i -> {
+					if (i.getAmount() != 0L)
+						sb.append(i.toString());
+				});
+				sb.append("]");
+			} else
+				sb.append(", listImg=").append("<empty>");
 		}
 		sb.append('}');
 		return sb.toString();
@@ -132,9 +127,9 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 	}
 
 	public Object clone() throws CloneNotSupportedException {
-		Pattern cloned = new Pattern(this.size, this.amount);
+		Pattern cloned = new Pattern((Vector) this.size.clone(), this.amount);
 		cloned.listImg = new ArrayList<Image>();
-		if(listImg != null){
+		if (listImg != null) {
 			for (int i = 0; i < listImg.size(); i++) {
 				cloned.listImg.add((Image) listImg.get(i).clone());
 			}
@@ -160,7 +155,7 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 			return PattArea1.compareTo(PattArea2);
 
 			// descending order
-//			 return PattArea2.compareTo(PattArea1);
+			// return PattArea2.compareTo(PattArea1);
 		}
 
 	};

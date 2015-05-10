@@ -28,17 +28,18 @@ public class PatternUtil {
 			patternTemp = (Pattern) pattern.clone();
 			for (Image image : patternTemp.getListImg()) {
 				if (image.getId().equals(imageId)) {
-					image.setAmount(image.getAmount() + 1);
+					image.incrementAmoutByOne();
 					if (verif != null) {
 						patternTemp = verif.getPlacedPatternRecursive(patternTemp, 0);
 						if (patternTemp != null) {
 							pattern.setPattern(patternTemp);
-
+							if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
+								System.out.println("makeSolvable non packable  !!");
+							}
 							return true;
 						}
 					} else {
 						pattern.setPattern(patternTemp);
-
 						return true;
 					}
 					break;
@@ -47,6 +48,9 @@ public class PatternUtil {
 
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
+		}
+		if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
+			System.out.println("makeSolvable non packable  !!");
 		}
 		return false;
 	}
@@ -93,7 +97,7 @@ public class PatternUtil {
 		try {
 			originTemp = (Pattern) originPattern.clone();
 			destinaionTemp = (Pattern) destinationPattern.clone();
-			
+
 			// suppress from origin pattern
 			for (int i = 0; i < originTemp.getListImg().size(); i++) {
 				if (originTemp.getListImg().get(i).getId().equals(imageId) && (amount = originTemp.getListImg().get(i).getAmount()) > 0) {
@@ -110,7 +114,7 @@ public class PatternUtil {
 							originPattern.setPattern(originTemp);
 							return true;
 						}
-					}else{
+					} else {
 						return false;
 					}
 				}
