@@ -115,7 +115,7 @@ public class Genetic extends StrategyMethod {
                 s = getViableCrossedSolution(c);
                 if (s != null) {
                     // TODO : Décommenter quand fonctionnel
-                    //if (random.nextDouble() * 100 <= mutationFrequency) s = getViableMutatedSolution(s);
+                    if (random.nextDouble() * 100 <= mutationFrequency) s = getViableMutatedSolution(s);
                     generation.add(s);
                 }
             }
@@ -123,50 +123,7 @@ public class Genetic extends StrategyMethod {
         }
 
     }
-    public void fonctionne() {
-    	
-    	// Génération de la population de départ
-        while (generation.size() < populationSize) {
-        	Solution solution = GeneticUtil.getRandomViableSolution2(getContext(), getVerificationMethod());
-            generation.add(solution);
-        }
-        
-        // Génération i
-        for (Integer i = 0; i < amountOfGeneration; i++) {
-        	
-        	// Récupération des meilleurs solutions
-            generation.forEach(s -> {
-                if (s.getFitness() == -1L)
-                    s.setFitness(getFitness(s));
-            });
-            generation = generation.stream()
-                    .sorted((o1, o2) -> {
-                        Long fit1 = o1.getFitness(), fit2 = o2.getFitness();
-                        if (fit1 > fit2) return 1;
-                        if (fit2 > fit1) return -1;
-                        return 0;
-                    })
-                    .collect(Collectors.toList())
-                    .subList(0, (int) (generation.size() * bestPartPercentage));
-            CoupleIterator coupleIterator = new CoupleIterator(generation);
-            Couple c;
-            Solution s;
-            
-            // Croisement et mutation
-            while (generation.size() < populationSize) {
-                if (!coupleIterator.hasNext()) coupleIterator.reset();
-                c = coupleIterator.next();
-                s = getViableCrossedSolution(c);
-                if(s != null) {
-                    if (random.nextDouble() % 100 <= mutationFrequency) s = getViableMutatedSolution(s);
-                    generation.add(s);
-                }
-            }
-            
-            System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
-        }
-    }
-
+    
     public Long getFitness(Solution solution) {
         Long fit = getLinearResolutionMethod().getFitnessAndRemoveUseless(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
         solution.setFitness(fit);
