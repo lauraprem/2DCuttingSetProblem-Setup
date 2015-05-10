@@ -5,6 +5,7 @@ import com.polytech4A.CSPS.core.model.GeneticSolution;
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
+import com.polytech4A.CSPS.core.model.Vector;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.util.PatternUtil;
 import com.polytech4A.CSPS.core.util.SolutionUtil;
@@ -119,13 +120,109 @@ public class GeneticUtil extends SolutionUtil {
         
 //        if(verificationMethod.getPlaced(solution) == null){
         	makePackable(context,solution, verificationMethod);
+        	
 //        	if(verificationMethod.getPlaced(solution) == null){
 //        		System.out.println("Null");
 //        	}
 //        }
-        	 if(verificationMethod.getPlaced(solution) == null){
-        		 System.out.println("Null");
-        	 }
+//        	 if(verificationMethod.getPlaced(solution) == null){
+//        		 System.out.println("Null");
+//        	 }
+        	
+        	
+        	// TODO Test
+    		// Récupération id de la liste d'images qui doivent être présent
+        	int nbImage = context.getImages().size();
+        	ArrayList<Image> listIdImg = new ArrayList<Image>();
+        	for (int i = 0; i <nbImage; i++) {
+        		listIdImg.add(new Image(context.getImages().get(i).getId(),context.getImages().get(i).getSize(),context.getImages().get(i).getAmount()));
+        	}
+        	
+//    		Solution s = new Solution();
+//    		for(int k=0;k <11; k++){
+//    			Pattern p = new Pattern(new Vector(context.getPatternSize().getX(),context.getPatternSize().getY()),listIdImg);
+//    			if(k==0){
+//    				p.addImg(7L);
+//    				p.addImg(16L);
+//    				p.addImg(19L);
+//    			}
+//    			if(k==1){
+//    				p.addImg(1L);
+//    				p.addImg(20L);
+//    				p.addImg(19L);
+//    			}
+//    			if(k==2){
+//    				p.addImg(0L);
+//    				p.addImg(10L);
+//    				p.addImg(16L);
+//    				p.addImg(28L);
+//    			}
+//    			if(k==3){
+//    				p.addImg(5L);
+//    				p.addImg(14L);
+//    				p.addImg(18L);
+//    				p.addImg(21L);
+//    				p.addImg(27L);
+//    			}
+//    			if(k==4){
+//    				p.addImg(1L);
+//    				p.addImg(10L);
+//    				p.addImg(14L);
+//    				p.addImg(22L);
+//    				p.addImg(24L);
+//    			}
+//    			if(k==5){
+//    				p.addImg(3L);
+//    				p.addImg(6L);
+//    			}
+//    			if(k==6){
+//    				p.addImg(0L);
+//    				p.addImg(9L);
+//    				p.addImg(26L);
+//    			}
+//    			if(k==7){
+//    				p.addImg(1L);
+//    				p.addImg(5L);
+//    				p.addImg(13L);
+//    				p.addImg(22L);
+//    			}
+//    			if(k==8){
+//    				p.addImg(10L);
+//    				p.addImg(12L);
+//    				p.addImg(14L);
+//    				p.addImg(16L);
+//    				p.addImg(18L);
+//    				p.addImg(29L);
+//    			}
+//    			if(k==9){
+//    				p.addImg(3L);
+//    				p.addImg(4L);
+//    				p.addImg(17L);
+//    				p.addImg(23L);
+//    			}
+//    			if(k==10){
+//    				p.addImg(5L);
+//    				p.addImg(8L);
+//    				p.addImg(9L);
+//    				p.addImg(14L);
+//    			}
+//    			if(k==11){
+//    				p.addImg(2L);
+//    				p.addImg(11L);
+//    				p.addImg(15L);
+//    				p.addImg(24L);
+//    				p.addImg(24L);
+//    				p.addImg(27L);
+//    			}
+//    			s.addPattern(p);
+//    		}
+//    		solution.setSolution(s);
+//    		
+    		//----------------------
+        	
+        	if(!isSolvable(context, solution)){
+	    		System.out.println("Pas solvable cross !!");
+	    	}
         return solution;
     }
 
