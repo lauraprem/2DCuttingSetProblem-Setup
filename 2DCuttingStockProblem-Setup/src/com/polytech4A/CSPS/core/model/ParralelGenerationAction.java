@@ -52,13 +52,13 @@ public class ParralelGenerationAction extends Thread {
 
     private void makeRandom() {
         generation.set(index, (Solution) GeneticUtil.getRandomViableSolution2(context, verificationMethod).clone());
-        //if(getGenerated()*10000/generation.size()%100 == 0) System.out.println(getGenerated()*100/generation.size() + "% of population generated");
+        if(getGenerated()*1000/generation.size()%10 == 0) System.out.println(getGenerated()*100/generation.size() + "% of population generated");
 
     }
 
     private void makeMutation() {
         generation.set(index, (Solution) GeneticUtil.getViableMutatedSolution(context, verificationMethod, (Solution) generation.get(index).clone()).clone());
-        //if(getGenerated()*10000/generation.size()%100 == 0) System.out.println(getGenerated()*100/generation.size() + "% mutated generated");
+        if(getGenerated()*1000/generation.size()%10 == 0) System.out.println(getGenerated()*100/generation.size() + "% mutated generated");
     }
 
     public static Integer getGenerated() {

@@ -162,7 +162,7 @@ public class Genetic extends StrategyMethod {
                 ParralelGenerationAction.setGenerated(0);
                 for (int index = 0; index < generation.size(); index++) {
                     if (random.nextDouble() <= mutationFrequency) {
-                        action = new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, semaphore, GenerationAction.randomSolution);
+                        action = new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, semaphore, GenerationAction.randomMutation);
                         action.start();
                     }
                     else semaphore.release();
