@@ -181,9 +181,9 @@ public class Genetic extends StrategyMethod {
             // System.out.println("Non packable");
             // }
             bestSolution = getVerificationMethod().getPlaced(solution);
-            Resolution resolution = new Resolution(getContext());
-            resolution.setSolution(bestSolution);
-            String filepath = new ToPNG().save("genetic-inter", resolution);
+            //Resolution resolution = new Resolution(getContext());
+            //resolution.setSolution(bestSolution);
+            //String filepath = new ToPNG().save("genetic-inter", resolution);
             //Report.makeStatisticReport(filepath, statistics[0], statistics[1], statistics[2]);
             // new ToPNG().save("solution-" + solution.getFitness(), new
             // Resolution(getContext(), solution));
