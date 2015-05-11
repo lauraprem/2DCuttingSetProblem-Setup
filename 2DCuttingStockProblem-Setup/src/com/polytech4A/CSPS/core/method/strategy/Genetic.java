@@ -170,7 +170,7 @@ public class Genetic extends StrategyMethod {
             }
             Resolution resolution = new Resolution(getContext());
             resolution.setSolution(bestSolution);
-            String filepath = new ToPNG().save("genetic", resolution);
+            String filepath = new ToPNG().save("version2.1-", resolution);
             Report.makeStatisticReport(filepath, statistics[3], statistics[0], statistics[1], statistics[2]);
         } catch (Exception e) {
             //e.printStackTrace();
