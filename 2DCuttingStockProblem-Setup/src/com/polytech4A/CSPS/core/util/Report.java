@@ -84,7 +84,7 @@ public class Report {
         //str.append("Best Found;");
         str.append("Best Fitness;");
         str.append("Average Fitness;");
-        str.append("Worst Fitness;");
+        str.append("Worst Fitness;\n");
         int val;
         for (int i = 0; i < maxGeneration; i++) {
             Long bestFound = bestsFound.get(i), best = bests.get(i), average = averages.get(i), worst = worsts.get(i);
