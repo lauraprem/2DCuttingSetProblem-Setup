@@ -14,6 +14,12 @@ public class Tests {
     public ArrayList<Solution> solution = new ArrayList<>();
     private ArrayList<Pattern> patterns = new ArrayList<>();
 
+    public Tests() {
+        contexts.add(context0());
+
+        solution.add(solution0());
+    }
+
     public int size() {
         return contexts.size();
     }
@@ -24,12 +30,6 @@ public class Tests {
 
     public Solution getSolution(int i) {
         return solution.get(i);
-    }
-
-    public Tests() {
-        contexts.add(context0());
-
-        solution.add(solution0());
     }
 
     private Solution solution0() {

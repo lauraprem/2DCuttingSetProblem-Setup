@@ -34,8 +34,8 @@ public abstract class FileMethod {
     protected boolean mkdir(String subDir, Date date) {
         String file = path + '/';
         file += dir + '/';
-        if(!"".equals(subDir)) file += subDir;
-        if(date != null) file += '-' + new SimpleDateFormat(DATE_FORMAT).format(date);
+        if (!"".equals(subDir)) file += subDir;
+        if (date != null) file += '-' + new SimpleDateFormat(DATE_FORMAT).format(date);
 
         File f = new File(file);
         return f.mkdirs();
@@ -52,9 +52,9 @@ public abstract class FileMethod {
     protected String getFilename(String subDir, String filename, Date date, Long id) {
         String file = path + '/';
         file += dir + '/';
-        if(!"".equals(subDir)) file += subDir + '-' + new SimpleDateFormat(DATE_FORMAT).format(date) + '/';
+        if (!"".equals(subDir)) file += subDir + '-' + new SimpleDateFormat(DATE_FORMAT).format(date) + '/';
         file += filename;
-        if(id >= 0) file += '_' + id.toString();
+        if (id >= 0) file += '_' + id.toString();
         file += '-' + new SimpleDateFormat(DATE_FORMAT).format(date);
         file += '.' + extension;
         return file;

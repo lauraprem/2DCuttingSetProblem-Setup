@@ -8,43 +8,45 @@ import com.polytech4A.CSPS.core.resolution.util.context.Context;
  *         13/03/2015
  */
 public class Resolution extends Thread {
-	private Context context;
-	private Solution solution;
+    private Context context;
+    private Solution solution;
 
-	public Resolution(Context context) {
-		this.context = context;
-	}
-	public Resolution(Context context, Solution solution) {
-		this.context = context;
-		this.solution = solution;
-	}
+    public Resolution(Context context) {
+        this.context = context;
+    }
 
-	public Context getContext() {
-		return context;
-	}
+    public Resolution(Context context, Solution solution) {
+        this.context = context;
+        this.solution = solution;
+    }
 
-	public void setContext(Context context) {
-		this.context = context;
-	}
+    public Context getContext() {
+        return context;
+    }
 
-	public Solution getSolution() {
-		return solution;
-	}
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
-	public void setSolution(Solution solution) {
-		this.solution = solution;
-	}
+    public Solution getSolution() {
+        return solution;
+    }
 
-	@Override public void run() {
+    public void setSolution(Solution solution) {
+        this.solution = solution;
+    }
 
-	}
+    @Override
+    public void run() {
 
-	@Override
-	public String toString() {
-		final StringBuffer sb = new StringBuffer("Resolution{");
-		sb.append("context=").append(context);
-		sb.append(", solution=").append(solution);
-		sb.append("}\n");
-		return sb.toString();
-	}
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Resolution{");
+        sb.append("context=").append(context);
+        sb.append(", solution=").append(solution);
+        sb.append("}\n");
+        return sb.toString();
+    }
 }

@@ -3,11 +3,8 @@ package com.polytech4A.CSPS.core;
 import com.polytech4A.CSPS.core.method.strategy.Genetic;
 import com.polytech4A.CSPS.core.method.strategy.StrategyMethod;
 import com.polytech4A.CSPS.core.method.verification.VerificationMethodImpl;
-import com.polytech4A.CSPS.core.model.Solution;
-import com.polytech4A.CSPS.core.resolution.Resolution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.resolution.util.context.ContextLoaderUtils;
-import com.polytech4A.CSPS.core.resolution.util.file.ToPNG;
 
 import java.io.IOException;
 

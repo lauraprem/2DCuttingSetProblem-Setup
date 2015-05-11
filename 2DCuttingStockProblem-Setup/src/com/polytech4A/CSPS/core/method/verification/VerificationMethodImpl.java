@@ -1,56 +1,31 @@
 package com.polytech4A.CSPS.core.method.verification;
 
+import com.polytech4A.CSPS.core.model.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ListIterator;
 
-import com.polytech4A.CSPS.core.model.Bin;
-import com.polytech4A.CSPS.core.model.Image;
-import com.polytech4A.CSPS.core.model.Pattern;
-import com.polytech4A.CSPS.core.model.Position;
-import com.polytech4A.CSPS.core.model.Solution;
-import com.polytech4A.CSPS.core.model.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
- *
  * @author Corinne Faire aussi en fonction de la hauteur
  */
 public class VerificationMethodImpl implements IVerificationMethod {
 
-    public enum ImageOrientation {
-
-        ROTATION_0,
-        ROTATION_90
-    }
-
-    public enum CutOrientation {
-
-        CUT_HORIZONTAL,
-        CUT_VERTICAL
-    }
     /*
      * Liste de pattern au fur et à mesure du découpage du pattern initial. A
      * trier du plus petit au plus grand
      */
     private ArrayList<Bin> listBinHoriz;
-
     private ArrayList<Bin> listBinVerti;
-
     private int compteur;
     private long minArea;
     private long nbSteps;
     private long maxSteps;
-
-	// TODO test
-//	private ArrayList<Pattern> listBin;
     /**
      * Liste les images à placer sur un pattern de la plus grande taille à la
      * plus petite
      */
     private ArrayList<Image> listImg;
-
     public VerificationMethodImpl() {
         this.listBinHoriz = new ArrayList<Bin>();
         this.listBinVerti = new ArrayList<Bin>();
@@ -59,6 +34,9 @@ public class VerificationMethodImpl implements IVerificationMethod {
         nbSteps = 0;
         minArea = java.lang.Long.MAX_VALUE;
     }
+
+    // TODO test
+//	private ArrayList<Pattern> listBin;
 
     public ArrayList<Bin> getListPattern() {
         return listBinHoriz;
@@ -116,7 +94,6 @@ public class VerificationMethodImpl implements IVerificationMethod {
             this.listBinHoriz.remove(index);
         }
     }
-    
 
     public void removeListBinVerti(int BinVertiInt) {
         int index = 0;
@@ -141,19 +118,20 @@ public class VerificationMethodImpl implements IVerificationMethod {
         System.out.println("");
         System.out.println("");
         System.out.println("VerificationMethodImpl starting...");*/
-		// TODO Test
+        // TODO Test
 //		listBin = new ArrayList<Pattern>();
 
         for (int i = 0; i < solution.getPatterns().size(); i++) {
             //System.out.println("Prossessing patern" + i);
             //Pattern p = this.getPlacedPattern(solution.getPatterns().get(i));
-            Pattern p = this.getPlacedPatternRecursive(solution.getPatterns().get(i),0);
+            Pattern p = this.getPlacedPatternRecursive(solution.getPatterns().get(i), 0);
             //System.out.println(solution.getPatterns().get(i));
             if (p != null) {
                 newSolution.addPattern(p);
+            } else {
+                return null;
             }
-              else { return null; }
-             
+
 
             // TODO Test
 //			if(listBinHoriz.size()>0)
@@ -162,7 +140,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 //				listimgTest.add(new Image(listBin.get(j).getSize(),1L));
 //				listBin.get(j).setListImg(listimgTest);
 //				newSolution.addPattern(listBin.get(j));
-//				
+//
 //			}
 //			break;
 
@@ -180,7 +158,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
         // Initialisation des variables pour placer un pattern
         Bin newBin = new Bin(pattern.getSize(), pattern.getAmount());
         listImg = (ArrayList<Image>) pattern.getListImg().clone();
-        
+
 
         /*System.out.println("Pattern size " + pattern.getSize());
         System.out.println("Images list " + listImg.size());
@@ -194,7 +172,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
         }*/
 
         ResetBin(newBin);
-        
+
         //System.out.println("listBinHoriz" + listBinHoriz.get(0).getArea());
 
         this.getImgOrderDesc();
@@ -207,7 +185,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 } else { // change les bin
                     if (processPlacement(i, false, false) == false) {
 
-						// Recommencer à placer en mettant les images
+                        // Recommencer à placer en mettant les images
                         // verticalement
                         // ResetBin(newBin);
                         // if (processPlacement(i, true,true) == true) {
@@ -242,7 +220,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
      */
     @Override
     public Pattern getPlacedPatternRecursive(Pattern pattern, int maxEssais) {
-        
+
         nbSteps = 0;
         // Initialisation des variables pour placer un pattern
         Bin newBin = new Bin(pattern.getSize(), pattern.getAmount());
@@ -251,24 +229,24 @@ public class VerificationMethodImpl implements IVerificationMethod {
         //System.out.println("Pattern size " + pattern.getSize());
         //System.out.println("Images list " + listImg.size());
         int ite = 0;
-        
+
         int nbTotImage = 0;
         for (Image immag : listImg) {
-            
-            if( minArea > immag.getArea()){
+
+            if (minArea > immag.getArea()) {
                 minArea = immag.getArea();
             }
-            
+
             nbTotImage += immag.getAmount();
-            
+
             if (immag.getAmount() > 0) {
                 //System.out.println("Image nb: " + ite + " size" + immag.getSize() + " amount" +  immag.getAmount());
             }
             ite++;
 
         }
-        
-        this.maxSteps = maxEssais*nbTotImage;
+
+        this.maxSteps = maxEssais * nbTotImage;
 //        this.maxSteps = 1;
 
         ResetBin(newBin);
@@ -279,14 +257,14 @@ public class VerificationMethodImpl implements IVerificationMethod {
         ///////////////////// Recursive call ///////////////////////////
         ArrayList<Image> result = new ArrayList<Image>();
         int idImg = getNextImageIndex(0, -1, listImg);
-        if ((idImg <0) || (!processPlacementRecursive(idImg, 0, listImg, listBinHoriz, 0, result))) {
+        if ((idImg < 0) || (!processPlacementRecursive(idImg, 0, listImg, listBinHoriz, 0, result))) {
             //System.out.println("No pattern found");
             return null;
-        }else{
+        } else {
             //System.out.println("Succeed to match pattern");
         }
 
-                ////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////
 //		int i = 0;
 //		while (i < listImg.size()) {
 //			Long amount = listImg.get(i).getAmount();
@@ -307,7 +285,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
 //					}
 //				}
 //				amount--;
-//				
+//
 //				// TODO test
 ////				if(listBinHoriz.size()>0)
 ////				for (int j = 0; j < listBinHoriz.size(); j++) {
@@ -397,28 +375,28 @@ public class VerificationMethodImpl implements IVerificationMethod {
         }
         return -1;
     }
-    
-    public void deepCopyImageList(ArrayList<Image> imagecpy, ArrayList<Image> images){
+
+    public void deepCopyImageList(ArrayList<Image> imagecpy, ArrayList<Image> images) {
         imagecpy.clear();
         ArrayList<Image> imagesCp = (ArrayList<Image>) images.clone();
-        for(Image p : imagesCp) {
-                imagecpy.add(((Image) p.clone()));
+        for (Image p : imagesCp) {
+            imagecpy.add(((Image) p.clone()));
         }
     }
-    
-    public void deepCopyBinList( ArrayList<Bin> bincpy, ArrayList<Bin> listBin){
+
+    public void deepCopyBinList(ArrayList<Bin> bincpy, ArrayList<Bin> listBin) {
         bincpy.clear();
         ArrayList<Bin> listBinCp = (ArrayList<Bin>) listBin.clone();
-        for(Bin item: listBinCp) {
-                bincpy.add( (Bin) item.clone());
+        for (Bin item : listBinCp) {
+            bincpy.add((Bin) item.clone());
         }
     }
-        
+
     private boolean processPlacementRecursive(int idCurrentImage, int idCurrentImageCount, ArrayList<Image> images, ArrayList<Bin> listBin, int cpt, ArrayList<Image> imagesResult) {
         //ystem.out.println("processPlacementRecursive idCurrentImage" + idCurrentImage+ " idCurrentImageCount" + idCurrentImageCount + " cpt"+ cpt + " listBinsize" + listBin.size());
-        
+
         //Stop recursion if timeout
-        if(maxSteps > 0 && nbSteps++ > maxSteps){
+        if (maxSteps > 0 && nbSteps++ > maxSteps) {
             return false;
         }
         Image currentImage = images.get(idCurrentImage);
@@ -431,34 +409,34 @@ public class VerificationMethodImpl implements IVerificationMethod {
         int newImageCount = 0;
         if (nextImageIndex == idCurrentImage) {
             newImageCount = idCurrentImageCount + 1;
-        } 
-        
+        }
+
 
         while (iterator.hasNext()) {
             Bin element = iterator.next();
             //Boolean boll = currentImage.getArea() <= element.getArea();
             //System.out.println("Iterrate" + element + " sizeOk:" + boll );
-            
+
             if (currentImage.getArea() <= element.getArea()) {
                 //System.out.println("Iterrate" + element );
-                
+
                 //Check four nodes
-                
+
                 //Deep copy lists
                 ArrayList<Image> imagecpy = new ArrayList<Image>();
                 ArrayList<Bin> bincpy = new ArrayList<Bin>();
-                
-                deepCopyImageList(imagecpy,images);
+
+                deepCopyImageList(imagecpy, images);
                 deepCopyBinList(bincpy, listBin);
 
 
-                //Node: Horizontal cut, rotation 0 
+                //Node: Horizontal cut, rotation 0
                 if (placementImage(element, idCurrentImage, imagecpy, cpt * 2, CutOrientation.CUT_HORIZONTAL, ImageOrientation.ROTATION_0, bincpy)) {
                     //Test if there are more images
                     if (nextImageIndex < 0) {
                         //Succeed, no more images, we copy the image list
                         //imagesResult = imagecpy;
-                        imagesResult.clear(); 
+                        imagesResult.clear();
                         imagesResult.addAll(imagecpy);
                         //System.out.println("SOLUTION FOUND" + imagecpy);
                         return true;
@@ -468,21 +446,21 @@ public class VerificationMethodImpl implements IVerificationMethod {
                             return true;
                         } else {
                             //Reset lists for next try
-                            deepCopyImageList(imagecpy,images);
+                            deepCopyImageList(imagecpy, images);
                             deepCopyBinList(bincpy, listBin);
                         }
                     }
                 }
 
-                //Node: Vertical cut, rotation 0 
+                //Node: Vertical cut, rotation 0
                 if (placementImage(element, idCurrentImage, imagecpy, cpt * 2, CutOrientation.CUT_VERTICAL, ImageOrientation.ROTATION_0, bincpy)) {
                     //Test if there are more images
                     if (nextImageIndex < 0) {
                         //Succeed, no more images, we copy the image list
                         //imagesResult = imagecpy;
-                        imagesResult.clear(); 
+                        imagesResult.clear();
                         imagesResult.addAll(imagecpy);
-                        
+
                         return true;
                     } else {
                         //Recurssive call
@@ -490,19 +468,19 @@ public class VerificationMethodImpl implements IVerificationMethod {
                             return true;
                         } else {
                             //Reset lists for next try
-                            deepCopyImageList(imagecpy,images);
+                            deepCopyImageList(imagecpy, images);
                             deepCopyBinList(bincpy, listBin);
                         }
                     }
                 }
 
-                //Node: Horizontal cut, rotation 90 
+                //Node: Horizontal cut, rotation 90
                 if (placementImage(element, idCurrentImage, imagecpy, cpt * 2, CutOrientation.CUT_HORIZONTAL, ImageOrientation.ROTATION_90, bincpy)) {
                     //Test if there are more images
                     if (nextImageIndex < 0) {
                         //Succeed, no more images, we copy the image list
                         //imagesResult = imagecpy;
-                        imagesResult.clear(); 
+                        imagesResult.clear();
                         imagesResult.addAll(imagecpy);
                         return true;
                     } else {
@@ -511,19 +489,19 @@ public class VerificationMethodImpl implements IVerificationMethod {
                             return true;
                         } else {
                             //Reset lists for next branch
-                            deepCopyImageList(imagecpy,images);
+                            deepCopyImageList(imagecpy, images);
                             deepCopyBinList(bincpy, listBin);
                         }
                     }
                 }
 
-                //Node: Horizontal cut, rotation 0 
+                //Node: Horizontal cut, rotation 0
                 if (placementImage(element, idCurrentImage, imagecpy, cpt * 2, CutOrientation.CUT_VERTICAL, ImageOrientation.ROTATION_90, bincpy)) {
                     //Test if there are more images
                     if (nextImageIndex < 0) {
                         //Succeed, no more images, we copy the image list
                         //imagesResult = imagecpy;
-                        imagesResult.clear(); 
+                        imagesResult.clear();
                         imagesResult.addAll(imagecpy);
                         return true;
                     } else {
@@ -568,7 +546,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 }
             }
 
-			// assemblages des bins
+            // assemblages des bins
             // faire pour liste puis break => recommencer (classement du plus grand au plus petit
             // faire pareil pour l'autre (verticalement)
 //			ArrayList<Integer> binsUtiliser = new ArrayList<Integer>();
@@ -643,11 +621,11 @@ public class VerificationMethodImpl implements IVerificationMethod {
                             bin1 = new Bin(new Vector(p.getSize().getX()
                                     - listImg.get(iImage).getSize().getX(), p.getSize()
                                     .getY()), new Vector(p.getCoord().getX()
-                                            + listImg.get(iImage).getSize().getX(), p.getCoord()
-                                            .getY()));
+                                    + listImg.get(iImage).getSize().getX(), p.getCoord()
+                                    .getY()));
                             bin2 = new Bin(new Vector(listImg.get(iImage).getSize().getX(),
                                     p.getSize().getY()
-                                    - listImg.get(iImage).getSize().getY()),
+                                            - listImg.get(iImage).getSize().getY()),
                                     new Vector(p.getCoord().getX(), listImg.get(iImage)
                                             .getSize().getY()
                                             + p.getCoord().getY()));
@@ -656,8 +634,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
                             bin1 = new Bin(new Vector(p.getSize().getX()
                                     - listImg.get(iImage).getSize().getX(), listImg
                                     .get(iImage).getSize().getY()), new Vector(p.getCoord()
-                                            .getX() + listImg.get(iImage).getSize().getX(), p
-                                            .getCoord().getY()));
+                                    .getX() + listImg.get(iImage).getSize().getX(), p
+                                    .getCoord().getY()));
                             bin2 = new Bin(new Vector(p.getSize().getX(), p.getSize()
                                     .getY() - listImg.get(iImage).getSize().getY()),
                                     new Vector(p.getCoord().getX(), listImg.get(iImage)
@@ -678,11 +656,11 @@ public class VerificationMethodImpl implements IVerificationMethod {
                             bin1 = new Bin(new Vector(p.getSize().getX()
                                     - listImg.get(iImage).getSize().getY(), p.getSize()
                                     .getY()), new Vector(p.getCoord().getX()
-                                            + listImg.get(iImage).getSize().getY(), p.getCoord()
-                                            .getY()));
+                                    + listImg.get(iImage).getSize().getY(), p.getCoord()
+                                    .getY()));
                             bin2 = new Bin(new Vector(listImg.get(iImage).getSize().getY(),
                                     p.getSize().getY()
-                                    - listImg.get(iImage).getSize().getX()),
+                                            - listImg.get(iImage).getSize().getX()),
                                     new Vector(p.getCoord().getX(), listImg.get(iImage)
                                             .getSize().getX()
                                             + p.getCoord().getY()));
@@ -691,8 +669,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
                             bin1 = new Bin(new Vector(p.getSize().getX()
                                     - listImg.get(iImage).getSize().getY(), listImg
                                     .get(iImage).getSize().getX()), new Vector(p.getCoord()
-                                            .getX() + listImg.get(iImage).getSize().getY(), p
-                                            .getCoord().getY()));
+                                    .getX() + listImg.get(iImage).getSize().getY(), p
+                                    .getCoord().getY()));
                             bin2 = new Bin(new Vector(p.getSize().getX(), p.getSize()
                                     .getY() - listImg.get(iImage).getSize().getX()),
                                     new Vector(p.getCoord().getX(), listImg.get(iImage)
@@ -702,27 +680,27 @@ public class VerificationMethodImpl implements IVerificationMethod {
                     }
                     break;
                 }
-            break;
+                break;
         }
-        
+
         //Return bins if founded
         if (position != null && bin1 != null && bin2 != null) {
 
             //Add the nex bin
-            if(bin1.getArea() >= minArea){
-                 bin1.setClasse(p.getClasse() + 1);
-                 int id1 = compteur++;
-                 bin1.setId(id1);
-                 listBin.add(bin1);
+            if (bin1.getArea() >= minArea) {
+                bin1.setClasse(p.getClasse() + 1);
+                int id1 = compteur++;
+                bin1.setId(id1);
+                listBin.add(bin1);
             }
-            
-            if(bin2.getArea() >= minArea){
-                 bin2.setClasse(p.getClasse() + 1);
-                 int id2 = compteur++;
-                 bin2.setId(id2);
-                 listBin.add(bin2);
-            }           
-            
+
+            if (bin2.getArea() >= minArea) {
+                bin2.setClasse(p.getClasse() + 1);
+                int id2 = compteur++;
+                bin2.setId(id2);
+                listBin.add(bin2);
+            }
+
             //Remove previous bin
             int index = 0;
             for (int i = 0; i < listBin.size(); i++) {
@@ -732,18 +710,18 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 }
             }
             listBin.remove(index);
-            
-            if(iImage == 10){
-               int y = 0;
-               y++;
+
+            if (iImage == 10) {
+                int y = 0;
+                y++;
             }
             listImg.get(iImage).getPositions().add(position);
             return true;
-        }else{
+        } else {
             //System.err.println("NULL position or bin1 or bin2");
             return false;
         }
-                
+
     }
 
     /**
@@ -756,7 +734,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
     protected boolean placementImage(Bin p, int iImage) { // Bas Droite
         Position position = null; // image courrente
 
-		// Verification si rentre dans le Pattern sinon on tourne l'image de
+        // Verification si rentre dans le Pattern sinon on tourne l'image de
         // 90°C, on place si possible (met coord image)
         if ((p.getSize().getX() >= listImg.get(iImage).getSize().getX() && (p
                 .getSize().getY() >= listImg.get(iImage).getSize().getY()))) {
@@ -777,11 +755,11 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 bin1 = new Bin(new Vector(p.getSize().getX()
                         - listImg.get(iImage).getSize().getX(), p.getSize()
                         .getY()), new Vector(p.getCoord().getX()
-                                + listImg.get(iImage).getSize().getX(), p.getCoord()
-                                .getY()));
+                        + listImg.get(iImage).getSize().getX(), p.getCoord()
+                        .getY()));
                 bin2 = new Bin(new Vector(listImg.get(iImage).getSize().getX(),
                         p.getSize().getY()
-                        - listImg.get(iImage).getSize().getY()),
+                                - listImg.get(iImage).getSize().getY()),
                         new Vector(p.getCoord().getX(), listImg.get(iImage)
                                 .getSize().getY()
                                 + p.getCoord().getY()));
@@ -789,11 +767,11 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 bin1 = new Bin(new Vector(p.getSize().getX()
                         - listImg.get(iImage).getSize().getY(), p.getSize()
                         .getY()), new Vector(p.getCoord().getX()
-                                + listImg.get(iImage).getSize().getY(), p.getCoord()
-                                .getY()));
+                        + listImg.get(iImage).getSize().getY(), p.getCoord()
+                        .getY()));
                 bin2 = new Bin(new Vector(listImg.get(iImage).getSize().getY(),
                         p.getSize().getY()
-                        - listImg.get(iImage).getSize().getX()),
+                                - listImg.get(iImage).getSize().getX()),
                         new Vector(p.getCoord().getX(), listImg.get(iImage)
                                 .getSize().getX()
                                 + p.getCoord().getY()));
@@ -813,8 +791,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 bin3 = new Bin(new Vector(p.getSize().getX()
                         - listImg.get(iImage).getSize().getX(), listImg
                         .get(iImage).getSize().getY()), new Vector(p.getCoord()
-                                .getX() + listImg.get(iImage).getSize().getX(), p
-                                .getCoord().getY()));
+                        .getX() + listImg.get(iImage).getSize().getX(), p
+                        .getCoord().getY()));
                 bin4 = new Bin(new Vector(p.getSize().getX(), p.getSize()
                         .getY() - listImg.get(iImage).getSize().getY()),
                         new Vector(p.getCoord().getX(), listImg.get(iImage)
@@ -824,8 +802,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 bin3 = new Bin(new Vector(p.getSize().getX()
                         - listImg.get(iImage).getSize().getY(), listImg
                         .get(iImage).getSize().getX()), new Vector(p.getCoord()
-                                .getX() + listImg.get(iImage).getSize().getX(), p
-                                .getCoord().getY()));
+                        .getX() + listImg.get(iImage).getSize().getX(), p
+                        .getCoord().getY()));
                 bin4 = new Bin(new Vector(p.getSize().getX(), p.getSize()
                         .getY() - listImg.get(iImage).getSize().getX()),
                         new Vector(p.getCoord().getX(), listImg.get(iImage)
@@ -876,11 +854,11 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 bin1 = new Bin(new Vector(p.getSize().getX()
                         - listImg.get(iImage).getSize().getX(), p.getSize()
                         .getY()), new Vector(p.getCoord().getX()
-                                + listImg.get(iImage).getSize().getX(), p.getCoord()
-                                .getY()));
+                        + listImg.get(iImage).getSize().getX(), p.getCoord()
+                        .getY()));
                 bin2 = new Bin(new Vector(listImg.get(iImage).getSize().getX(),
                         p.getSize().getY()
-                        - listImg.get(iImage).getSize().getY()),
+                                - listImg.get(iImage).getSize().getY()),
                         new Vector(p.getCoord().getX(), listImg.get(iImage)
                                 .getSize().getY()
                                 + p.getCoord().getY()));
@@ -888,11 +866,11 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 bin1 = new Bin(new Vector(p.getSize().getX()
                         - listImg.get(iImage).getSize().getY(), p.getSize()
                         .getY()), new Vector(p.getCoord().getX()
-                                + listImg.get(iImage).getSize().getY(), p.getCoord()
-                                .getY()));
+                        + listImg.get(iImage).getSize().getY(), p.getCoord()
+                        .getY()));
                 bin2 = new Bin(new Vector(listImg.get(iImage).getSize().getY(),
                         p.getSize().getY()
-                        - listImg.get(iImage).getSize().getX()),
+                                - listImg.get(iImage).getSize().getX()),
                         new Vector(p.getCoord().getX(), listImg.get(iImage)
                                 .getSize().getX()
                                 + p.getCoord().getY()));
@@ -912,8 +890,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 bin3 = new Bin(new Vector(p.getSize().getX()
                         - listImg.get(iImage).getSize().getX(), listImg
                         .get(iImage).getSize().getY()), new Vector(p.getCoord()
-                                .getX() + listImg.get(iImage).getSize().getX(), p
-                                .getCoord().getY()));
+                        .getX() + listImg.get(iImage).getSize().getX(), p
+                        .getCoord().getY()));
                 bin4 = new Bin(new Vector(p.getSize().getX(), p.getSize()
                         .getY() - listImg.get(iImage).getSize().getY()),
                         new Vector(p.getCoord().getX(), listImg.get(iImage)
@@ -923,8 +901,8 @@ public class VerificationMethodImpl implements IVerificationMethod {
                 bin3 = new Bin(new Vector(p.getSize().getX()
                         - listImg.get(iImage).getSize().getY(), listImg
                         .get(iImage).getSize().getX()), new Vector(p.getCoord()
-                                .getX() + listImg.get(iImage).getSize().getX(), p
-                                .getCoord().getY()));
+                        .getX() + listImg.get(iImage).getSize().getX(), p
+                        .getCoord().getY()));
                 bin4 = new Bin(new Vector(p.getSize().getX(), p.getSize()
                         .getY() - listImg.get(iImage).getSize().getX()),
                         new Vector(p.getCoord().getX(), listImg.get(iImage)
@@ -969,5 +947,17 @@ public class VerificationMethodImpl implements IVerificationMethod {
         ArrayList<Image> listImgCp = (ArrayList<Image>) getListImg().clone();
         Collections.sort(listImgCp, Image.ImageNameComparator);
         setListImg(listImgCp);
+    }
+
+    public enum ImageOrientation {
+
+        ROTATION_0,
+        ROTATION_90
+    }
+
+    public enum CutOrientation {
+
+        CUT_HORIZONTAL,
+        CUT_VERTICAL
     }
 }

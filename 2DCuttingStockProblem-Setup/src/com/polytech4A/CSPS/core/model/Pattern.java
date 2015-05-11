@@ -10,82 +10,87 @@ import java.util.Comparator;
  */
 public class Pattern implements Comparable<Pattern>, Cloneable {
 
-	/**
-	 * taille du pattern
-	 */
-	protected Vector size;
+    /**
+     * taille du pattern
+     */
+    protected Vector size;
+    public final static Comparator<Pattern> PatternNameComparator = new Comparator<Pattern>() {
+        public int compare(Pattern p1, Pattern p2) {
 
-	/**
-	 * Nombre de fois qu'il faut imprimer le pattern
-	 */
-	protected Long amount = 0L;
+            Long PattArea1 = p1.getArea();
+            Long PattArea2 = p2.getArea();
 
-	/**
-	 * Les images présente dans le pattern
-	 */
-	protected ArrayList<Image> listImg;
+            // ascending order
+            return PattArea1.compareTo(PattArea2);
 
-	public Pattern(Vector size) {
-		super();
-		this.size = size;
-	}
+            // descending order
+            // return PattArea2.compareTo(PattArea1);
+        }
 
-	public Pattern(Vector size, Long amount) {
-		super();
-		this.size = size;
-		this.amount = amount;
-	}
+    };
+    /**
+     * Nombre de fois qu'il faut imprimer le pattern
+     */
+    protected Long amount = 0L;
+    /**
+     * Les images présente dans le pattern
+     */
+    protected ArrayList<Image> listImg;
 
-	public Pattern(Vector size, ArrayList<Image> listImg) {
-		this.size = size;
-		this.listImg = listImg;
-	}
+    public Pattern(Vector size) {
+        super();
+        this.size = size;
+    }
 
-	public Vector getSize() {
-		return size;
-	}
+    public Pattern(Vector size, Long amount) {
+        super();
+        this.size = size;
+        this.amount = amount;
+    }
 
-	public void setSize(Vector size) {
-		this.size = size;
-	}
+    public Pattern(Vector size, ArrayList<Image> listImg) {
+        this.size = size;
+        this.listImg = listImg;
+    }
 
-	public Long getAmount() {
-		return amount;
-	}
+    public Vector getSize() {
+        return size;
+    }
 
-	public void setAmount(Long amount) {
-		this.amount = amount;
-	}
+    public void setSize(Vector size) {
+        this.size = size;
+    }
 
-	public ArrayList<Image> getListImg() {
-		return listImg;
-	}
+    public Long getAmount() {
+        return amount;
+    }
 
-	public void setListImg(ArrayList<Image> listImg) {
-		this.listImg = listImg;
-	}
+    public void setAmount(Long amount) {
+        this.amount = amount;
+    }
 
-	public void addImg(Image img) {
-		for (int i = 0; i < listImg.size(); i++) {
-			if (listImg.get(i).getId().equals(img.getId())) {
-				listImg.get(i).setAmount(listImg.get(i).getAmount() + 1);
-			}
-		}
-	}
+    public ArrayList<Image> getListImg() {
+        return listImg;
+    }
 
-	public Long getArea() {
-		return size.getX() * size.getY();
-	}
+    public void setListImg(ArrayList<Image> listImg) {
+        this.listImg = listImg;
+    }
 
-	public Image getImage(Long id) {
-		for (Image image : listImg)
-			if (id.equals(image.getId()))
-				return image;
-		return null;
-	}
+    public void addImg(Image img) {
+        for (int i = 0; i < listImg.size(); i++) {
+            if (listImg.get(i).getId().equals(img.getId())) {
+                listImg.get(i).setAmount(listImg.get(i).getAmount() + 1);
+            }
+        }
+    }
+
+    public Long getArea() {
+        return size.getX() * size.getY();
+    }
 
 	/*
-	 * @Override public String toString() { StringBuilder listImgString = new
+     * @Override public String toString() { StringBuilder listImgString = new
 	 * StringBuilder(); String patternString = "PATTERN\n" + "size : " +
 	 * escToString(size) + "\n" + "amount : " + escToString(amount) + "\n" +
 	 * "listImg : \n";
@@ -100,66 +105,58 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 	 * return patternString; }
 	 */
 
-	@Override
-	public String toString() {
-		final StringBuffer sb = new StringBuffer("Pattern{");
-		sb.append("size=").append(size);
-		sb.append(", amount=").append(amount);
-		if (listImg != null) {
-			if (listImg.size() != 0) {
-				sb.append(", listImg=[");
-				listImg.forEach(i -> {
-					if (i.getAmount() != 0L)
-						sb.append(i.toString());
-				});
-				sb.append("]");
-			} else
-				sb.append(", listImg=").append("<empty>");
-		}
-		sb.append('}');
-		return sb.toString();
-	}
+    public Image getImage(Long id) {
+        for (Image image : listImg)
+            if (id.equals(image.getId()))
+                return image;
+        return null;
+    }
 
-	public synchronized void setPattern(Pattern pattern) {
-		this.amount = pattern.getAmount();
-		this.size = pattern.getSize();
-		this.listImg = new ArrayList<Image>();
-			for (Image image : pattern.listImg) {
-				this.listImg.add((Image) image.clone());
-			}
-	}
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Pattern{");
+        sb.append("size=").append(size);
+        sb.append(", amount=").append(amount);
+        if (listImg != null) {
+            if (listImg.size() != 0) {
+                sb.append(", listImg=[");
+                listImg.forEach(i -> {
+                    if (i.getAmount() != 0L)
+                        sb.append(i.toString());
+                });
+                sb.append("]");
+            } else
+                sb.append(", listImg=").append("<empty>");
+        }
+        sb.append('}');
+        return sb.toString();
+    }
 
-	public Object clone() {
-		Pattern cloned = new Pattern((Vector) this.size.clone(), this.amount);
-		cloned.listImg = new ArrayList<Image>();
-		if (listImg != null) {
-			for (int i = 0; i < listImg.size(); i++) {
-				cloned.listImg.add((Image) listImg.get(i).clone());
-			}
-		}
-		return cloned;
-	}
+    public synchronized void setPattern(Pattern pattern) {
+        this.amount = pattern.getAmount();
+        this.size = pattern.getSize();
+        this.listImg = new ArrayList<Image>();
+        for (Image image : pattern.listImg) {
+            this.listImg.add((Image) image.clone());
+        }
+    }
 
-	@Override
-	public int compareTo(Pattern o) {
-		if (this.getArea() < o.getArea()) {
-			return 0;
-		}
-		return 1;
-	}
+    public Object clone() {
+        Pattern cloned = new Pattern((Vector) this.size.clone(), this.amount);
+        cloned.listImg = new ArrayList<Image>();
+        if (listImg != null) {
+            for (int i = 0; i < listImg.size(); i++) {
+                cloned.listImg.add((Image) listImg.get(i).clone());
+            }
+        }
+        return cloned;
+    }
 
-	public final static Comparator<Pattern> PatternNameComparator = new Comparator<Pattern>() {
-		public int compare(Pattern p1, Pattern p2) {
-
-			Long PattArea1 = p1.getArea();
-			Long PattArea2 = p2.getArea();
-
-			// ascending order
-			return PattArea1.compareTo(PattArea2);
-
-			// descending order
-			// return PattArea2.compareTo(PattArea1);
-		}
-
-	};
+    @Override
+    public int compareTo(Pattern o) {
+        if (this.getArea() < o.getArea()) {
+            return 0;
+        }
+        return 1;
+    }
 }

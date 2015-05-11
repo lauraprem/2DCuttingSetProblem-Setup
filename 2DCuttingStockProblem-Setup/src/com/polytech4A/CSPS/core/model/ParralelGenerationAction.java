@@ -43,8 +43,8 @@ public class ParralelGenerationAction extends Thread {
     @Override
     public void run() {
         // TODO : Problème de synchronized pour verificationMethod
-        if(GenerationAction.randomSolution.equals(generationAction)) makeRandom();
-        else if(GenerationAction.randomMutation.equals(generationAction)) makeMutation();
+        if (GenerationAction.randomSolution.equals(generationAction)) makeRandom();
+        else if (GenerationAction.randomMutation.equals(generationAction)) makeMutation();
         semaphore.release();
     }
 

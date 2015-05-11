@@ -23,8 +23,6 @@ import java.util.Date;
  *         09/04/2015
  */
 public class ToPNG extends FileMethod {
-    private static final Logger logger = Log.getLogger(ToPNG.class);
-
     /**
      * Font size for legend.
      */
@@ -61,6 +59,7 @@ public class ToPNG extends FileMethod {
      * Brightness for colored mod.
      */
     public final static float BRIGHTNESS = 0.7f;
+    private static final Logger logger = Log.getLogger(ToPNG.class);
 
     /**
      * Void Constructor.

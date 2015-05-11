@@ -1,25 +1,18 @@
 package com.polytech4A.CSPS.core.method;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.apache.commons.math3.optim.MaxIter;
-import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-import org.apache.commons.math3.optim.linear.LinearConstraintSet;
-import org.apache.commons.math3.optim.linear.LinearObjectiveFunction;
-import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
-import org.apache.commons.math3.optim.linear.NonNegativeConstraint;
-import org.apache.commons.math3.optim.linear.Relationship;
-import org.apache.commons.math3.optim.linear.SimplexSolver;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-import org.apache.logging.log4j.Logger;
-
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.util.Log;
+import org.apache.commons.math3.optim.MaxIter;
+import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.linear.*;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LinearResolutionMethod {
 
@@ -40,6 +33,44 @@ public class LinearResolutionMethod {
      */
     private Context context;
 
+    /**
+     * Create a LinearResolution Method with initial resolution to initialize function and constraints.
+     *
+     * @param context Current context.
+     */
+    public LinearResolutionMethod(Context context) {
+        this.context = context;
+    }
+
+    public static Boolean check(ArrayList<Long> count, Context context, Solution solution) {
+        ArrayList<Long> countImage = new ArrayList<>();
+        Long sum;
+        for (Long i = 0L; i < context.getImages().size(); i++) {
+            countImage.add(0L);
+        }
+        int index;
+        Pattern pattern;
+        for (int i = 0; i < solution.getPatterns().size(); i++) {
+            pattern = solution.getPatterns().get(i);
+            for (Image image : pattern.getListImg()) {
+                index = image.getId().intValue();
+//                countImage.set(index, countImage.get(index) + count.get(i) * image.getAmount());
+            }
+        }
+        Boolean check = Boolean.TRUE;
+        for (int i = 0; i < context.getImages().size(); i++) {
+            if (countImage.get(i) < context.getImages().get(i).getGoal()) {
+                check = Boolean.FALSE;
+                logger.warn(context.getImages().get(i).getId()
+                        + " : "
+                        + context.getImages().get(i).getGoal()
+                        + " -> "
+                        + countImage.get(i));
+            }
+        }
+        return check;
+    }
+
     public Long getFitness(Solution solution, Long costOfPattern,
                            Long costOfPrinting) {
         ArrayList<Long> count = getCount(solution);
@@ -59,7 +90,6 @@ public class LinearResolutionMethod {
         return minimize(solution);
     }
 
-
     public Long getFitnessAndRemoveUseless(Solution solution, Long costOfPattern,
                                            Long costOfPrinting) {
 //		if (!SolutionUtil.isSolvable(context, solution)) {
@@ -74,16 +104,6 @@ public class LinearResolutionMethod {
                 i--;
             }
         return changed ? getFitness(solution, costOfPattern, costOfPrinting) : fitness;
-    }
-
-
-    /**
-     * Create a LinearResolution Method with initial resolution to initialize function and constraints.
-     *
-     * @param context Current context.
-     */
-    public LinearResolutionMethod(Context context) {
-        this.context = context;
     }
 
     /**
@@ -148,34 +168,5 @@ public class LinearResolutionMethod {
             constraints.add(new LinearConstraint(coefficients, Relationship.GEQ, ctxImage.getGoal()));
         }
         this.constraints = constraints;
-    }
-
-    public static Boolean check(ArrayList<Long> count, Context context, Solution solution) {
-        ArrayList<Long> countImage = new ArrayList<>();
-        Long sum;
-        for (Long i = 0L; i < context.getImages().size(); i++) {
-            countImage.add(0L);
-        }
-        int index;
-        Pattern pattern;
-        for (int i = 0; i < solution.getPatterns().size(); i++) {
-            pattern = solution.getPatterns().get(i);
-            for (Image image : pattern.getListImg()) {
-                index = image.getId().intValue();
-//                countImage.set(index, countImage.get(index) + count.get(i) * image.getAmount());
-            }
-        }
-        Boolean check = Boolean.TRUE;
-        for (int i = 0; i < context.getImages().size(); i++) {
-            if (countImage.get(i) < context.getImages().get(i).getGoal()) {
-                check = Boolean.FALSE;
-                logger.warn(context.getImages().get(i).getId()
-                        + " : "
-                        + context.getImages().get(i).getGoal()
-                        + " -> "
-                        + countImage.get(i));
-            }
-        }
-        return check;
     }
 }

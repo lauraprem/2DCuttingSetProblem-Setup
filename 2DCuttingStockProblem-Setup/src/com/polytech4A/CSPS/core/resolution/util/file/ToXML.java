@@ -7,12 +7,12 @@ import com.polytech4A.CSPS.core.resolution.Resolution;
  *         13/03/2015
  */
 public class ToXML extends FileMethod {
-	public ToXML() {
-		super("xml", "xml");
-	}
+    public ToXML() {
+        super("xml", "xml");
+    }
 
-	@Override
-	public String save(String filename, Resolution resolution) {
-		return null;
-	}
+    @Override
+    public String save(String filename, Resolution resolution) {
+        return null;
+    }
 }

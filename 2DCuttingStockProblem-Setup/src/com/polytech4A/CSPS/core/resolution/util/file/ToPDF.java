@@ -7,12 +7,12 @@ import com.polytech4A.CSPS.core.resolution.Resolution;
  */
 public class ToPDF extends FileMethod {
 
-	public ToPDF() {
-		super("pdf", "pdf");
-	}
+    public ToPDF() {
+        super("pdf", "pdf");
+    }
 
-	@Override
-	public String save(String filename, Resolution resolution) {
-		return null;
-	}
+    @Override
+    public String save(String filename, Resolution resolution) {
+        return null;
+    }
 }

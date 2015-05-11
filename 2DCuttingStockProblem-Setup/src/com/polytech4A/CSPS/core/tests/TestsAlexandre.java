@@ -1,6 +1,5 @@
 package com.polytech4A.CSPS.core.tests;
 
-import com.polytech4A.CSPS.core.method.LinearResolutionMethod;
 import com.polytech4A.CSPS.core.method.strategy.Genetic;
 import com.polytech4A.CSPS.core.method.verification.VerificationMethodImpl;
 import com.polytech4A.CSPS.core.model.Solution;
@@ -9,8 +8,6 @@ import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.resolution.util.file.ToPNG;
 import com.polytech4A.CSPS.core.util.Log;
 import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
 
 /**
  * @author Alexandre
@@ -34,7 +31,7 @@ public class TestsAlexandre {
         resolution.setSolution(solution);
         logger.trace("test");
         new ToPNG().save("test", resolution);*/
-         Tests tests = new Tests();
+        Tests tests = new Tests();
         Context context = tests.getContext(0);
         Genetic genetic = new Genetic(context, new VerificationMethodImpl(), 10, 100);
         genetic.run();
