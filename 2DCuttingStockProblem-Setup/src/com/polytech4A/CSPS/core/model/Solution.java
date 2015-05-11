@@ -43,7 +43,14 @@ public class Solution {
 	}
 
 	public void setPatterns(ArrayList<Pattern> patterns) {
-		this.patterns = patterns;
+		this.patterns = new ArrayList<Pattern>();
+		try {
+			for (Pattern pattern : patterns) {
+				this.patterns.add((Pattern) pattern.clone());
+			}
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void addPattern(Pattern p) {
@@ -133,7 +140,10 @@ public class Solution {
 	 * @see Cloneable
 	 */
 	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
+	public Object clone() {
+		Solution clonned = new Solution();
+		clonned.setPatterns(patterns);
+		clonned.setFitness(fitness);
+		return clonned;
 	}
 }
