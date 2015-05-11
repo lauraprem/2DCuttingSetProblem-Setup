@@ -121,12 +121,12 @@ public class SolutionUtil {
 		// System.out.println("SO good ! ;-)");
 		// }
 
-		if (!isSolvable(context, s)) {
-			System.out.println("makeSolvable non sovable !!");
-		}
-		if (verificationMethod.getPlaced(s) == null) {
-			System.out.println("makeSolvable non packable  !!");
-		}
+//		if (!isSolvable(context, s)) {
+//			System.out.println("makeSolvable non sovable !!");
+//		}
+//		if (verificationMethod.getPlaced(s) == null) {
+//			System.out.println("makeSolvable non packable  !!");
+//		}
 		// if (listIdImg.size() == 0)
 		// return true;
 
@@ -173,12 +173,12 @@ public class SolutionUtil {
 		// }
 		// }
 		solution.setSolution(getRandomViableSolution2(context, verificationMethod));
-		if (!isSolvable(context, solution)) {
-			System.out.println("makeSolvable non sovable !!");
-		}
-		if (verificationMethod.getPlaced(solution) == null) {
-			System.out.println("makeSolvable non packable  !!");
-		}
+//		if (!isSolvable(context, solution)) {
+//			System.out.println("makeSolvable non sovable !!");
+//		}
+//		if (verificationMethod.getPlaced(solution) == null) {
+//			System.out.println("makeSolvable non packable  !!");
+//		}
 		// if(verificationMethod.getPlaced(solution) ==null)
 		// System.out.println("Pas packable, mais enfin !!");
 		return verificationMethod.getPlaced(solution) != null;
@@ -301,16 +301,16 @@ public class SolutionUtil {
 			e.printStackTrace();
 		}
 
-		if (verificationMethod.getPlaced(s) == null) {
-			System.out.println("makeSolvable non packable  !!");
-		}
+//		if (verificationMethod.getPlaced(s) == null) {
+//			System.out.println("makeSolvable non packable  !!");
+//		}
 		s.setSolution(makeSolvable(context, s, verificationMethod));
-		if (!isSolvable(context, s)) {
-			System.out.println("makeSolvable non sovable !!");
-		}
-		if (verificationMethod.getPlaced(s) == null) {
-			System.out.println("makeSolvable non packable  !!");
-		}
+//		if (!isSolvable(context, s)) {
+//			System.out.println("makeSolvable non sovable !!");
+//		}
+//		if (verificationMethod.getPlaced(s) == null) {
+//			System.out.println("makeSolvable non packable  !!");
+//		}
 		// Solution tmp = verificationMethod.getPlaced(s);
 		// if(tmp == null){
 		// System.out.println("Solution Random : non packable \n");

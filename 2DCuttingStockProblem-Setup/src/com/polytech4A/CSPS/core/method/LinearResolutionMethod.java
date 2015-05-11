@@ -1,18 +1,25 @@
 package com.polytech4A.CSPS.core.method;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.apache.commons.math3.optim.MaxIter;
+import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.linear.LinearConstraint;
+import org.apache.commons.math3.optim.linear.LinearConstraintSet;
+import org.apache.commons.math3.optim.linear.LinearObjectiveFunction;
+import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
+import org.apache.commons.math3.optim.linear.NonNegativeConstraint;
+import org.apache.commons.math3.optim.linear.Relationship;
+import org.apache.commons.math3.optim.linear.SimplexSolver;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+import org.apache.logging.log4j.Logger;
+
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
 import com.polytech4A.CSPS.core.util.Log;
-import org.apache.commons.math3.optim.MaxIter;
-import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.linear.*;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class LinearResolutionMethod {
 
@@ -55,6 +62,9 @@ public class LinearResolutionMethod {
 
     public Long getFitnessAndRemoveUseless(Solution solution, Long costOfPattern,
                                            Long costOfPrinting) {
+//		if (!SolutionUtil.isSolvable(context, solution)) {
+//			System.out.println("makeSolvable non sovable !!");
+//		}
         Long fitness = getFitness(solution, costOfPattern, costOfPrinting);
         Boolean changed = Boolean.FALSE;
         for (int i = 0; i < solution.getPatterns().size(); i++)

@@ -122,8 +122,15 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 
 	public synchronized void setPattern(Pattern pattern) {
 		this.amount = pattern.getAmount();
-		this.listImg = pattern.getListImg();
 		this.size = pattern.getSize();
+		this.listImg = new ArrayList<Image>();
+		try {
+			for (Image image : pattern.listImg) {
+				this.listImg.add((Image) image.clone());
+			}
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Object clone() throws CloneNotSupportedException {

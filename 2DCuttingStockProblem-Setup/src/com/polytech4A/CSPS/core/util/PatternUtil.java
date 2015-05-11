@@ -30,12 +30,12 @@ public class PatternUtil {
 				if (image.getId().equals(imageId)) {
 					image.incrementAmoutByOne();
 					if (verif != null) {
-						patternTemp = verif.getPlacedPatternRecursive(patternTemp, 0);
-						if (patternTemp != null) {
+//						patternTemp = verif.getPlacedPatternRecursive(patternTemp, 0);
+						if (verif.getPlacedPatternRecursive(patternTemp, 0) != null) {
 							pattern.setPattern(patternTemp);
-							if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
-								System.out.println("makeSolvable non packable  !!");
-							}
+//							if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
+//								System.out.println("makeSolvable non packable  !!");
+//							}
 							return true;
 						}
 					} else {
@@ -49,9 +49,9 @@ public class PatternUtil {
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
-		if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
-			System.out.println("makeSolvable non packable  !!");
-		}
+//		if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
+//			System.out.println("makeSolvable non packable  !!");
+//		}
 		return false;
 	}
 

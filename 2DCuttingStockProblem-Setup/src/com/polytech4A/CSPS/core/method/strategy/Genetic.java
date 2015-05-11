@@ -74,7 +74,9 @@ public class Genetic extends StrategyMethod {
 		for (int index = 0; index < generation.size(); index++) {
 			// new RandomSolution(getContext(), getVerificationMethod(),
 			// generation, index, semaphore).start();
-			generation.set(index, SolutionUtil.getRandomViableSolution2(getContext(), getVerificationMethod()));
+		
+				generation.set(index, (Solution)SolutionUtil.getRandomViableSolution2(getContext(), getVerificationMethod()).clone());
+			
 			// generation.set(index,
 			// SolutionUtil.getRandomViableSolution2(getContext(),
 			// getVerificationMethod(), 0, 10));
@@ -90,10 +92,22 @@ public class Genetic extends StrategyMethod {
 				generation = generation.parallelStream().sorted((s1, s2) -> {
 					Long fit1 = s1.getFitness(), fit2 = s2.getFitness();
 					if (fit1 == -1L) {
+//						if (!SolutionUtil.isSolvable(getContext(), s1)) {
+//							System.out.println("makeSolvable non sovable !!");
+//						}
+//						if (getVerificationMethod().getPlaced(s1) == null) {
+//							System.out.println("makeSolvable non packable  !!");
+//						}
 						s1.setFitness(getFitness(s1));
 						fit1 = s1.getFitness();
 					}
 					if (fit2 == -1L) {
+//						if (!SolutionUtil.isSolvable(getContext(), s2)) {
+//							System.out.println("makeSolvable non sovable !!");
+//						}
+//						if (getVerificationMethod().getPlaced(s2) == null) {
+//							System.out.println("makeSolvable non packable  !!");
+//						}
 						s2.setFitness(getFitness(s2));
 						fit2 = s2.getFitness();
 					}
@@ -124,7 +138,7 @@ public class Genetic extends StrategyMethod {
 				 * (random.nextDouble() <= mutationFrequency) solution =
 				 * getViableMutatedSolution(solution); });
 				 */
-				generation.parallelStream().filter(tempSolution -> random.nextDouble() <= mutationFrequency).forEach(solution -> solution = getViableMutatedSolution(solution));
+				generation.stream().filter(tempSolution -> random.nextDouble() <= mutationFrequency).forEach(solution -> solution = getViableMutatedSolution((Solution)solution.clone()));
 				System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
 			}
 		} finally {
@@ -136,6 +150,12 @@ public class Genetic extends StrategyMethod {
 	}
 
 	public Long getFitness(Solution solution) {
+//		if (!SolutionUtil.isSolvable(getContext(), solution)) {
+//			System.out.println("makeSolvable non sovable !!");
+//		}
+//		if (getVerificationMethod().getPlaced(solution) == null) {
+//			System.out.println("makeSolvable non packable  !!");
+//		}
 		Long fit = getLinearResolutionMethod().getFitnessAndRemoveUseless(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
 		solution.setFitness(fit);
 		if (bestSolution == null || solution.getFitness() < bestSolution.getFitness()) {
