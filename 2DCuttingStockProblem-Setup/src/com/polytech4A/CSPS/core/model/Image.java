@@ -159,7 +159,7 @@ public class Image implements Comparable<Image> {
 	}
 
 	@Override
-	public Object clone() throws CloneNotSupportedException {
+	public Object clone() {
 		Image cloned = new Image((Vector) size.clone(), goal);
 		cloned.id = id;
 		cloned.setAmount(amount);

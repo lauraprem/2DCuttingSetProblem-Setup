@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import com.polytech4A.CSPS.core.method.strategy.util.GeneticUtil;
 import com.polytech4A.CSPS.core.method.verification.IVerificationMethod;
+import com.polytech4A.CSPS.core.model.GenerationAction;
+import com.polytech4A.CSPS.core.model.ParralelGenerationAction;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.model.couple.Couple;
 import com.polytech4A.CSPS.core.model.couple.CoupleIterator;
@@ -23,33 +25,59 @@ import com.polytech4A.CSPS.core.util.SolutionUtil;
  *         16/04/2015
  */
 public class Genetic extends StrategyMethod {
-	private Random random;
-	private Integer populationSize;
-	private Integer amountOfGeneration;
-	private Double bestPartPercentage = 30.0 / 100.0;
-	private Double mutationFrequency = 3.0 / 100.0;
-	private List<Solution> generation = Collections.<Solution> synchronizedList(new ArrayList<>());
+    private Random random;
+    private Integer populationSize;
+    private Integer amountOfGeneration;
+    private Double bestPartPercentage = 30.0 / 100.0;
+    private Double mutationFrequency = 3.0 / 100.0;
+    private Integer previousGenerationIndex = -1;
+    private Integer generationSinceLast = 0;
+    private List<Solution> previousGeneration = Collections.<Solution>synchronizedList(new ArrayList<>());
+    private List<Long>[] statistics;
+    private List<Solution> generation = Collections.<Solution>synchronizedList(new ArrayList<>());
 
-	// NOTE : Mutations multiples (P)
+    // NOTE : Mutations multiples (P)
 
-	public Genetic(Context context, IVerificationMethod verificationMethod, Integer populationSize, Integer amountOfGeneration, Double bestPartPercentage, Double mutationFrequency) {
-		super(context, verificationMethod);
-		this.populationSize = populationSize;
-		this.bestPartPercentage = bestPartPercentage;
-		this.mutationFrequency = mutationFrequency;
-		this.amountOfGeneration = amountOfGeneration;
-		random = new Random();
+
+    public Genetic(Context context, IVerificationMethod verificationMethod,
+                   Integer populationSize, Integer amountOfGeneration,
+                   Double bestPartPercentage, Double mutationFrequency) {
+        this(context, verificationMethod,
+                populationSize, amountOfGeneration,
+                bestPartPercentage, mutationFrequency,
+                null, null, null, null);
+    }
+
+    public Genetic(Context context, IVerificationMethod verificationMethod,
+                   Integer populationSize, Integer amountOfGeneration,
+                   Double bestPartPercentage, Double mutationFrequency,
+                   Solution bestSolution,
+                   List<Solution> previousGeneration, Integer previousGenerationIndex, List<Long>[] statistics) {
+        super(context, verificationMethod);
+        this.populationSize = populationSize;
+        this.bestPartPercentage = bestPartPercentage;
+        this.mutationFrequency = mutationFrequency;
+        this.amountOfGeneration = amountOfGeneration;
+        this.previousGeneration = previousGeneration;
+        this.previousGenerationIndex = previousGenerationIndex;
+        this.statistics = statistics;
+        this.bestSolution = bestSolution;
+        random = new Random();
+    }
+
+    public Genetic(Context context, IVerificationMethod verificationMethod,
+                   Integer populationSize, Integer amountOfGeneration,
+                   Double bestPartPercentage) {
+		this(context, verificationMethod,
+				populationSize, amountOfGeneration,
+				bestPartPercentage, 3.0 / 100.0);
 	}
-
-	public Genetic(Context context, IVerificationMethod verificationMethod, Integer populationSize, Integer amountOfGeneration, Double bestPartPercentage) {
-		this(context, verificationMethod, populationSize, amountOfGeneration, bestPartPercentage, 3.0 / 100.0);
-
-	}
-
-	public Genetic(Context context, IVerificationMethod verificationMethod, Integer populationSize, Integer amountOfGeneration) {
-		this(context, verificationMethod, populationSize, amountOfGeneration, 30.0 / 100.0, 3.0 / 100.0);
-	}
-
+		public Genetic(Context context, IVerificationMethod verificationMethod,
+				Integer populationSize, Integer amountOfGeneration) {
+			this(context, verificationMethod,
+					populationSize, amountOfGeneration,
+					30.0 / 100.0, 3.0 / 100.0);
+		}
 	/**
 	 * When an object implementing interface <code>Runnable</code> is used
 	 * to create a thread, starting the thread causes the object's
@@ -72,15 +100,7 @@ public class Genetic extends StrategyMethod {
 		}
 		Semaphore semaphore = new Semaphore(-populationSize + 1);
 		for (int index = 0; index < generation.size(); index++) {
-			// new RandomSolution(getContext(), getVerificationMethod(),
-			// generation, index, semaphore).start();
-		
-				generation.set(index, (Solution)SolutionUtil.getRandomViableSolution2(getContext(), getVerificationMethod()).clone());
-			
-			// generation.set(index,
-			// SolutionUtil.getRandomViableSolution2(getContext(),
-			// getVerificationMethod(), 0, 10));
-			semaphore.release();
+			new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, semaphore, GenerationAction.randomSolution).run();
 		}
 		try {
 			semaphore.acquire();
@@ -133,12 +153,18 @@ public class Genetic extends StrategyMethod {
 						generation.add(s);
 					}
 				}
-				/*
-				 * generation.parallelStream().forEach(solution -> { if
-				 * (random.nextDouble() <= mutationFrequency) solution =
-				 * getViableMutatedSolution(solution); });
-				 */
-				generation.stream().filter(tempSolution -> random.nextDouble() <= mutationFrequency).forEach(solution -> solution = getViableMutatedSolution((Solution)solution.clone()));
+				semaphore = new Semaphore(-populationSize + 1);
+				for (int index = 0; index < generation.size(); index++) {
+					if(random.nextDouble() <= mutationFrequency)
+						new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, semaphore, GenerationAction.randomMutation).run();
+					else semaphore.release();
+					//generation.set(index, SolutionUtil.getRandomViableSolution2(getContext(), getVerificationMethod()));
+				}
+				try {
+					semaphore.acquire();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
 			}
 		} finally {
@@ -150,12 +176,6 @@ public class Genetic extends StrategyMethod {
 	}
 
 	public Long getFitness(Solution solution) {
-//		if (!SolutionUtil.isSolvable(getContext(), solution)) {
-//			System.out.println("makeSolvable non sovable !!");
-//		}
-//		if (getVerificationMethod().getPlaced(solution) == null) {
-//			System.out.println("makeSolvable non packable  !!");
-//		}
 		Long fit = getLinearResolutionMethod().getFitnessAndRemoveUseless(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
 		solution.setFitness(fit);
 		if (bestSolution == null || solution.getFitness() < bestSolution.getFitness()) {
@@ -177,7 +197,7 @@ public class Genetic extends StrategyMethod {
 	}
 
 	private Solution getViableCrossedSolution(Couple c) {
-		return GeneticUtil.getViableCrossedSolution(getContext(), getVerificationMethod(), c.getS1(), c.getS2());
+		return GeneticUtil.getViableCrossedSolution(getContext(), getVerificationMethod(), c.getS1(), c.getS2(), mutationFrequency);
 	}
 
 	private Solution getViableCrossedSolution2(Couple c) {

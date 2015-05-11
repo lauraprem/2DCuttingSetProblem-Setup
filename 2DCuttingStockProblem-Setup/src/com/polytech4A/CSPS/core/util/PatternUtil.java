@@ -24,7 +24,6 @@ public class PatternUtil {
 	 */
 	public static boolean addImage(Pattern pattern, Long imageId, IVerificationMethod verif) {
 		Pattern patternTemp;
-		try {
 			patternTemp = (Pattern) pattern.clone();
 			for (Image image : patternTemp.getListImg()) {
 				if (image.getId().equals(imageId)) {
@@ -46,19 +45,15 @@ public class PatternUtil {
 				}
 			}
 
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
+		if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
+			System.out.println("makeSolvable non packable  !!");
 		}
-//		if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
-//			System.out.println("makeSolvable non packable  !!");
-//		}
 		return false;
 	}
 
 	public static boolean supressImage(Pattern pattern, Long imageId, IVerificationMethod verif) {
 		Long amount;
 		Pattern patternTemp;
-		try {
 			patternTemp = (Pattern) pattern.clone();
 
 			for (int i = 0; i < patternTemp.getListImg().size(); i++) {
@@ -72,10 +67,6 @@ public class PatternUtil {
 					break;
 				}
 			}
-
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
 
 		return false;
 	}
@@ -93,8 +84,6 @@ public class PatternUtil {
 		Pattern originTemp;
 		Pattern destinaionTemp;
 		Long amount;
-
-		try {
 			originTemp = (Pattern) originPattern.clone();
 			destinaionTemp = (Pattern) destinationPattern.clone();
 
@@ -119,11 +108,6 @@ public class PatternUtil {
 					}
 				}
 			}
-
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-
 		return false;
 	}
 
@@ -140,8 +124,6 @@ public class PatternUtil {
 
 		Pattern pattern1Temp;
 		Pattern pattern2Temp;
-
-		try {
 			pattern1Temp = (Pattern) pattern1.clone();
 			pattern2Temp = (Pattern) pattern2.clone();
 
@@ -154,9 +136,6 @@ public class PatternUtil {
 					}
 				}
 			}
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
 
 		return false;
 	}

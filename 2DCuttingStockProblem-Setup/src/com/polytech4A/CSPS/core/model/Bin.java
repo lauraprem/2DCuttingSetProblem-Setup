@@ -64,7 +64,7 @@ public class Bin extends Pattern implements Cloneable{
 	}
 	
 	@Override
-	public Object clone() throws CloneNotSupportedException {
+	public Object clone() {
 		Bin cloned = new Bin(this.size, this.amount);
 		cloned.listImg = new ArrayList<Image>();
 		if(listImg != null){

@@ -124,16 +124,12 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 		this.amount = pattern.getAmount();
 		this.size = pattern.getSize();
 		this.listImg = new ArrayList<Image>();
-		try {
 			for (Image image : pattern.listImg) {
 				this.listImg.add((Image) image.clone());
 			}
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
 	}
 
-	public Object clone() throws CloneNotSupportedException {
+	public Object clone() {
 		Pattern cloned = new Pattern((Vector) this.size.clone(), this.amount);
 		cloned.listImg = new ArrayList<Image>();
 		if (listImg != null) {

@@ -11,19 +11,22 @@ import java.util.concurrent.Semaphore;
  * @author Alexandre
  *         07/05/2015
  */
-public class RandomSolution extends Thread {
+public class ParralelGenerationAction extends Thread {
     private final int index;
     private final List<Solution> generation;
     private final IVerificationMethod verificationMethod;
     private final Context context;
     private final Semaphore semaphore;
+    private final GenerationAction generationAction;
 
-    public RandomSolution(Context context, IVerificationMethod verificationMethod, List<Solution> generation, int index, Semaphore semaphore) {
+    public ParralelGenerationAction(Context context, IVerificationMethod verificationMethod, List<Solution> generation, int index, Semaphore semaphore,
+                                    GenerationAction generationAction) {
         this.index = index;
         this.generation = generation;
         this.context = context;
         this.verificationMethod = verificationMethod;
         this.semaphore = semaphore;
+        this.generationAction = generationAction;
     }
 
     /**
@@ -40,7 +43,17 @@ public class RandomSolution extends Thread {
     @Override
     public void run() {
         // TODO : Problème de synchronized pour verificationMethod
-        generation.set(index, GeneticUtil.getRandomViableSolution(context, verificationMethod));
+        if(GenerationAction.randomSolution.equals(generationAction)) makeRandom();
+        else if(GenerationAction.randomMutation.equals(generationAction)) makeMutation();
         semaphore.release();
+    }
+
+    private void makeRandom() {
+        generation.set(index, (Solution) GeneticUtil.getRandomViableSolution2(context, verificationMethod).clone());
+
+    }
+
+    private void makeMutation() {
+        generation.set(index, (Solution) GeneticUtil.getViableMutatedSolution(context, verificationMethod, (Solution) generation.get(index).clone()).clone());
     }
 }

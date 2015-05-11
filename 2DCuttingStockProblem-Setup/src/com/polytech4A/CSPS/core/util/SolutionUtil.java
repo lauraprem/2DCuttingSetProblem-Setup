@@ -65,7 +65,6 @@ public class SolutionUtil {
 			int i = 0;
 			while (i < s.getPatterns().size()) {
 				Pattern testPattern;
-				try {
 					testPattern = (Pattern) s.getPatterns().get(i).clone();
 					testPattern.addImg(e);
 					if (verificationMethod.getPlacedPatternRecursive(testPattern, 0) != null) {
@@ -75,9 +74,6 @@ public class SolutionUtil {
 					} else {
 						i++;
 					}
-				} catch (CloneNotSupportedException ex) {
-					ex.printStackTrace();
-				}
 			}
 
 			// création d'un nouveau pattern
@@ -238,7 +234,6 @@ public class SolutionUtil {
 		// int id;
 		ArrayList<Image> images = new ArrayList<Image>();
 
-		try {
 			for (Image image : context.getImages()) {
 				images.add((Image) image.clone());
 			}
@@ -296,10 +291,6 @@ public class SolutionUtil {
 				}
 			}
 			s.setPatterns(patterns);
-
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
 
 //		if (verificationMethod.getPlaced(s) == null) {
 //			System.out.println("makeSolvable non packable  !!");
@@ -423,11 +414,7 @@ public class SolutionUtil {
 		int nbImage = context.getImages().size();
 		ArrayList<Image> listIdImg = new ArrayList<Image>();
 		for (int i = 0; i < nbImage; i++) {
-			try {
-				listIdImg.add(new Image(context.getImages().get(i).getId(), (Vector) (context.getImages().get(i).getSize().clone()), context.getImages().get(i).getAmount()));
-			} catch (CloneNotSupportedException e) {
-				e.printStackTrace();
-			}
+			listIdImg.add(new Image(context.getImages().get(i).getId(), (Vector) (context.getImages().get(i).getSize().clone()), context.getImages().get(i).getAmount()));
 		}
 
 		Iterator itr = listIdImg.iterator();

@@ -44,13 +44,9 @@ public class Solution {
 
 	public void setPatterns(ArrayList<Pattern> patterns) {
 		this.patterns = new ArrayList<Pattern>();
-		try {
 			for (Pattern pattern : patterns) {
 				this.patterns.add((Pattern) pattern.clone());
 			}
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void addPattern(Pattern p) {
@@ -69,13 +65,9 @@ public class Solution {
 
 	public void setSolution(Solution s) {
 		patterns = new ArrayList<Pattern>();
-		try {
 			for (Pattern pattern : s.getPatterns()) {
 				patterns.add((Pattern) pattern.clone());
 			}
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
 		fitness = s.getFitness();
 	}
 

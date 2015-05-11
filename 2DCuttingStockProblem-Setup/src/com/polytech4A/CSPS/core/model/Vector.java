@@ -141,7 +141,7 @@ public class Vector {
 	 * @see Cloneable
 	 */
 	@Override
-	public Object clone() throws CloneNotSupportedException {
+	public Object clone() {
 		return new Vector(this.X, this.Y);
 	}
 }

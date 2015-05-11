@@ -333,11 +333,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
         if (listBinVerti.size() > 0) {
             listBinVerti.clear();
         }
-        try {
-            listBinVerti.add((Bin) bin.clone());
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        listBinVerti.add((Bin) bin.clone());
         compteur = 1;
 
         // Reset position des images
@@ -406,11 +402,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
         imagecpy.clear();
         ArrayList<Image> imagesCp = (ArrayList<Image>) images.clone();
         for(Image p : imagesCp) {
-            try {
                 imagecpy.add(((Image) p.clone()));
-            } catch (CloneNotSupportedException ex) {
-                Logger.getLogger(VerificationMethodImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
     
@@ -418,11 +410,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
         bincpy.clear();
         ArrayList<Bin> listBinCp = (ArrayList<Bin>) listBin.clone();
         for(Bin item: listBinCp) {
-            try {
                 bincpy.add( (Bin) item.clone());
-            } catch (CloneNotSupportedException ex) {
-                Logger.getLogger(VerificationMethodImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
         

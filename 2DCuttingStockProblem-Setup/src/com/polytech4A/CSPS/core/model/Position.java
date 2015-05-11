@@ -49,7 +49,7 @@ public class Position extends Vector {
     }
     
     @Override
-     public Object clone() throws CloneNotSupportedException {
+     public Object clone() {
         Position cloned = new Position(getX(),getY());
         cloned.rotated = rotated; 
         return cloned;
