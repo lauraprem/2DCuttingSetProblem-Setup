@@ -26,6 +26,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
      * plus petite
      */
     private ArrayList<Image> listImg;
+
     public VerificationMethodImpl() {
         this.listBinHoriz = new ArrayList<Bin>();
         this.listBinVerti = new ArrayList<Bin>();
@@ -50,7 +51,7 @@ public class VerificationMethodImpl implements IVerificationMethod {
         return listImg;
     }
 
-    public synchronized void setListImg(ArrayList<Image> listImg) {
+    public void setListImg(ArrayList<Image> listImg) {
         this.listImg = listImg;
     }
 
@@ -302,6 +303,22 @@ public class VerificationMethodImpl implements IVerificationMethod {
         return newBin;
     }
 
+    @Override
+    public IVerificationMethod cloneVerificationMethod() {
+        VerificationMethodImpl verificationMethod = new VerificationMethodImpl();
+
+        verificationMethod.setListImg(new ArrayList<>());
+        for(Image image : listImg) verificationMethod.getListImg().add(image);
+
+        verificationMethod.setListBinHoriz(new ArrayList<>());
+        for(Bin bin : listBinHoriz) verificationMethod.getListBinHoriz().add(bin);
+
+        verificationMethod.setListBinVerti(new ArrayList<>());
+        for(Bin bin : listBinVerti) verificationMethod.getListBinVerti().add(bin);
+
+        return verificationMethod;
+    }
+
     private void ResetBin(Bin bin) {
         if (listBinHoriz.size() > 0) {
             listBinHoriz.clear();
@@ -388,7 +405,11 @@ public class VerificationMethodImpl implements IVerificationMethod {
         bincpy.clear();
         ArrayList<Bin> listBinCp = (ArrayList<Bin>) listBin.clone();
         for (Bin item : listBinCp) {
-            bincpy.add((Bin) item.clone());
+            try {
+                bincpy.add((Bin) item.clone());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

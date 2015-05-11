@@ -99,9 +99,12 @@ public class Genetic extends StrategyMethod {
         while (generation.size() < populationSize) {
             generation.add(new Solution());
         }
+        ParralelGenerationAction action;
         Semaphore semaphore = new Semaphore(-populationSize + 1);
+        ParralelGenerationAction.setGenerated(0);
         for (int index = 0; index < generation.size(); index++) {
-            new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, semaphore, GenerationAction.randomSolution).start();
+            action = new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, semaphore, GenerationAction.randomSolution);
+            action.start();
         }
         try {
             semaphore.acquire();
@@ -155,9 +158,13 @@ public class Genetic extends StrategyMethod {
                     }
                 }
                 semaphore = new Semaphore(-populationSize + 1);
+
+                ParralelGenerationAction.setGenerated(0);
                 for (int index = 0; index < generation.size(); index++) {
-                    if (random.nextDouble() <= mutationFrequency)
-                        new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, semaphore, GenerationAction.randomMutation).start();
+                    if (random.nextDouble() <= mutationFrequency) {
+                        action = new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, semaphore, GenerationAction.randomSolution);
+                        action.start();
+                    }
                     else semaphore.release();
                     //generation.set(index, SolutionUtil.getRandomViableSolution2(getContext(), getVerificationMethod()));
                 }

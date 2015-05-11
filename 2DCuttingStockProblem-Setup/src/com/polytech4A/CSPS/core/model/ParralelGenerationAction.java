@@ -18,13 +18,14 @@ public class ParralelGenerationAction extends Thread {
     private final Context context;
     private final Semaphore semaphore;
     private final GenerationAction generationAction;
+    private static Integer generated;
 
     public ParralelGenerationAction(Context context, IVerificationMethod verificationMethod, List<Solution> generation, int index, Semaphore semaphore,
                                     GenerationAction generationAction) {
         this.index = index;
         this.generation = generation;
         this.context = context;
-        this.verificationMethod = verificationMethod;
+        this.verificationMethod = verificationMethod.cloneVerificationMethod();
         this.semaphore = semaphore;
         this.generationAction = generationAction;
     }
@@ -45,15 +46,26 @@ public class ParralelGenerationAction extends Thread {
         // TODO : Problème de synchronized pour verificationMethod
         if (GenerationAction.randomSolution.equals(generationAction)) makeRandom();
         else if (GenerationAction.randomMutation.equals(generationAction)) makeMutation();
+        setGenerated(getGenerated() + 1);
         semaphore.release();
     }
 
     private void makeRandom() {
         generation.set(index, (Solution) GeneticUtil.getRandomViableSolution2(context, verificationMethod).clone());
+        //if(getGenerated()*10000/generation.size()%100 == 0) System.out.println(getGenerated()*100/generation.size() + "% of population generated");
 
     }
 
     private void makeMutation() {
         generation.set(index, (Solution) GeneticUtil.getViableMutatedSolution(context, verificationMethod, (Solution) generation.get(index).clone()).clone());
+        //if(getGenerated()*10000/generation.size()%100 == 0) System.out.println(getGenerated()*100/generation.size() + "% mutated generated");
+    }
+
+    public static Integer getGenerated() {
+        return generated;
+    }
+
+    public static void setGenerated(Integer generated) {
+        ParralelGenerationAction.generated = generated;
     }
 }

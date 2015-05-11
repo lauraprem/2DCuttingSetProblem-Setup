@@ -40,4 +40,6 @@ public interface IVerificationMethod {
      * @return Pattern si c'est possible, 'null' sinon
      */
     public Pattern getPlacedPatternRecursive(Pattern pattern, int maxEssais);
+
+    public IVerificationMethod cloneVerificationMethod();
 }
