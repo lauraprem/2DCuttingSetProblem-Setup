@@ -25,6 +25,7 @@ public class Genetic extends StrategyMethod {
     private Integer amountOfGeneration;
     private Double bestPartPercentage = 30.0 / 100.0;
     private Double mutationFrequency = 1 / 100.0;
+    private final Double baseMutationFrequency;
     private Integer generationSinceLast = 0;
     private Integer previousGenerationIndex = -1;
     private List<Solution> previousGeneration;
@@ -40,18 +41,20 @@ public class Genetic extends StrategyMethod {
         this(context, verificationMethod,
                 populationSize, amountOfGeneration,
                 bestPartPercentage, mutationFrequency,
-                null, null, null, null);
+                null, null, null, null, mutationFrequency);
     }
 
     public Genetic(Context context, IVerificationMethod verificationMethod,
                    Integer populationSize, Integer amountOfGeneration,
                    Double bestPartPercentage, Double mutationFrequency,
                    Solution bestSolution,
-                   List<Solution> previousGeneration, Integer previousGenerationIndex, List<Long>[] statistics) {
+                   List<Solution> previousGeneration, Integer previousGenerationIndex, List<Long>[] statistics,
+                   Double baseMutationFrequency) {
         super(context, verificationMethod);
         this.populationSize = populationSize;
         this.bestPartPercentage = bestPartPercentage;
         this.mutationFrequency = mutationFrequency;
+        this.baseMutationFrequency = baseMutationFrequency;
         this.amountOfGeneration = amountOfGeneration;
         this.previousGeneration = previousGeneration;
         this.previousGenerationIndex = previousGenerationIndex;
@@ -113,6 +116,7 @@ public class Genetic extends StrategyMethod {
         }
         try {
             for (Integer i = (previousGenerationIndex != -1 ? previousGenerationIndex : 0); i < amountOfGeneration; i++) {
+                generationSinceLast++;
                 generation = generation.parallelStream().sorted((s1, s2) -> {
                     Long fit1 = s1.getFitness(), fit2 = s2.getFitness();
                     if (fit1 == -1L) {
@@ -129,6 +133,9 @@ public class Genetic extends StrategyMethod {
                         return -1;
                     return 0;
                 }).collect(Collectors.toList());
+                if (generationSinceLast == 0) mutationFrequency = baseMutationFrequency;
+                else if (generationSinceLast % 10 == 0 && mutationFrequency < 2 * baseMutationFrequency)
+                    mutationFrequency += 0.001;
 
                 LongSummaryStatistics stats = generation.parallelStream().mapToLong(value -> value.getFitness()).summaryStatistics();
                 statistics[0].add(stats.getMin());
@@ -153,7 +160,7 @@ public class Genetic extends StrategyMethod {
                 ParralelGenerationAction.setGenerated(0);
                 parralelGenerationActions.clear();
                 for (int index = (int) (generation.size() * bestPartPercentage); index < generation.size(); index++) {
-                //for (int index = 0; index < generation.size(); index++) {
+                    //for (int index = 0; index < generation.size(); index++) {
                     if (random.nextDouble() <= mutationFrequency)
                         parralelGenerationActions.add(new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, GenerationAction.randomMutation));
                 }
@@ -169,7 +176,7 @@ public class Genetic extends StrategyMethod {
             //e.printStackTrace();
             previousGenerationIndex++;
             new Genetic(getContext(), getVerificationMethod(), populationSize, amountOfGeneration, bestPartPercentage, mutationFrequency,
-                    bestSolution, previousGeneration, previousGenerationIndex, statistics).run();
+                    bestSolution, previousGeneration, previousGenerationIndex, statistics, baseMutationFrequency).run();
         }
     }
 
