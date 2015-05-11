@@ -159,4 +159,14 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
         }
         return 1;
     }
+
+	public void deleteImg(Long idImage) {
+		for (int i = 0; i < listImg.size(); i++) {
+            if (listImg.get(i).getId().equals(idImage)) {
+            	if(listImg.get(i).getAmount()>0){
+            		listImg.get(i).setAmount(listImg.get(i).getAmount() - 1);
+            	}
+            }
+        }
+	}
 }
