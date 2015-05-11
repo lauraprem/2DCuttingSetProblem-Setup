@@ -106,10 +106,11 @@ public class Pattern implements Comparable<Pattern>, Cloneable {
 	 */
 
     public Image getImage(Long id) {
-        for (Image image : listImg)
-            if (id.equals(image.getId()))
-                return image;
-        return null;
+        return (Image) listImg.get(id.intValue()).clone();
+    }
+
+    public void setImage(Long id, Image image) {
+        listImg.set(id.intValue(), (Image) image.clone());
     }
 
     @Override

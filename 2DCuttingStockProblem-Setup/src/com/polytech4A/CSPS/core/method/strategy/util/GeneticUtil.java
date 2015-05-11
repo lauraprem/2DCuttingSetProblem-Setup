@@ -49,7 +49,7 @@ public class GeneticUtil extends SolutionUtil {
         return !isPackable ? null : solution;
     }
 
-    public static Solution getViableCrossedSolution(Context context, IVerificationMethod verificationMethod, Solution s1, Solution s2, Double mutationFrequency) {
+    public static Solution getViableCrossedSolution(Context context, IVerificationMethod verificationMethod, Solution s1, Solution s2) {
         Random random = new Random();
         Long maxTentatives = 100L, tentative = 0L;
         Solution solution;
@@ -107,19 +107,18 @@ public class GeneticUtil extends SolutionUtil {
         switch (method) {
             case 0:
                 s = GeneticUtil.getViableAddNeighbor(solution, verificationMethod);
-                makePackable(context, s, verificationMethod);
                 return s;
             case 1:
                 s = GeneticUtil.getViableCrossedNeighbor(solution, verificationMethod);
-                makePackable(context, s, verificationMethod);
                 return s;
             case 2:
                 s = GeneticUtil.getViableExchangeNeighbor(solution, verificationMethod);
-                makePackable(context, s, verificationMethod);
+                return s;
+            case 3:
+                s = GeneticUtil.addViableRandomPattern(solution, context, verificationMethod);
                 return s;
             default:
                 s = GeneticUtil.getViableSupressNeighbor(solution, verificationMethod);
-                makePackable(context, s, verificationMethod);
                 return s;
         }
     }

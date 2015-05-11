@@ -27,6 +27,8 @@ public class Program {
                 Integer
                         populationSize = Integer.parseInt(args[2]),
                         amountOfGeneration = Integer.parseInt(args[3]);
+                if(args.length > 5) strategyMethod = new Genetic(context, new VerificationMethodImpl(), populationSize, amountOfGeneration, Double.parseDouble(args[4]),Double.parseDouble(args[5]));
+                    else
                 strategyMethod = new Genetic(context, new VerificationMethodImpl(), populationSize, amountOfGeneration);
                 strategyMethod.run();
             }

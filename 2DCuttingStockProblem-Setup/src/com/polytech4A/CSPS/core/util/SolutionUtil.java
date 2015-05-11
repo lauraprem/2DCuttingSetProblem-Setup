@@ -1,18 +1,14 @@
 package com.polytech4A.CSPS.core.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
 import com.polytech4A.CSPS.core.method.verification.IVerificationMethod;
 import com.polytech4A.CSPS.core.model.Image;
 import com.polytech4A.CSPS.core.model.Pattern;
 import com.polytech4A.CSPS.core.model.Solution;
 import com.polytech4A.CSPS.core.model.Vector;
 import com.polytech4A.CSPS.core.resolution.util.context.Context;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Alexandre
@@ -130,53 +126,54 @@ public class SolutionUtil {
     }
 
     public static Boolean makePackable(Context context, Solution solution, IVerificationMethod verificationMethod) {
-    	
-    	 Random random = new Random();
-    	 
-    	// On cherche les patterns non packable, s'il y en a on enlève une image au hasard jusqu'à que ça marche
-    	ArrayList<Pattern> listPattern =  (ArrayList<Pattern>) solution.getPatterns().clone();
-    	for (int i = 0; i <listPattern.size(); i++) {
-    		
-    		// Si le pattern n'est pas packable on enlève une image au hasard jusqu'à la rendre packable
-    		if(verificationMethod.getPlacedPatternRecursive(solution.getPatterns().get(i), 0) == null){
-    			ArrayList<Long> listIdImage = new ArrayList<Long>();
-    			
-    			// Récupération des images présente dans le pattern
-    			for (int j = 0; j < solution.getPatterns().get(i).getListImg().size(); j++) {
-    				if(solution.getPatterns().get(i).getListImg().get(j).getAmount()>0){
-    					listIdImage.add(solution.getPatterns().get(i).getListImg().get(j).getId());
-    				}
-				}
-    			
-    			// Enlève les images jusqu'à ce que le pattern soit packable
-    			ArrayList<Long> listIdImageEnleve = new ArrayList<Long>();
-    			while(verificationMethod.getPlacedPatternRecursive(solution.getPatterns().get(i), 0) == null){
-    				Long idImage = (long) random.nextInt(listIdImage.size()-1);
-    				solution.getPatterns().get(i).deleteImg(idImage);
-    				listIdImageEnleve.add(idImage);
-    			}
-    			
-    			// On essaye d'insérer les images dans autant de nouveaux patterns qu'il faut
-    			 ArrayList<Pattern> patterns = new ArrayList<Pattern>();
-    			 Pattern pattern = new Pattern(new Vector(context.getPatternSize().getX(),context.getPatternSize().getY()), context.getCopyImages());
-    			 Iterator iter = listIdImageEnleve.iterator();
-    		        while (iter.hasNext()) {
-    		        	 Long imageId = (Long) iter.next();
-    		        	if (!PatternUtil.addImage(pattern, imageId, verificationMethod)) {
-    		                patterns.add((Pattern) pattern.clone());
-    		                pattern = new Pattern(context.getPatternSize(), context.getCopyImages());
-    		                PatternUtil.addImage(pattern, imageId, verificationMethod);
-    		                iter.remove();
-    		            }
-    		            if (listIdImageEnleve.size() == 0) {
-    		                patterns.add((Pattern) pattern.clone());
-    		            }
-		            }    	    	
-    		}
-		}
-    	solution.setSolution(makeSolvable(context, solution,verificationMethod));
 
-//      solution.setSolution(getRandomViableSolution2(context, verificationMethod));
+        /*Random random = new Random();
+
+        // On cherche les patterns non packable, s'il y en a on enlève une image au hasard jusqu'à que ça marche
+        ArrayList<Pattern> listPattern = (ArrayList<Pattern>) solution.getPatterns().clone();
+        for (int i = 0; i < listPattern.size(); i++) {
+
+            // Si le pattern n'est pas packable on enlève une image au hasard jusqu'à la rendre packable
+            if (verificationMethod.getPlacedPatternRecursive(solution.getPatterns().get(i), 0) == null) {
+                ArrayList<Long> listIdImage = new ArrayList<Long>();
+
+                // Récupération des images présente dans le pattern
+                for (int j = 0; j < solution.getPatterns().get(i).getListImg().size(); j++) {
+                    if (solution.getPatterns().get(i).getListImg().get(j).getAmount() > 0) {
+                        listIdImage.add(solution.getPatterns().get(i).getListImg().get(j).getId());
+                    }
+                }
+
+                // Enlève les images jusqu'à ce que le pattern soit packable
+                ArrayList<Long> listIdImageEnleve = new ArrayList<Long>();
+                while (verificationMethod.getPlacedPatternRecursive(solution.getPatterns().get(i), 0) == null) {
+                    Long idImage = (long) random.nextInt(listIdImage.size() - 1);
+                    solution.getPatterns().get(i).deleteImg(idImage);
+                    listIdImageEnleve.add(idImage);
+                }
+
+                // On essaye d'insérer les images dans autant de nouveaux patterns qu'il faut
+                ArrayList<Pattern> patterns = new ArrayList<Pattern>();
+                Pattern pattern = new Pattern(new Vector(context.getPatternSize().getX(), context.getPatternSize().getY()), context.getCopyImages());
+                Iterator iter = listIdImageEnleve.iterator();
+                while (iter.hasNext()) {
+                    Long imageId = (Long) iter.next();
+                    if (!PatternUtil.addImage(pattern, imageId, verificationMethod)) {
+                        patterns.add((Pattern) pattern.clone());
+                        pattern = new Pattern(context.getPatternSize(), context.getCopyImages());
+                        PatternUtil.addImage(pattern, imageId, verificationMethod);
+                        iter.remove();
+                    }
+                    if (listIdImageEnleve.size() == 0) {
+                        patterns.add((Pattern) pattern.clone());
+                    }
+                }
+            }
+        }
+        solution.setSolution(makeSolvable(context, solution, verificationMethod));
+
+        */
+        solution.setSolution(getRandomViableSolution2(context, verificationMethod));
 //		if (!isSolvable(context, solution)) {
 //			System.out.println("makeSolvable non sovable !!");
 //		}
@@ -219,7 +216,7 @@ public class SolutionUtil {
         }
         for (Integer index : patternIndexes) {
             /*
-			 * for(int i = 0; i < 4; i++) {
+             * for(int i = 0; i < 4; i++) {
 			 * PatternUtil.addImage(patterns.get(index),
 			 * imageIds.get(random.nextInt(imageIds.size())),
 			 * verificationMethod); }
@@ -369,9 +366,8 @@ public class SolutionUtil {
 
         patternIndex = r.nextInt(s.getPatterns().size());
         imageIndex = r.nextInt(s.getPatterns().get(patternIndex).getListImg().size());
-        PatternUtil.addImage(s.getPatterns().get(patternIndex), s.getPatterns().get(patternIndex).getListImg().get(imageIndex).getId(), verificationMethod);
-
-        return s;
+        return PatternUtil.addImage(s.getPatterns().get(patternIndex), s.getPatterns().get(patternIndex).getListImg().get(imageIndex).getId(), verificationMethod)
+                ? s : solution;
     }
 
     public static Solution getViableCrossedNeighbor(Solution solution, IVerificationMethod verificationMethod) {
@@ -392,10 +388,27 @@ public class SolutionUtil {
             image1Index = r.nextInt(s.getPatterns().get(pattern2Index).getListImg().size());
         }
 
-        PatternUtil.crossImage(s.getPatterns().get(pattern1Index), s.getPatterns().get(pattern2Index), s.getPatterns().get(pattern2Index).getListImg().get(image1Index).getId(), s
-                .getPatterns().get(pattern1Index).getListImg().get(image2Index).getId(), verificationMethod);
-        return s;
+        return PatternUtil.crossImage(s.getPatterns().get(pattern1Index), s.getPatterns().get(pattern2Index), s.getPatterns().get(pattern2Index).getListImg().get(image1Index).getId(), s
+                .getPatterns().get(pattern1Index).getListImg().get(image2Index).getId(), verificationMethod)
+                ?
+                s : solution;
 
+    }
+
+    public static Solution addViableRandomPattern(Solution solution, Context context, IVerificationMethod verificationMethod) {
+        return addViableRandomPattern(solution, context, verificationMethod, -1L);
+    }
+
+    public static Solution addViableRandomPattern(Solution solution, Context context, IVerificationMethod verificationMethod, Long idImage) {
+        Pattern p = new Pattern(context.getPatternSize(), context.getCopyImages());
+        Random r = new Random();
+        if (idImage >= 0) PatternUtil.addImage(p, idImage, verificationMethod.cloneVerificationMethod());
+        Long newIdImage;
+        do {
+            newIdImage = ((Integer) r.nextInt(context.getImages().size())).longValue();
+        } while (PatternUtil.addImage(p, newIdImage, verificationMethod.cloneVerificationMethod())) ;
+        solution.addPattern(p);
+        return solution;
     }
 
     public static Solution getViableExchangeNeighbor(Solution solution, IVerificationMethod verificationMethod) {
@@ -412,9 +425,9 @@ public class SolutionUtil {
             imageIndex = r.nextInt(s.getPatterns().get(originPattern).getListImg().size());
         }
 
-        PatternUtil.exchangeImage(s.getPatterns().get(originPattern), s.getPatterns().get(destinationPattern), s.getPatterns().get(originPattern).getListImg().get(imageIndex)
-                .getId(), verificationMethod);
-        return s;
+        return PatternUtil.exchangeImage(s.getPatterns().get(originPattern), s.getPatterns().get(destinationPattern), s.getPatterns().get(originPattern).getListImg().get(imageIndex)
+                .getId(), verificationMethod)
+                ? s : solution;
     }
 
     public static Boolean isSolvable(Context context, Solution solution) {

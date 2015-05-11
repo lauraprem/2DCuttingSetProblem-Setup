@@ -21,24 +21,23 @@ public class PatternUtil {
     public static boolean addImage(Pattern pattern, Long imageId, IVerificationMethod verif) {
         Pattern patternTemp;
         patternTemp = (Pattern) pattern.clone();
-        for (Image image : patternTemp.getListImg()) {
-            if (image.getId().equals(imageId)) {
-                image.incrementAmoutByOne();
-                if (verif != null) {
+        if(imageId < 0)
+            return false;
+        Image image = patternTemp.getImage(imageId);
+        image.incrementAmoutByOne();
+        patternTemp.setImage(imageId, image);
+        if (verif != null) {
 //						patternTemp = verif.getPlacedPatternRecursive(patternTemp, 0);
-                    if (verif.getPlacedPatternRecursive(patternTemp, 0) != null) {
-                        pattern.setPattern(patternTemp);
+            if (verif.getPlacedPatternRecursive(patternTemp, 0) != null) {
+                pattern.setPattern(patternTemp);
 //							if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
 //								System.out.println("makeSolvable non packable  !!");
 //							}
-                        return true;
-                    }
-                } else {
-                    pattern.setPattern(patternTemp);
-                    return true;
-                }
-                break;
+                return true;
             }
+        } else {
+            pattern.setPattern(patternTemp);
+            return true;
         }
 
         if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
@@ -125,10 +124,10 @@ public class PatternUtil {
         pattern1Temp = (Pattern) pattern1.clone();
         pattern2Temp = (Pattern) pattern2.clone();
 
-        if (addImage(pattern1Temp, imageId1, verif)) {
-            if (addImage(pattern2Temp, imageId2, verif)) {
-                if (supressImage(pattern1Temp, imageId2, verif)) {
-                    if (supressImage(pattern2Temp, imageId1, verif)) {
+        if (supressImage(pattern1Temp, imageId2, verif)) {
+            if (addImage(pattern1Temp, imageId1, verif)) {
+                if (supressImage(pattern2Temp, imageId1, verif)) {
+                    if (addImage(pattern2Temp, imageId2, verif)) {
                         return true;
                     }
                 }

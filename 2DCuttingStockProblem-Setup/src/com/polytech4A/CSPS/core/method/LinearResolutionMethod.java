@@ -129,7 +129,7 @@ public class LinearResolutionMethod {
             }
             return count;
         } catch (NoFeasibleSolutionException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }

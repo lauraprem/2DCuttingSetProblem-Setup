@@ -46,7 +46,7 @@ public class CoupleIterator implements Iterator<Couple> {
      * Returns the next element in the iteration.
      */
     @Override
-    public Couple next() {
+    public synchronized Couple next() {
         if (generation.size() < 2) throw new NoSuchElementException();
         int indexS1 = random.nextInt(generation.size()), indexS2 = random.nextInt(generation.size() - 1);
         if (indexS2 >= indexS1) indexS2++;

@@ -5,5 +5,5 @@ package com.polytech4A.CSPS.core.model;
  *         11/05/2015
  */
 public enum GenerationAction {
-    randomSolution, randomMutation;
+    randomSolution, randomMutation, crossedSolution;
 }
