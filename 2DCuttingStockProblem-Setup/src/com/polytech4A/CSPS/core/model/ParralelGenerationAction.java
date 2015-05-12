@@ -80,9 +80,9 @@ public class ParralelGenerationAction extends Thread {
     }
 
     private void makeCrossing() {
-        Solution s = GeneticUtil.getViableCrossedSolution(context, verificationMethod, (Solution) couple.getS1().clone(), (Solution) couple.getS2().clone());
+        Solution s = GeneticUtil.getViableCrossedSolution(context, verificationMethod, (Solution) generation.get(couple.getS1()).clone(), (Solution) generation.get(couple.getS2()).clone());
         if (s == null) makeCrossing();
-        else generation.set(index, (Solution) s.clone());
+        else generation.set(index, s);
         //if(getGenerated()*1000/generation.size()%10 == 0) System.out.println(getGenerated()*100/generation.size() + "% population generated");
     }
 

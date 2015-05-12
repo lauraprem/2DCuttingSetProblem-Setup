@@ -9,12 +9,13 @@ import java.util.*;
  *         29/04/2015
  */
 public class CoupleIterator implements Iterator<Couple> {
-    private ArrayList<Solution> generation;
+    private Integer indexMax;
+    private List<Solution> generation;
     private Random random = new Random();
 
     public CoupleIterator(List<Solution> generation) {
-        this.generation = new ArrayList<>();
-        for (Solution solution : generation) this.generation.add(solution);
+        this.indexMax = generation.size();
+        this.generation = generation;
     }
 
     /**
@@ -26,7 +27,7 @@ public class CoupleIterator implements Iterator<Couple> {
      */
     @Override
     public boolean hasNext() {
-        return generation.size() >= 2;
+        return indexMax >= 2;
     }
 
     /**
@@ -47,9 +48,9 @@ public class CoupleIterator implements Iterator<Couple> {
      */
     @Override
     public synchronized Couple next() {
-        if (generation.size() < 2) throw new NoSuchElementException();
-        int indexS1 = random.nextInt(generation.size()), indexS2 = random.nextInt(generation.size() - 1);
+        if (indexMax < 2) throw new NoSuchElementException();
+        int indexS1 = random.nextInt(indexMax), indexS2 = random.nextInt(indexMax - 1);
         if (indexS2 >= indexS1) indexS2++;
-        return new Couple(generation.get(indexS1), generation.get(indexS2));
+        return new Couple(indexS1, indexS2);
     }
 }

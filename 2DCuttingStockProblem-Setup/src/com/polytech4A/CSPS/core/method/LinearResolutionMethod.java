@@ -95,14 +95,15 @@ public class LinearResolutionMethod {
 //		if (!SolutionUtil.isSolvable(context, solution)) {
 //			System.out.println("makeSolvable non sovable !!");
 //		}
+        ArrayList<Pattern> patterns = new ArrayList<>();
         Long fitness = getFitness(solution, costOfPattern, costOfPrinting);
         Boolean changed = Boolean.FALSE;
-        for (int i = 0; i < solution.getPatterns().size(); i++)
-            if (solution.getPatterns().get(i).getAmount() == 0L) {
-                solution.getPatterns().remove(i);
-                changed = Boolean.TRUE;
-                i--;
-            }
+        for (int i = 0; i < solution.getPatterns().size(); i++) {
+            if (solution.getPatterns().get(i).getAmount() != 0L) {
+                patterns.add(solution.getPatterns().get(i));
+            } else changed = Boolean.TRUE;
+        }
+        solution.setPatterns(patterns);
         return changed ? getFitness(solution, costOfPattern, costOfPrinting) : fitness;
     }
 
@@ -129,7 +130,7 @@ public class LinearResolutionMethod {
             }
             return count;
         } catch (NoFeasibleSolutionException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         return null;
     }

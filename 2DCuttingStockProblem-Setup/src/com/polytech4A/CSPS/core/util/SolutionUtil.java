@@ -366,6 +366,7 @@ public class SolutionUtil {
 
         patternIndex = r.nextInt(s.getPatterns().size());
         imageIndex = r.nextInt(s.getPatterns().get(patternIndex).getListImg().size());
+        s.setFitness(-1L);
         return PatternUtil.addImage(s.getPatterns().get(patternIndex), s.getPatterns().get(patternIndex).getListImg().get(imageIndex).getId(), verificationMethod)
                 ? s : solution;
     }
@@ -387,7 +388,7 @@ public class SolutionUtil {
         while (s.getPatterns().get(pattern2Index).getListImg().get(image1Index).getAmount() == 0) {
             image1Index = r.nextInt(s.getPatterns().get(pattern2Index).getListImg().size());
         }
-
+        s.setFitness(-1L);
         return PatternUtil.crossImage(s.getPatterns().get(pattern1Index), s.getPatterns().get(pattern2Index), s.getPatterns().get(pattern2Index).getListImg().get(image1Index).getId(), s
                 .getPatterns().get(pattern1Index).getListImg().get(image2Index).getId(), verificationMethod)
                 ?
@@ -408,6 +409,7 @@ public class SolutionUtil {
             newIdImage = ((Integer) r.nextInt(context.getImages().size())).longValue();
         } while (PatternUtil.addImage(p, newIdImage, verificationMethod.cloneVerificationMethod())) ;
         solution.addPattern(p);
+        solution.setFitness(-1L);
         return solution;
     }
 
@@ -424,7 +426,7 @@ public class SolutionUtil {
         while (s.getPatterns().get(originPattern).getListImg().get(imageIndex).getAmount() == 0) {
             imageIndex = r.nextInt(s.getPatterns().get(originPattern).getListImg().size());
         }
-
+        s.setFitness(-1L);
         return PatternUtil.exchangeImage(s.getPatterns().get(originPattern), s.getPatterns().get(destinationPattern), s.getPatterns().get(originPattern).getListImg().get(imageIndex)
                 .getId(), verificationMethod)
                 ? s : solution;

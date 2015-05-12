@@ -41,7 +41,7 @@ public class Genetic extends StrategyMethod {
         this(context, verificationMethod,
                 populationSize, amountOfGeneration,
                 bestPartPercentage, mutationFrequency,
-                null, null, null, null, mutationFrequency);
+                null, null, null, null, mutationFrequency, null);
     }
 
     public Genetic(Context context, IVerificationMethod verificationMethod,
@@ -49,7 +49,7 @@ public class Genetic extends StrategyMethod {
                    Double bestPartPercentage, Double mutationFrequency,
                    Solution bestSolution,
                    List<Solution> previousGeneration, Integer previousGenerationIndex, List<Long>[] statistics,
-                   Double baseMutationFrequency) {
+                   Double baseMutationFrequency, Integer generationSinceLast) {
         super(context, verificationMethod);
         this.populationSize = populationSize;
         this.bestPartPercentage = bestPartPercentage;
@@ -60,6 +60,7 @@ public class Genetic extends StrategyMethod {
         this.previousGenerationIndex = previousGenerationIndex;
         this.statistics = statistics;
         this.bestSolution = bestSolution;
+        this.generationSinceLast = generationSinceLast;
         random = new Random();
     }
 
@@ -114,6 +115,7 @@ public class Genetic extends StrategyMethod {
         } else {
             previousGeneration.stream().forEach(solution -> generation.add(solution));
         }
+        if (generationSinceLast == null) generationSinceLast = -1;
         try {
             for (Integer i = (previousGenerationIndex != -1 ? previousGenerationIndex : 0); i < amountOfGeneration; i++) {
                 generationSinceLast++;
@@ -138,16 +140,17 @@ public class Genetic extends StrategyMethod {
                     mutationFrequency += 0.001;
 
                 LongSummaryStatistics stats = generation.parallelStream().mapToLong(value -> value.getFitness()).summaryStatistics();
-                statistics[0].add(stats.getMin());
-                statistics[1].add(((Double) stats.getAverage()).longValue());
-                statistics[2].add(stats.getMax());
-                statistics[3].add(bestSolution.getFitness());
-                CoupleIterator coupleIterator = new CoupleIterator(generation);
+                Long min = stats.getMin(), average = ((Double) stats.getAverage()).longValue(), max = stats.getMax(), best = bestSolution.getFitness();
+                statistics[0].add(min);
+                statistics[1].add(average);
+                statistics[2].add(max);
+                statistics[3].add(best);
 
                 previousGeneration.clear();
                 generation.stream().forEach(solution -> previousGeneration.add((Solution) solution.clone()));
                 previousGenerationIndex = i;
                 generation = generation.subList(0, (int) (generation.size() * bestPartPercentage));
+                CoupleIterator coupleIterator = new CoupleIterator(generation);
                 ParralelGenerationAction.setGenerated(0);
                 parralelGenerationActions.clear();
                 for (int index = generation.size(); index < populationSize; index++) {
@@ -155,33 +158,29 @@ public class Genetic extends StrategyMethod {
                             generation, index, coupleIterator.next(), GenerationAction.crossedSolution));
                     generation.add(new Solution());
                 }
-                parralelGenerationActions.parallelStream().forEach(parralelGenerationAction2 -> parralelGenerationAction2.run());
-
+                parralelGenerationActions.stream().forEach(parralelGenerationAction2 -> parralelGenerationAction2.run());
+/*
                 ParralelGenerationAction.setGenerated(0);
                 parralelGenerationActions.clear();
-                if(generationSinceLast != 0 && generationSinceLast%100 == 0) {
-                    for (int index = 0; index < (int) (generation.size() * bestPartPercentage); index++) {
-                        generation.set(index, GeneticUtil.addViableRandomPattern(generation.get(index), getContext(), getVerificationMethod()));
-                    }
-                }
                 for (int index = (int) (generation.size() * bestPartPercentage); index < generation.size(); index++) {
                     //for (int index = 0; index < generation.size(); index++) {
                     if (random.nextDouble() <= mutationFrequency)
                         parralelGenerationActions.add(new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, GenerationAction.randomMutation));
                 }
-                    parralelGenerationActions.parallelStream().forEach(parralelGenerationAction -> parralelGenerationAction.run());
-
+                parralelGenerationActions.parallelStream().forEach(parralelGenerationAction -> parralelGenerationAction.run());
+*/
                 System.out.println("Génération " + i + " : Fitness " + bestSolution.getFitness() + ", Patterns " + bestSolution.getPatterns().size());
             }
             Resolution resolution = new Resolution(getContext());
             resolution.setSolution(bestSolution);
-            String filepath = new ToPNG().save("version2.1", resolution);
+            String filepath = new ToPNG().save("version2.2", resolution);
             Report.makeStatisticReport(filepath, statistics[3], statistics[0], statistics[1], statistics[2]);
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             previousGenerationIndex++;
+            generationSinceLast--;
             new Genetic(getContext(), getVerificationMethod(), populationSize, amountOfGeneration, bestPartPercentage, mutationFrequency,
-                    bestSolution, previousGeneration, previousGenerationIndex, statistics, baseMutationFrequency).run();
+                    bestSolution, previousGeneration, previousGenerationIndex, statistics, baseMutationFrequency, generationSinceLast).run();
         }
     }
 
@@ -192,7 +191,7 @@ public class Genetic extends StrategyMethod {
             // if(getVerificationMethod().getPlaced(solution)==null){
             // System.out.println("Non packable");
             // }
-            generationSinceLast = 0;
+            generationSinceLast = -1;
             bestSolution = getVerificationMethod().getPlaced(solution);
             //Resolution resolution = new Resolution(getContext());
             //resolution.setSolution(bestSolution);
@@ -209,11 +208,11 @@ public class Genetic extends StrategyMethod {
     }
 
     private Solution getViableCrossedSolution(Couple c) {
-        return GeneticUtil.getViableCrossedSolution(getContext(), getVerificationMethod(), c.getS1(), c.getS2());
+        return GeneticUtil.getViableCrossedSolution(getContext(), getVerificationMethod(),  generation.get(c.getS1()),  generation.get(c.getS2()));
     }
 
     private Solution getViableCrossedSolution2(Couple c) {
-        return GeneticUtil.getViableCrossedSolution2(getContext(), getVerificationMethod(), c.getS1(), c.getS2());
+        return GeneticUtil.getViableCrossedSolution2(getContext(), getVerificationMethod(),  generation.get(c.getS1()),  generation.get(c.getS2()));
     }
 
     /**
