@@ -81,17 +81,16 @@ public class Report {
         int maxGeneration = Math.max(bests.size(), Math.max(averages.size(), worsts.size()));
         StringBuilder str = new StringBuilder();
         str.append("Generation;");
-        //str.append("Best Found;");
+        str.append("Best Found;");
         str.append("Best Fitness;");
         str.append("Average Fitness;");
         str.append("Worst Fitness;\n");
-        int val;
         for (int i = 0; i < maxGeneration; i++) {
             Long bestFound = bestsFound.get(i), best = bests.get(i), average = averages.get(i), worst = worsts.get(i);
             str.append(i + 1);
             str.append(';');
-            //str.append(bestFound);
-            //str.append(';');
+            str.append(bestFound);
+            str.append(';');
             str.append(best);
             str.append(';');
             str.append(average);
