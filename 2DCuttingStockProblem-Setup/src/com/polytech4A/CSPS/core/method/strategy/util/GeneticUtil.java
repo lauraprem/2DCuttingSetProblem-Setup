@@ -102,8 +102,8 @@ public class GeneticUtil extends SolutionUtil {
 
     public static Solution getViableMutatedSolution(Context context, IVerificationMethod verificationMethod, Solution solution) {
         Random r = new Random();
-        int method = r.nextInt(4);
-        Solution s = null;
+        int method = r.nextInt(3);
+        Solution s;
         switch (method) {
             case 0:
                 s = GeneticUtil.getViableAddNeighbor(solution, verificationMethod);
@@ -114,9 +114,10 @@ public class GeneticUtil extends SolutionUtil {
             case 2:
                 s = GeneticUtil.getViableExchangeNeighbor(solution, verificationMethod);
                 return s;
+            /*
             case 3:
                 s = GeneticUtil.addViableRandomPattern(solution, context, verificationMethod);
-                return s;
+                return s;*/
             default:
                 s = GeneticUtil.getViableSupressNeighbor(solution, verificationMethod);
                 return s;
