@@ -159,14 +159,19 @@ public class Genetic extends StrategyMethod {
 
                 ParralelGenerationAction.setGenerated(0);
                 parralelGenerationActions.clear();
+                if(generationSinceLast != 0 && generationSinceLast%100 == 0) {
+                    for (int index = 0; index < (int) (generation.size() * bestPartPercentage); index++) {
+                        generation.set(index, GeneticUtil.addViableRandomPattern(generation.get(index), getContext(), getVerificationMethod()));
+                    }
+                }
                 for (int index = (int) (generation.size() * bestPartPercentage); index < generation.size(); index++) {
                     //for (int index = 0; index < generation.size(); index++) {
                     if (random.nextDouble() <= mutationFrequency)
                         parralelGenerationActions.add(new ParralelGenerationAction(getContext(), getVerificationMethod(), generation, index, GenerationAction.randomMutation));
                 }
-                parralelGenerationActions.parallelStream().forEach(parralelGenerationAction -> parralelGenerationAction.run());
+                    parralelGenerationActions.parallelStream().forEach(parralelGenerationAction -> parralelGenerationAction.run());
 
-                System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
+                System.out.println("Génération " + i + " : Fitness " + bestSolution.getFitness() + ", Patterns " + bestSolution.getPatterns().size());
             }
             Resolution resolution = new Resolution(getContext());
             resolution.setSolution(bestSolution);
@@ -187,6 +192,7 @@ public class Genetic extends StrategyMethod {
             // if(getVerificationMethod().getPlaced(solution)==null){
             // System.out.println("Non packable");
             // }
+            generationSinceLast = 0;
             bestSolution = getVerificationMethod().getPlaced(solution);
             //Resolution resolution = new Resolution(getContext());
             //resolution.setSolution(bestSolution);
