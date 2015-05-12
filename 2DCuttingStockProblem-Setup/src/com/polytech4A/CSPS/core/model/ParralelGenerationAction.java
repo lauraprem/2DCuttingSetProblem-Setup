@@ -70,17 +70,17 @@ public class ParralelGenerationAction extends Thread {
     }
 
     private void makeRandom() {
-        generation.set(index, (Solution) GeneticUtil.getRandomViableSolution2(context, verificationMethod).clone());
+        generation.set(index, (Solution) GeneticUtil.getRandomPackableSolution2(context, verificationMethod).clone());
         //if(getGenerated()*1000/generation.size()%10 == 0) System.out.println(getGenerated() * 100 / generation.size() + "% of population generated");
     }
 
     private void makeMutation() {
-        generation.set(index, (Solution) GeneticUtil.getViableMutatedSolution(context, verificationMethod, (Solution) generation.get(index).clone()).clone());
+        generation.set(index, (Solution) GeneticUtil.getPackableMutatedSolution(context, verificationMethod, (Solution) generation.get(index).clone()).clone());
         //if(getGenerated()*1000/generation.size()%10 == 0) System.out.println(getGenerated()*100/generation.size() + "% mutated generated");
     }
 
     private void makeCrossing() {
-        Solution s = GeneticUtil.getViableCrossedSolution(context, verificationMethod, (Solution) couple.getS1().clone(), (Solution) couple.getS2().clone());
+        Solution s = GeneticUtil.getPackableCrossedSolution(context, verificationMethod, (Solution) couple.getS1().clone(), (Solution) couple.getS2().clone());
         if (s == null) makeCrossing();
         else generation.set(index, (Solution) s.clone());
         //if(getGenerated()*1000/generation.size()%10 == 0) System.out.println(getGenerated()*100/generation.size() + "% population generated");

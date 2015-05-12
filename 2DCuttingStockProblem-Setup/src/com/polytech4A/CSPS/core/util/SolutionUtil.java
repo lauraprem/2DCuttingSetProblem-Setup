@@ -173,7 +173,7 @@ public class SolutionUtil {
         solution.setSolution(makeSolvable(context, solution, verificationMethod));
 
         */
-        solution.setSolution(getRandomViableSolution2(context, verificationMethod));
+        solution.setSolution(getRandomPackableSolution2(context, verificationMethod));
 //		if (!isSolvable(context, solution)) {
 //			System.out.println("makeSolvable non sovable !!");
 //		}
@@ -185,7 +185,7 @@ public class SolutionUtil {
         return true;
     }
 
-    public static Solution getRandomViableSolution(Context context, IVerificationMethod verificationMethod) {
+    public static Solution getRandomPackableSolution(Context context, IVerificationMethod verificationMethod) {
         Random random = new Random();
         Integer amountOfPattern = random.nextInt(context.getMaxPattern() - context.getMinPattern()) + context.getMinPattern();
         Solution solution = new Solution();
@@ -230,7 +230,7 @@ public class SolutionUtil {
         return solution;
     }
 
-    public static Solution getRandomViableSolution2(Context context, IVerificationMethod verificationMethod) {
+    public static Solution getRandomPackableSolution2(Context context, IVerificationMethod verificationMethod) {
         int nbRandomImageMin = 1;
         int nbRandomImageMax = context.getImages().size();
         Solution s = new Solution();
@@ -343,7 +343,7 @@ public class SolutionUtil {
      * @param verificationMethod
      * @return solution avec l'image en moins
      */
-    public static Solution getViableSupressNeighbor(Solution solution, IVerificationMethod verificationMethod) {
+    public static Solution getPackableSupressNeighbor(Solution solution, IVerificationMethod verificationMethod) {
         Random r = new Random();
         Solution s = new Solution(solution);
         int patternIndex;
@@ -358,7 +358,7 @@ public class SolutionUtil {
         return s;
     }
 
-    public static Solution getViableAddNeighbor(Solution solution, IVerificationMethod verificationMethod) {
+    public static Solution getPackableAddNeighbor(Solution solution, IVerificationMethod verificationMethod) {
         Random r = new Random();
         Solution s = new Solution(solution);
         int patternIndex;
@@ -370,7 +370,7 @@ public class SolutionUtil {
                 ? s : solution;
     }
 
-    public static Solution getViableCrossedNeighbor(Solution solution, IVerificationMethod verificationMethod) {
+    public static Solution getPackableCrossedNeighbor(Solution solution, IVerificationMethod verificationMethod) {
         Random r = new Random();
         Solution s = new Solution(solution);
         int pattern1Index;
@@ -395,11 +395,11 @@ public class SolutionUtil {
 
     }
 
-    public static Solution addViableRandomPattern(Solution solution, Context context, IVerificationMethod verificationMethod) {
-        return addViableRandomPattern(solution, context, verificationMethod, -1L);
+    public static Solution addPackableRandomPattern(Solution solution, Context context, IVerificationMethod verificationMethod) {
+        return addPackableRandomPattern(solution, context, verificationMethod, -1L);
     }
 
-    public static Solution addViableRandomPattern(Solution solution, Context context, IVerificationMethod verificationMethod, Long idImage) {
+    public static Solution addPackableRandomPattern(Solution solution, Context context, IVerificationMethod verificationMethod, Long idImage) {
         Pattern p = new Pattern(context.getPatternSize(), context.getCopyImages());
         Random r = new Random();
         if (idImage >= 0) PatternUtil.addImage(p, idImage, verificationMethod.cloneVerificationMethod());
@@ -411,7 +411,7 @@ public class SolutionUtil {
         return solution;
     }
 
-    public static Solution getViableExchangeNeighbor(Solution solution, IVerificationMethod verificationMethod) {
+    public static Solution getPackableExchangeNeighbor(Solution solution, IVerificationMethod verificationMethod) {
         Random r = new Random();
         Solution s = new Solution(solution);
         int originPattern;

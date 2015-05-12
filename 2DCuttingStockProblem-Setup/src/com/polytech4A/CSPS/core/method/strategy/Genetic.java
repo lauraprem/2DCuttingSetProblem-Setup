@@ -153,8 +153,11 @@ public class Genetic extends StrategyMethod {
                 for (int index = generation.size(); index < populationSize; index++) {
                     parralelGenerationActions.add(new ParralelGenerationAction(getContext(), getVerificationMethod(),
                             generation, index, coupleIterator.next(), GenerationAction.crossedSolution));
+                }
+                for (int index = generation.size(); index < populationSize; index++) {
                     generation.add(new Solution());
                 }
+
                 parralelGenerationActions.parallelStream().forEach(parralelGenerationAction2 -> parralelGenerationAction2.run());
 
                 ParralelGenerationAction.setGenerated(0);
@@ -166,7 +169,7 @@ public class Genetic extends StrategyMethod {
                 }
                 parralelGenerationActions.parallelStream().forEach(parralelGenerationAction -> parralelGenerationAction.run());
 
-                System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
+                    System.out.println("Génération : " + i + ", Fitness : " + bestSolution.getFitness());
             }
             Resolution resolution = new Resolution(getContext());
             resolution.setSolution(bestSolution);
@@ -184,9 +187,9 @@ public class Genetic extends StrategyMethod {
         Long fit = getLinearResolutionMethod().getFitnessAndRemoveUseless(solution, (long) getContext().getPatternCost(), (long) getContext().getSheetCost());
         solution.setFitness(fit);
         if (bestSolution == null || solution.getFitness() < bestSolution.getFitness()) {
-            // if(getVerificationMethod().getPlaced(solution)==null){
-            // System.out.println("Non packable");
-            // }
+            if(getVerificationMethod().getPlaced(solution)==null){
+                System.out.println("Non packable");
+            }
             bestSolution = getVerificationMethod().getPlaced(solution);
             //Resolution resolution = new Resolution(getContext());
             //resolution.setSolution(bestSolution);
@@ -198,16 +201,16 @@ public class Genetic extends StrategyMethod {
         return fit;
     }
 
-    private Solution getViableMutatedSolution(Solution s) {
-        return GeneticUtil.getViableMutatedSolution(getContext(), getVerificationMethod(), s);
+    private Solution getPackableMutatedSolution(Solution s) {
+        return GeneticUtil.getPackableMutatedSolution(getContext(), getVerificationMethod(), s);
     }
 
-    private Solution getViableCrossedSolution(Couple c) {
-        return GeneticUtil.getViableCrossedSolution(getContext(), getVerificationMethod(), c.getS1(), c.getS2());
+    private Solution getPackableCrossedSolution(Couple c) {
+        return GeneticUtil.getPackableCrossedSolution(getContext(), getVerificationMethod(), c.getS1(), c.getS2());
     }
 
-    private Solution getViableCrossedSolution2(Couple c) {
-        return GeneticUtil.getViableCrossedSolution2(getContext(), getVerificationMethod(), c.getS1(), c.getS2());
+    private Solution getPackableCrossedSolution2(Couple c) {
+        return GeneticUtil.getPackableCrossedSolution2(getContext(), getVerificationMethod(), c.getS1(), c.getS2());
     }
 
     /**

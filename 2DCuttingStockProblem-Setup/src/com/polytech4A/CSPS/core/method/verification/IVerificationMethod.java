@@ -9,7 +9,7 @@ public interface IVerificationMethod {
      * @param solution
      * @return
      */
-    default boolean isViable(Solution solution) {
+    default boolean isPackable(Solution solution) {
         return getPlaced(solution) != null;
     }
 

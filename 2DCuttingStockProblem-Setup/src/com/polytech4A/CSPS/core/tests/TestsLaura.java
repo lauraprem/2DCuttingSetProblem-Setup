@@ -45,14 +45,14 @@ public class TestsLaura {
         // Solution solution = new Solution(patterns);
         // System.out.println(solution);
         // System.out.println("---------------------------------------------------------");
-        // System.out.println(SolutionUtil.getViableAddNeighbor(solution,
+        // System.out.println(SolutionUtil.getPackableAddNeighbor(solution,
         // verif));
 
         Tests tests = new Tests();
         Context context = tests.getContext(0);
         IVerificationMethod verif = new VerificationMethodImpl();
 
-//		Solution s = SolutionUtil.getRandomViableSolution2(context, verif, 2, 2);
+//		Solution s = SolutionUtil.getRandomPackableSolution2(context, verif, 2, 2);
 //		System.out.println(SolutionUtil.isSolvable(context, s));
         // System.out.println(s);
         Resolution resolution = new Resolution(context);

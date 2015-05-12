@@ -40,9 +40,9 @@ public class PatternUtil {
             return true;
         }
 
-        if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
-            System.out.println("makeSolvable non packable  !!");
-        }
+        //if (verif.getPlacedPatternRecursive(pattern, 0) == null) {
+            //System.out.println("makeSolvable non packable  !!");
+        //}
         return false;
     }
 
